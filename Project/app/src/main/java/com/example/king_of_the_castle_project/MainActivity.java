@@ -1,5 +1,6 @@
 package com.example.king_of_the_castle_project;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -7,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import java.lang.reflect.Method;
 
 public class MainActivity extends AppCompatActivity {
 

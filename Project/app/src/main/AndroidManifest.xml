@@ -16,9 +16,6 @@
             android:name=".EventDetailsScreen"
             android:exported="false" />
         <activity
-            android:name=".EventDetailsActivity"
-            android:exported="false" />
-        <activity
             android:name=".EntrantScreenActivity"
             android:exported="false" />
         <activity

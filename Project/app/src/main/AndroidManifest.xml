@@ -30,6 +30,12 @@
         <activity
             android:name=".OrganizerActivity">
         </activity>
+        <activity
+            android:name=".ManageFacilityActivity">
+        </activity>
+        <activity
+            android:name=".CreateEventActivity">
+        </activity>
     </application>
 
 </manifest>

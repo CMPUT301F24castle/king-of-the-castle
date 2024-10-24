@@ -4,14 +4,14 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/screen_bg">
+    android:background="@color/light_purple">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="   Home"
         android:textColor="@color/light_green"
-        android:background="@color/custom_gray"
+        android:background="@color/dark_grey"
         android:textSize="32sp"
         android:textStyle="bold"
         android:padding="15dp"
@@ -107,7 +107,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/light_green"
-        android:background="@color/custom_gray"
+        android:background="@color/dark_grey"
         android:textSize="32sp"
         android:textStyle="bold"
         android:padding="15dp"/>

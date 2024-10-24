@@ -2,10 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="screen_bg">#D9D6F1</color>
-    <color name="border_color">#B4ADEA</color>
     <color name="medium_purple">#C7C2EE</color>
-    <color name="custom_gray">#50514F</color>
     <color name="dark_grey">#50514F</color>
     <color name="dark_green">#63AD4D</color>
     <color name="light_green">#B5D1A2</color>

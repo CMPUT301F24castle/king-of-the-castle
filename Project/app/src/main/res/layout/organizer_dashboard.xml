@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_bg">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="   Home"
+        android:textColor="@color/light_green"
+        android:background="@color/custom_gray"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:padding="15dp"
+         />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome Back!"
+        android:textColor="@color/black"
+        android:background="@drawable/welcome_back_rounded_border"
+        android:layout_marginTop="60dp"
+        android:paddingBottom="30dp"
+        android:paddingTop="30dp"
+        android:paddingStart="50dp"
+        android:paddingEnd="50dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:letterSpacing="0.1"/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/organizer_button_layout_bg"
+        android:padding="25dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="45dp">
+        <Button
+            android:id="@+id/create_event_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create Event"
+            android:textColor="@android:color/black"
+            app:backgroundTint="@null"
+            android:background="@drawable/organizer_button_bg"
+            android:paddingTop="30dp"
+            android:paddingBottom="30dp"
+            android:paddingStart="90dp"
+            android:paddingEnd="90dp"
+            android:textSize="24sp"/>
+        <Button
+            android:id="@+id/manage_event_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Manage Events"
+            android:textColor="@android:color/black"
+            app:backgroundTint="@null"
+            android:background="@drawable/organizer_button_bg"
+            android:paddingTop="30dp"
+            android:paddingBottom="30dp"
+            android:paddingStart="75dp"
+            android:paddingEnd="75dp"
+            android:textSize="24sp"
+            android:layout_marginTop="20dp"/>
+        <Button
+            android:id="@+id/manage_facility_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Manage Facility"
+            android:textColor="@android:color/black"
+            app:backgroundTint="@null"
+            android:background="@drawable/organizer_button_bg"
+            android:paddingTop="30dp"
+            android:paddingBottom="30dp"
+            android:paddingStart="72dp"
+            android:paddingEnd="72dp"
+            android:textSize="24sp"
+            android:layout_marginTop="20dp"/>
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/change_role_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Change Role"
+        android:textColor="@android:color/black"
+        app:backgroundTint="@null"
+        android:background="@drawable/organizer_button_bg"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:paddingStart="72dp"
+        android:paddingEnd="72dp"
+        android:textSize="24sp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/light_green"
+        android:background="@color/custom_gray"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:padding="15dp"/>
+
+</LinearLayout>

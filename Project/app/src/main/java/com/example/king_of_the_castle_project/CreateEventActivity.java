@@ -17,7 +17,7 @@ public class CreateEventActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.event_creation_screen);
+        setContentView(R.layout.event_create_screen);
         // Get all event details
         EditText eventName = findViewById(R.id.event_name_edit_text);
         EditText eventDate = findViewById(R.id.event_date_edit_text);
@@ -25,7 +25,8 @@ public class CreateEventActivity extends AppCompatActivity {
         EditText eventDetails = findViewById(R.id.event_details_edit_text);
         EditText eventMaxParticipants = findViewById(R.id.event_max_participants_edit_text);
         // however to check photos
-
+        Button uploadImageButton = findViewById(R.id.upload_photo_button);
+        Button returnButton = findViewById(R.id.edit_facility_return_button);
         // Geolocation checkbox
         CheckBox eventGeolocation = findViewById(R.id.event_geolocation_checkbox);
 
@@ -42,6 +43,13 @@ public class CreateEventActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Send information to firebase first
                 // TODO
+                // return
+                finish();
+            }
+        });
+
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 // return
                 finish();
             }

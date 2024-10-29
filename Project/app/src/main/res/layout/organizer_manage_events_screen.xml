@@ -21,7 +21,7 @@
 
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/edit_facility_return_button"
+        android:id="@+id/return_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/light_green"

@@ -8,13 +8,13 @@ import java.util.Random;
 public class Lottery { ;
     private List<Entrant> selectedAttendees;
 
-    public Lottery{
+    public Lottery() {
         this.selectedAttendees = new ArrayList<>(); //selectedAttendees will be the list of entrants we randomly get from the waiting list
     }
 
-    public void selectRandomEntrants(EventDetails eventDetails) { //EventDetails will hold the values of the list of entrants (waiting list) as well as the number of participants needed for the event
-        int x = eventDetails.numberOfEntrants;  // Direct access to the private field
-        List<Entrant> waitingList = eventDetails.waitingList;  // Direct access to the private field
+    public void selectRandomEntrants(Event eventDetails) { //EventDetails will hold the values of the list of entrants (waiting list) as well as the number of participants needed for the event
+        int x = eventDetails.getWaitList().getNumberOfEntrants();  // Direct access to the private field
+        List<Entrant> waitingList = eventDetails.getWaitList();  // Direct access to the private field
 
         Random random = new Random();
         List<Entrant> tempWaitingList = new ArrayList<>(waitingList);

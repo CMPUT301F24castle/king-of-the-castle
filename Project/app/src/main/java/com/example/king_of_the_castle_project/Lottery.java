@@ -8,7 +8,7 @@ import java.util.Random;
 public class Lottery { ;
     private List<Entrant> selectedAttendees;
 
-    public Lottery{
+    public Lottery(){
         this.selectedAttendees = new ArrayList<>(); //selectedAttendees will be the list of entrants we randomly get from the waiting list
     }
 

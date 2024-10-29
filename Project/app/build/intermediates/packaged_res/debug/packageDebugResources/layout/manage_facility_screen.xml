@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_purple">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="   Edit Facility"
+        android:textColor="@color/light_green"
+        android:background="@color/dark_grey"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:padding="15dp"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:textColor="@color/black"
+        android:background="@drawable/edit_facility_screen_bg"
+        android:layout_marginTop="60dp"
+        android:paddingStart="25dp"
+        android:paddingEnd="25dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="50dp"
+        android:gravity="center"
+        android:layout_gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name:"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:gravity="start"
+            android:layout_gravity="start"/>
+
+        <EditText
+            android:id="@+id/facility_name_edit"
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:background="@color/light_purple"
+            android:textColor="@android:color/black"
+            android:gravity="center"
+            android:textSize="22sp"
+            android:padding="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="2dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location:"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:gravity="start"
+            android:layout_gravity="start"/>
+
+        <EditText
+            android:id="@+id/facility_location_edit"
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:background="@color/light_purple"
+            android:textColor="@android:color/black"
+            android:gravity="center"
+            android:textSize="22sp"
+            android:padding="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="2dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phone Number:"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:gravity="start"
+            android:layout_gravity="start"/>
+
+        <EditText
+            android:id="@+id/facility_number_edit"
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:background="@color/light_purple"
+            android:textColor="@android:color/black"
+            android:gravity="center"
+            android:textSize="22sp"
+            android:padding="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="2dp"/>
+
+        <Button
+            android:id="@+id/edit_facility_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit Facility"
+            android:textColor="@android:color/black"
+            app:backgroundTint="@null"
+            android:background="@color/light_green"
+            android:padding="5dp"
+            android:paddingStart="30dp"
+            android:paddingEnd="30dp"
+            android:textSize="24sp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+    <Button
+        android:id="@+id/return_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:backgroundTint="@null"
+        android:textColor="@color/light_green"
+        android:background="@color/dark_grey"
+        android:text="Return"
+        android:letterSpacing="0.1"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:padding="12dp"/>
+
+</LinearLayout>

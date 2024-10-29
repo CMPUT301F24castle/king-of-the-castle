@@ -1,0 +1,226 @@
+[
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/mipmap-hdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/drawable_baseline_mail_outline_24.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/drawable/baseline_mail_outline_24.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/mipmap-xhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/mipmap-mdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/drawable_rounded_light_green_button.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/drawable/rounded_light_green_button.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/layout_event_create_screen.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/layout/event_create_screen.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/drawable_event_list_content_bg.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/drawable/event_list_content_bg.xml"
+    },
+    {
+        "merged": "com.example.king_of_the_castle_project.app-debug-33:/layout_win_notification_fragment.xml.flat",
+        "source": "com.example.king_of_the_castle_project.app-main-35:/layout/win_notification_fragment.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/drawable_baseline_person_24.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/drawable/baseline_person_24.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/drawable_welcome_back_rounded_border.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/drawable/welcome_back_rounded_border.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/layout_entrant_event_waitlist.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/layout/entrant_event_waitlist.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/mipmap-hdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/layout_organizer_manage_events_screen.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/layout/organizer_manage_events_screen.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/drawable_calendar_icon.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/drawable/calendar_icon.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/drawable_toast_notification_bg.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/drawable/toast_notification_bg.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/drawable_organizer_button_bg.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/drawable/organizer_button_bg.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/layout_activity_main.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/layout/activity_main.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/drawable_bottom_background.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/drawable/bottom_background.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/drawable_item_selector.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/drawable/item_selector.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/drawable_button_border_and_background.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/drawable/button_border_and_background.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/xml_backup_rules.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/xml/backup_rules.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/drawable_entrant_event_waitlist_content_button_bg.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/drawable/entrant_event_waitlist_content_button_bg.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/drawable_baseline_format_list_bulleted_24.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/drawable/baseline_format_list_bulleted_24.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/layout_manage_facility_screen.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/layout/manage_facility_screen.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/layout_activity_entrant_screen.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/layout/activity_entrant_screen.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/font_inter_semibold.ttf.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/font/inter_semibold.ttf"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/mipmap-xxxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/drawable_baseline_qr_code_24.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/drawable/baseline_qr_code_24.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/drawable_baseline_home_24.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/drawable/baseline_home_24.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/mipmap-xxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/drawable_missing_image_icon.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/drawable/missing_image_icon.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/drawable_rounded_corner.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/drawable/rounded_corner.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/layout_entrant_event_waitlist_lot_results_content.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/layout/entrant_event_waitlist_lot_results_content.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/drawable_button_style.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/drawable/button_style.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/mipmap-xhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/drawable_baseline_settings_24.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/drawable/baseline_settings_24.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/layout_activity_event_details_screen.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/layout/activity_event_details_screen.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/drawable_edit_facility_screen_bg.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/drawable/edit_facility_screen_bg.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/drawable_ic_launcher_background.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/drawable/ic_launcher_background.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/mipmap-mdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/layout_organizer_dashboard.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/layout/organizer_dashboard.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/drawable_organizer_button_layout_bg.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/drawable/organizer_button_layout_bg.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/layout_toast_notification_layout.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/layout/toast_notification_layout.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/layout_entrant_event_waitlist_accepted_content.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/layout/entrant_event_waitlist_accepted_content.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/mipmap-xxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/mipmap-xxxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/drawable_entrant_event_waitlist_content_inner_bg.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/drawable/entrant_event_waitlist_content_inner_bg.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/layout_organizer_event_list_content.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/layout/organizer_event_list_content.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/drawable_entrant_event_waitlist_content_outer_bg.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/drawable/entrant_event_waitlist_content_outer_bg.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/layout_entrant_event_waitlist_lot_pending_content.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/layout/entrant_event_waitlist_lot_pending_content.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/menu_bottom_nav_menu.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/menu/bottom_nav_menu.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/drawable_frame_style.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/drawable/frame_style.xml"
+    },
+    {
+        "merged": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-debug-33:/xml_data_extraction_rules.xml.flat",
+        "source": "/Users/mako/.gradle/daemon/8.7/com.example.king_of_the_castle_project.app-main-35:/xml/data_extraction_rules.xml"
+    }
+]

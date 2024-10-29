@@ -19,5 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "King of the Castle"
+rootProject.name = "king-of-the-castle-project"
 include(":app")
+ 

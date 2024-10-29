@@ -11,7 +11,7 @@ public abstract class User {
     private String name;
     private String email;
     private String phoneNumber;
-    private int id;
+    private String id;
 
     /**
      * Constructor of the User
@@ -24,7 +24,7 @@ public abstract class User {
      * @param id
      *  Device ID of the user
      */
-    public User(String name, String email, String phoneNumber, int id) {
+    public User(String name, String email, String phoneNumber, String id) {
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
@@ -63,7 +63,7 @@ public abstract class User {
      * @return
      *  Device ID of the User
      */
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -99,7 +99,7 @@ public abstract class User {
      * @param id
      *  Device ID of the user
      */
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 }

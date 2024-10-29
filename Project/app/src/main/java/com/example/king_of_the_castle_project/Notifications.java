@@ -1,6 +1,4 @@
 package com.example.king_of_the_castle_project;
-import static java.lang.Integer.parseInt;
-
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -22,18 +20,18 @@ public class Notifications {
 
         for (Entrant entrant : selectedEntrants) {
             String message = "Congratulations. You have been chosen through the lottery! Would you like to accept or decline?";
-            //add buttons for accept and decline
 
-            //builds the notification
+
+            // Build the notification
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "default")
-                    .setContentTitle("Lottery Status")
+                    .setContentTitle("Lottery Notification")
                     .setContentText(message)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setAutoCancel(true); //dismiss notification when clicked
+                    .setAutoCancel(true); // Dismiss the notification when tapped
 
-            // Send the notification with hashCode() as ID
-            notificationManager.notify(entrant.getId().hashCode(), builder.build());
+            // Send the notification
+            notificationManager.notify(entrant.getId(), builder.build()); // Use a unique ID for each notification
         }
-    }
 
+    }
 }

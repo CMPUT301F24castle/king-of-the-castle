@@ -31,6 +31,15 @@ public class ManageFacilityActivity extends AppCompatActivity {
                 String facilityLocation = facilityLocationEditText.getText().toString();
                 String facilityNumber = facilityNumberEditText.getText().toString();
 
+                // check if facility exists in database
+                // if not
+                Facility facility = new Facility(facilityName, facilityLocation, facilityNumber);
+                // Send facility to firebase
+                /* else
+                getFacility somehow, then facility.setName(facilityName, location, etc);
+                Update facility in firebase
+                 */
+
                 // Return
                 finish();
             }

@@ -6,11 +6,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class CreateEventActivity extends AppCompatActivity {
     private boolean geolocation_check;
@@ -26,7 +22,7 @@ public class CreateEventActivity extends AppCompatActivity {
         EditText eventMaxParticipants = findViewById(R.id.event_max_participants_edit_text);
         // however to check photos
         Button uploadImageButton = findViewById(R.id.upload_photo_button);
-        Button returnButton = findViewById(R.id.edit_facility_return_button);
+        Button returnButton = findViewById(R.id.return_button);
         // Geolocation checkbox
         CheckBox eventGeolocation = findViewById(R.id.event_geolocation_checkbox);
 

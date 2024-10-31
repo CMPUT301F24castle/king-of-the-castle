@@ -22,9 +22,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/searchbar_background"
         android:hint="Search"
-        android:textColorHint="color/dark_grey"
+        android:textColorHint="@color/black"
         android:drawableStart="@drawable/ic_search_foreground"
-        android:drawablePaddingRight="10dp"
         android:layout_below="@id/header"
         android:layout_margin="8dp"/>
 

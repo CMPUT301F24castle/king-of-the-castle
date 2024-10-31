@@ -4,6 +4,7 @@ import java.sql.Time;
 import java.util.Date;
 
 public class Event {
+    private String Name;
     private Date date;
     private Time time;
     private Facility facility;
@@ -11,13 +12,16 @@ public class Event {
     private int maxParticipants;
     private WaitList waitList;
 
-    public Event(Date date, Time time, Facility facility, String notes, int maxParticipants) {
+    public Event(String Name, Date date, Time time, Facility facility, String notes, int maxParticipants) {
+        this.Name = Name;
         this.date = date;
         this.time = time;
         this.facility = facility;
         this.notes = notes;
         this.maxParticipants = maxParticipants;
     }
+
+    public String getName() {return Name; }
 
     public Date getDate() {
         return date;

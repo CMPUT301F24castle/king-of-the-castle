@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "307194773542",
+    "firebase_url": "https://king-of-the-castle-4ea7b-default-rtdb.firebaseio.com",
+    "project_id": "king-of-the-castle-4ea7b",
+    "storage_bucket": "king-of-the-castle-4ea7b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:307194773542:android:ed2e0bcf58f9c1df7ee6e7",
+        "android_client_info": {
+          "package_name": "com.company.app_name"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzYuPf5Au7soqY-O8rEq35GUZPZnkcKHI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:307194773542:android:c43f95fc57c8dff47ee6e7",
+        "android_client_info": {
+          "package_name": "com.example.king_of_the_castle_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzYuPf5Au7soqY-O8rEq35GUZPZnkcKHI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

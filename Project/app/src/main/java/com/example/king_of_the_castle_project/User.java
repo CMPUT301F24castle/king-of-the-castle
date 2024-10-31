@@ -1,10 +1,12 @@
 package com.example.king_of_the_castle_project;
 
+import java.io.Serializable;
+
 /**
  * The abstract class from which all User types extend
  * Defines a variable for everything the users have in common, as well as getters and setters
  */
-public abstract class User {
+public abstract class User implements Serializable {
     /**
      * Defining variables for all users
      */

@@ -2,9 +2,8 @@ package com.example.king_of_the_castle_project;
 import static java.lang.Integer.parseInt;
 
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
+
 import androidx.core.app.NotificationCompat;
 import java.util.List;
 

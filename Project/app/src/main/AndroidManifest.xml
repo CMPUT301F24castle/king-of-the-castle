@@ -29,7 +29,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".OrganizerActivity">
+            android:name=".OrganizerActivity"
+            android:exported="true">
         </activity>
         <activity
             android:name=".ManageFacilityActivity">

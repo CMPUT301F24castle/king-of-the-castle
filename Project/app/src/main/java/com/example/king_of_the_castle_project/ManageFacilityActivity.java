@@ -1,16 +1,11 @@
 package com.example.king_of_the_castle_project;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class ManageFacilityActivity extends AppCompatActivity {
     @Override
@@ -22,7 +17,7 @@ public class ManageFacilityActivity extends AppCompatActivity {
         EditText facilityNumberEditText = findViewById(R.id.facility_number_edit);
 
         Button editFacilityButton = findViewById(R.id.edit_facility_button);
-        Button editFacilityReturnButton = findViewById(R.id.edit_facility_return_button);
+        Button editFacilityReturnButton = findViewById(R.id.return_button);
 
         editFacilityButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

@@ -1,5 +1,6 @@
 package com.example.king_of_the_castle_project;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -34,7 +35,11 @@ public class ManageFacilityActivity extends AppCompatActivity {
                 getFacility somehow, then facility.setName(facilityName, location, etc);
                 Update facility in firebase
                  */
-
+                Intent resultIntent = new Intent();
+                // Put the data to pass back
+                resultIntent.putExtra("facilityModified", facilityName);
+                // Set result
+                setResult(RESULT_OK, resultIntent);
                 // Return
                 finish();
             }
@@ -43,7 +48,7 @@ public class ManageFacilityActivity extends AppCompatActivity {
             public void onClick(View v) {
                 finish();
             }
-            });
+        });
         // From main lol
         /*
         EdgeToEdge.enable(this);

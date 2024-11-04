@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Time;
@@ -36,14 +38,17 @@ import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Locale;
+import java.util.Map;
 
 public class CreateEventActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> imageSelectorLauncher;
     protected boolean geolocation_check = false;
     private FirebaseFirestore db;
     private String androidId;
+    private Bitmap qrCodeBitmap;
 
     /**
      * Default method for basic startup logic
@@ -102,7 +107,7 @@ public class CreateEventActivity extends AppCompatActivity {
                 String maxParticipants = eventMaxParticipants.getText().toString();
                 String date = eventDate.getText().toString();
                 String time = "12:00";
-                int number = 60; // Max participants for now
+                int number = 50000; // Max participants for now
                 // Fetch firebase first
                 db = FirebaseFirestore.getInstance();
                 // Verify date input
@@ -126,18 +131,26 @@ public class CreateEventActivity extends AppCompatActivity {
                 String qrCodeText = String.format("EventDetails: %s", name);
 
                 try {
-                    Bitmap qrCodeBitmap = createQRCode(qrCodeText);
+                    qrCodeBitmap = createQRCode(qrCodeText);
                 } catch (WriterException | IOException e) {
                     e.printStackTrace();
                     displayToastNotification("Error: Failed to generate QR Code");
                     finish();
                 }
+                // base64 string conversion so it can be stored in firebase
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                qrCodeBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                byte[] byteArray = byteArrayOutputStream.toByteArray();
+                String stringConversion = Base64.encodeToString(byteArray, Base64.DEFAULT);
                 // Create empty waitlist
                 WaitList waitlist = new WaitList(number);
                 // Create event then send to firebase
                 Event newEvent = new Event(name, date, time, location, details, number, waitlist, geolocation_check);
+                // Putting QR stuff into event class
+                newEvent.setQrCodeData(stringConversion);
+                // Sending to firebase
                 androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-                // sendToFirebase(newEvent, androidId);
+                sendToFirebase(newEvent, androidId, stringConversion);
                 // Passing data back
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("eventCreated", name);
@@ -217,10 +230,24 @@ public class CreateEventActivity extends AppCompatActivity {
      * @param androidId
      *      HWID, used to identify the collection that holds the events
      */
-    private void sendToFirebase(Event event, String androidId) {
+    private void sendToFirebase(Event event, String androidId, String qrCodeData) {
+        Map<String, Object> eventData = new HashMap<>();
+        eventData.put("name", event.getName());
+        eventData.put("date", event.getDate());
+        eventData.put("time", event.getTime());
+        eventData.put("location", event.getLocation());
+        eventData.put("details", event.getEventDetails());
+        eventData.put("maxParticipants", event.getMaxParticipants());
+        eventData.put("qrCodeData", qrCodeData);
         // Create new document or add to collection
         db.collection(androidId)
-                .add(event);
+                .add(eventData)
+                .addOnSuccessListener(documentReference -> {
+                    Log.d("Firestore", "Successful send to firebase");
+                })
+                .addOnFailureListener(e -> {
+                    Log.w("Firestore: ", "Failed to add event to firebase", e);
+                    // displayToastNotification("Failed to add event" + e.getMessage());
+                });
     }
-
 }

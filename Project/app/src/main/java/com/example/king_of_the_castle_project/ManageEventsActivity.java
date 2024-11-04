@@ -1,9 +1,14 @@
 package com.example.king_of_the_castle_project;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
@@ -40,6 +45,9 @@ public class ManageEventsActivity extends AppCompatActivity {
         listView = findViewById(R.id.event_list);
         // Initialize the events array
         events = new ArrayList<>();
+        // Adapter
+        arrayAdapter = new EventArrayAdapter(this, events);
+        listView.setAdapter(arrayAdapter);
         // Fetch events from firebase, then events.add
         db.collection(androidId)
                         .get()
@@ -47,13 +55,19 @@ public class ManageEventsActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     Event event = document.toObject(Event.class);
+//                                    String qrCodeDataString = document.getString("qrCode");
+//                                    // Convert back to QR code
+//                                    byte[] decodedBytes = Base64.decode(qrCodeDataString, Base64.DEFAULT);
+//                                    Bitmap qrCodebitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+//                                    // put it into the image view
+//                                    ImageView qrCodeImage = findViewById(R.id.organizer_event_qr_code);
+//                                    qrCodeImage.setImageBitmap(qrCodebitmap);
+
                                     events.add(event);
+                                    arrayAdapter.notifyDataSetChanged();
                                 }
                             }
                         });
-        // Adapter
-        arrayAdapter = new EventArrayAdapter(this, events);
-        listView.setAdapter(arrayAdapter);
 
         // Return button
         returnButton.setOnClickListener(new View.OnClickListener() {

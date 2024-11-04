@@ -11,9 +11,24 @@ public class Event {
     private String location;
     private String eventDetails;
     private int maxParticipants;
-    private WaitList waitList;
+    transient private WaitList waitList;
     private Boolean geolocation;
+    private String qrCodeData;
 
+    public Event() {
+        // Empty constructor for firebase
+    }
+
+    public Event(String name, String date, String time, String location, String eventDetails, int maxParticipants, Boolean geolocation) {
+        // Constructor with no waitlist because it was causing bugs
+        this.name = name;
+        this.date = date;
+        this.time = time;
+        this.location = location;
+        this.eventDetails = eventDetails;
+        this.maxParticipants = maxParticipants;
+        this.geolocation = geolocation;
+    }
 
     public Event(String name, String date, String time, String location, String eventDetails, int maxParticipants, WaitList waitList, Boolean geolocation) {
         this.name = name;
@@ -88,5 +103,13 @@ public class Event {
 
     public void setMaxParticipants(int maxParticipants) {
         this.maxParticipants = maxParticipants;
+    }
+
+    public String getQrCodeData() {
+        return qrCodeData;
+    }
+
+    public void setQrCodeData(String qrCodeData) {
+        this.qrCodeData = qrCodeData;
     }
 }

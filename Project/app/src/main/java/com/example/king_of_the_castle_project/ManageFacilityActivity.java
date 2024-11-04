@@ -9,6 +9,11 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ManageFacilityActivity extends AppCompatActivity {
+    /**
+     * Default method for basic startup logic
+     * @param savedInstanceState
+     *      If there was an Instance saved, saved instances restores it
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

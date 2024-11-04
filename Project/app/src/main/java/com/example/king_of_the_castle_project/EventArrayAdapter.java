@@ -23,6 +23,16 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
         super(context, 0, events);
     }
 
+    /**
+     * Sets the view for an item in the list
+     * @param position
+     *      Position of the event in the dataset
+     * @param convertView
+     *      Old view to reuse if it exists, else inflate a new one
+     * @param parent
+     *      Parent view that the view will be attached to
+     * @return
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {

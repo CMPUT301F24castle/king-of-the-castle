@@ -30,6 +30,11 @@ public class ManageEventsActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private String androidId;
 
+    /**
+     * Default method for basic startup logic
+     * @param savedInstanceState
+     *      If there was an Instance saved, saved instances restores it
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

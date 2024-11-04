@@ -229,8 +229,11 @@ public class CreateEventActivity extends AppCompatActivity {
      *      Event to send to the firebase
      * @param androidId
      *      HWID, used to identify the collection that holds the events
+     * @param qrCodeData
+     *      Used to pass the 64byte string QR Code data into the firebase
      */
     private void sendToFirebase(Event event, String androidId, String qrCodeData) {
+        // Create a new object that can be stored for event that does not use waitlist because it will bug :)
         Map<String, Object> eventData = new HashMap<>();
         eventData.put("name", event.getName());
         eventData.put("date", event.getDate());

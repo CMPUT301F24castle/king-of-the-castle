@@ -33,7 +33,9 @@ public class LoginScreenActivity extends AppCompatActivity {
         entrantPhone = findViewById(R.id.entrant_phone_edit_text);
         signUpButton = findViewById(R.id.sign_up_button);
 
+        // add intent to the chenge roles screen
         signUpButton.setOnClickListener(v -> saveEntrantData(androidId));
+
     }
 
     private void saveEntrantData(String androidId) {
@@ -48,6 +50,12 @@ public class LoginScreenActivity extends AppCompatActivity {
 
         if (email.isEmpty()) {
             Toast.makeText(this, "Please enter Email", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+
+        if (!email.matches(emailPattern)) {
+            Toast.makeText(this, "Please enter a valid Email", Toast.LENGTH_SHORT).show();
             return;
         }
 

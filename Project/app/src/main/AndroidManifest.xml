@@ -19,6 +19,12 @@
             android:name=".LoginScreenActivity"
             android:exported="false" />
         <activity
+            android:name=".MyWaitlistsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ListOfEntrantsInEventScreen"
+            android:exported="false" />
+        <activity
             android:name=".EventDetailsScreen"
             android:exported="false" />
         <activity

@@ -33,7 +33,7 @@ public class EntrantScreenActivity extends AppCompatActivity {
     private AppCompatButton viewInvitationsBut;
     private AppCompatButton waitingListBut;
     private Button changeRolesBut;
-    
+
     private boolean isScannedInstalled = false;
     private GmsBarcodeScanner scanner;
     private String scannnedCode;
@@ -115,7 +115,7 @@ public class EntrantScreenActivity extends AppCompatActivity {
                 .newBuilder()
                 .addApi(GmsBarcodeScanning.getClient(this))
                 .build();
-        
+
         moduleInstall.installModules(moduleInstallRequest)
                 .addOnSuccessListener(new OnSuccessListener<ModuleInstallResponse>() {
                     @Override

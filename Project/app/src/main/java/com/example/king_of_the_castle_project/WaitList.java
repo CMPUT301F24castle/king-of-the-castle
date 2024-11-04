@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class WaitList extends ArrayList {
+public class WaitList extends ArrayList<Entrant> {
     private int numberOfEntrants;
 
     public WaitList(int initialCapacity) {

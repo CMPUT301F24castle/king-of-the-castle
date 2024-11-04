@@ -34,11 +34,12 @@
 
 <!--        <include layout="@layout/entrant_event_waitlist_lot_results_content"/>-->
 
-        <ListView
-            android:id="@+id/lottery_results_list"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lottery_results_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:padding="16dp"/>
     </LinearLayout>
 
     <LinearLayout
@@ -60,7 +61,6 @@
             android:textStyle="bold"
             android:padding="10dp"/>
 
-        <!-- RecyclerView for Lottery Pending -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lottery_pending_recycler"
             android:layout_width="match_parent"
@@ -92,11 +92,12 @@
 <!--        <include layout="@layout/entrant_event_waitlist_accepted_content"/>-->
 
 
-        <ListView
-            android:id="@+id/accepted_list"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lottery_accepted_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:padding="16dp"/>
     </LinearLayout>
 
     <View

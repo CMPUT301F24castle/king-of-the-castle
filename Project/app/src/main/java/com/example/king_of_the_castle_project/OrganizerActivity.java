@@ -17,6 +17,11 @@ import androidx.appcompat.app.AppCompatActivity;
 public class OrganizerActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> activityResultLauncher;
 
+    /**
+     * Default method for basic startup logic
+     * @param savedInstanceState
+     *      If there was an Instance saved, saved instances restores it
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,28 +45,12 @@ public class OrganizerActivity extends AppCompatActivity {
                     if (returnData != null) {
                         // String facilityName = returnData.getStringExtra("facilityModified");
                         if (returnData.hasExtra("facilityModified")) { // mod facility notification
-                            LayoutInflater inflater = getLayoutInflater();
-                            View layout = inflater.inflate(R.layout.toast_notification_layout, findViewById(R.id.custom_toast_container));
-                            TextView text = layout.findViewById(R.id.toast_text);
-                            text.setText("Facility has been successfully modified");
-                            Toast toast = new Toast(getApplicationContext());
-                            toast.setDuration(Toast.LENGTH_SHORT);
-                            toast.setView(layout);
-                            toast.setGravity(Gravity.BOTTOM, 0, 100);
-                            toast.show();
+                            displayToastNotification("Facility has been successfully modified");
                             // Make sure it doesn't run again
                             returnData.removeExtra("facilityModified");
                         } else if (returnData.hasExtra("eventCreated")) { // Create event notification
                             String eventName = returnData.getStringExtra("eventCreated");
-                            LayoutInflater inflater = getLayoutInflater();
-                            View layout = inflater.inflate(R.layout.toast_notification_layout, findViewById(R.id.custom_toast_container));
-                            TextView text = layout.findViewById(R.id.toast_text);
-                            text.setText(String.format("Event %s has been successfully created", eventName));
-                            Toast toast = new Toast(getApplicationContext());
-                            toast.setDuration(Toast.LENGTH_SHORT);
-                            toast.setView(layout);
-                            toast.setGravity(Gravity.BOTTOM, 0, 100);
-                            toast.show();
+                            displayToastNotification(String.format("Event %s has been successfully created", eventName));
                             // Make sure it doesn't run again
                             returnData.removeExtra("eventCreated");
                         }
@@ -87,6 +76,12 @@ public class OrganizerActivity extends AppCompatActivity {
             }
         });
 
+        manageEventButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent intent = new Intent(OrganizerActivity.this, ManageEventsActivity.class);
+                startActivity(intent);
+         }
+        });
 
         // copied from main activity lol
         /*
@@ -96,5 +91,21 @@ public class OrganizerActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });*/
+    }
+    /**
+     * Function used to display toast notification
+     * @param message
+     *      Message parameter to pass what should be shown in the notification
+     */
+    protected void displayToastNotification(String message) {
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.toast_notification_layout, findViewById(R.id.custom_toast_container));
+        TextView text = layout.findViewById(R.id.toast_text);
+        text.setText(message);
+        Toast toast = new Toast(getApplicationContext());
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.setGravity(Gravity.BOTTOM, 0, 100);
+        toast.show();
     }
 }

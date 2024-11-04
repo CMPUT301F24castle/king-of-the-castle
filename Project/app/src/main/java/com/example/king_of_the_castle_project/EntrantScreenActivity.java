@@ -98,12 +98,16 @@ public class EntrantScreenActivity extends AppCompatActivity {
         waitingListBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(EntrantScreenActivity.this, MyWaitlistsActivity.class);
-                startActivity(intent);
+
             }
         });
 
-
+        changeRolesBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     /**

@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">king-of-the-castle-project</string>
+
+    <string-array name="roles_list_spinner">
+        <item>Role</item>
+        <item>Entrant</item>
+        <item>Organizer</item>
+        <item>Administrator</item>
+    </string-array>
 </resources>

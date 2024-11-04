@@ -37,10 +37,18 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ManageEventsActivity">
+    </activity>
+        <activity
             android:name=".OrganizerActivity"
-            android:exported="true"></activity>
-        <activity android:name=".ManageFacilityActivity"></activity>
-        <activity android:name=".CreateEventActivity"></activity>
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".ManageFacilityActivity">
+        </activity>
+        <activity
+            android:name=".CreateEventActivity">
+        </activity>
     </application>
 
 </manifest>

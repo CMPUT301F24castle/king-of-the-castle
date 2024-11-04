@@ -87,6 +87,13 @@ public class OrganizerActivity extends AppCompatActivity {
             }
         });
 
+        manageEventButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent intent = new Intent(OrganizerActivity.this, ManageEventsActivity.class);
+                startActivity(intent);
+         }
+        });
+
 
         // copied from main activity lol
         /*

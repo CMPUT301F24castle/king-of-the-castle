@@ -58,6 +58,14 @@ public class Event {
         this.location = location;
     }
 
+    public Boolean getGeolocation() {
+        return geolocation;
+    }
+
+    public void setGeolocation(Boolean geolocation) {
+        this.geolocation = geolocation;
+    }
+
     public WaitList getWaitList() {
         return waitList;
     }

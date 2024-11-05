@@ -34,23 +34,31 @@ android {
 }
 
 dependencies {
+    // Espresso and Testing Dependencies
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    androidTestImplementation("androidx.test.ext:junit:1.1.3")
+    androidTestImplementation("androidx.test.espresso:espresso-intents:3.4.0")
 
+    // Regular implementation dependencies
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
-    implementation("com.google.android.gms:play-services-code-scanner:16.1.0")
-    implementation("com.google.android.gms:play-services-base:18.5.0")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.12.0")
-    implementation("androidx.activity:activity:1.9.3")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+
+    // Firebase dependencies
     implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
     implementation(libs.google.firebase.firestore)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+
+    // Google Play Services dependencies
+    implementation("com.google.android.gms:play-services-code-scanner:16.1.0")
+    implementation("com.google.android.gms:play-services-base:18.5.0")
+
+    // ZXing dependencies for barcode scanning
     implementation("com.google.zxing:core:3.4.1")
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
 
+    // Unit testing dependencies
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.ext.junit)
 }
+

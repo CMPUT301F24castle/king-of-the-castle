@@ -1,5 +1,6 @@
 package com.example.king_of_the_castle_project;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.widget.Button;
@@ -33,10 +34,17 @@ public class LoginScreenActivity extends AppCompatActivity {
         entrantPhone = findViewById(R.id.entrant_phone_edit_text);
         signUpButton = findViewById(R.id.sign_up_button);
 
-        signUpButton.setOnClickListener(v -> saveEntrantData(androidId));
-    }
+        signUpButton.setOnClickListener(v -> saveEntrantData(androidId, isSuccess -> {
+            if (isSuccess) {
+                Intent intent = new Intent(this, ChooseRoleActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                Toast.makeText(this, "Failed to save data", Toast.LENGTH_SHORT).show();
+            }
+        }));    }
 
-    private void saveEntrantData(String androidId) {
+    private void saveEntrantData(String androidId, OnSaveCompleteListener listener) {
         String name = entrantName.getText().toString().trim();
         String email = entrantEmail.getText().toString().trim();
         String phone = entrantPhone.getText().toString().trim();
@@ -51,6 +59,12 @@ public class LoginScreenActivity extends AppCompatActivity {
             return;
         }
 
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+        if (!email.matches(emailPattern)) {
+            Toast.makeText(this, "Please enter a valid Email", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Entrant entrant = new Entrant(name, email, phone.isEmpty() ? null : phone, androidId);
 
         Map<String, Object> entrantData = new HashMap<>();
@@ -61,9 +75,17 @@ public class LoginScreenActivity extends AppCompatActivity {
 
         db.collection("entrants").document(androidId)
                 .set(entrantData)
-                .addOnSuccessListener(aVoid ->
-                        Toast.makeText(this, "Data saved successfully", Toast.LENGTH_SHORT).show())
-                .addOnFailureListener(e ->
-                        Toast.makeText(this, "Failed to save data: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Data saved successfully", Toast.LENGTH_SHORT).show();
+                    listener.onComplete(true);
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Failed to save data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    listener.onComplete(false);
+                });
+    }
+
+    interface OnSaveCompleteListener {
+        void onComplete(boolean isSuccess);
     }
 }

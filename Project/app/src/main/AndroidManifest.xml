@@ -53,6 +53,9 @@
         <activity
             android:name=".CreateEventActivity">
         </activity>
+        <activity
+            android:name=".MyWaitlistsActivity">
+        </activity>
     </application>
 
 </manifest>

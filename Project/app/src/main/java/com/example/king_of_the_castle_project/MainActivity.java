@@ -29,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        Intent intent = new Intent(MainActivity.this, MyWaitlistsActivity.class);
+        startActivity(intent);
+        finish();
+
         //notification permissions
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             String notificationPermission = "android.permission.POST_NOTIFICATIONS";

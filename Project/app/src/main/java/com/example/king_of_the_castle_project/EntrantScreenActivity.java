@@ -22,6 +22,8 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScanner;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning;
 
+import java.util.List;
+
 /**
  * Activity that shows toolbar, buttons and navbar on Entrant Screen
  */
@@ -91,6 +93,8 @@ public class EntrantScreenActivity extends AppCompatActivity {
         viewInvitationsBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
 
             }
         });

@@ -29,6 +29,8 @@ public class MyWaitlistsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.entrant_event_waitlist);
 
+
+
         db = FirebaseFirestore.getInstance();
         entrantID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 

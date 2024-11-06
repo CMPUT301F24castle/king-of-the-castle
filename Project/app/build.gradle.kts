@@ -31,6 +31,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
+    tasks.withType<Test> {
+        useJUnitPlatform() // Make all tests use JUnit 5
+    }
 }
 
 dependencies {
@@ -60,5 +64,7 @@ dependencies {
     // Unit testing dependencies
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
+    testImplementation ("org.junit.jupiter:junit-jupiter-api:5.0.1")
+    testRuntimeOnly ("org.junit.jupiter:junit-jupiter-engine:5.0.1")
 }
 

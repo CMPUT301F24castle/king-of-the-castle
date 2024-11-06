@@ -21,7 +21,7 @@ public class Lottery { ;
      * this is the event object to use
      */
     public void selectRandomEntrants(Event eventDetails) { //EventDetails will hold the values of the list of entrants (waiting list) as well as the number of participants needed for the event
-        int x = eventDetails.getWaitList().getNumberOfEntrants();  // Direct access to the private field
+        int x = eventDetails.getMaxParticipants();  // Direct access to the private field
         WaitList waitingList = eventDetails.getWaitList();  // Direct access to the private field
 
         Random random = new Random();

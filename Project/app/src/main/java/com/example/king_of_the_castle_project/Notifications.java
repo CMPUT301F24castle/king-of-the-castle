@@ -74,6 +74,37 @@ public class Notifications {
         }
     }
 
+
+
+    /**
+     * This will send a notification to selected entrants (by lottery system) if they would like to accept or decline their invitation (we are still waiting on their response)
+     * 2.7.2: As an organiser I want to send notifications to all selected entrants
+     * @param selectedEntrants
+     * This is the list of selected entrants by the lottery class
+     */
+    //2.7.2: As an organiser I want to send a notification to chosen entrants to sign up for events
+    public void sendLotteryNotificationForResponse(List<Entrant> selectedEntrants) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        for (Entrant entrant : selectedEntrants) {
+            String message = "Congratulations. You have been chosen through the lottery! Would you like to accept or decline? (Please note we are still waiting for your response)";
+            //(ADD) buttons for accept and decline
+
+            //builds the notification
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "default")
+                    .setContentTitle("Lottery Status")
+                    .setContentText(message)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setAutoCancel(true); //dismiss notification when clicked
+
+            // Send the notification with hashCode() as ID
+            notificationManager.notify(entrant.getId().hashCode(), builder.build());
+        }
+    }
+
+
+
+
     /**
      * This sends a notification to all cancelled entrants
      * 2.7.3: As an organiser I want to send a notification to all cancelled entrants

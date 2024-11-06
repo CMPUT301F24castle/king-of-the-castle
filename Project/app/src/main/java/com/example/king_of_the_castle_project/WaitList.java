@@ -26,4 +26,7 @@ public class WaitList extends ArrayList<Entrant> {
     public void setNumberOfEntrants(int numberOfEntrants) {
         this.numberOfEntrants = numberOfEntrants;
     }
+
+
+
 }

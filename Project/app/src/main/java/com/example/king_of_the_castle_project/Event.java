@@ -12,7 +12,7 @@ public class Event {
     private String location;
     private String eventDetails;
     private int maxParticipants;
-    private ArrayList<String> waitList;
+    private WaitList waitList;
     private ArrayList<String> acceptedList;
     private ArrayList<String> declinedList;
     private ArrayList<String> registeredList;

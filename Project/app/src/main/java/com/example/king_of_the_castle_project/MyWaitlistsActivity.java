@@ -53,8 +53,8 @@ public class MyWaitlistsActivity extends AppCompatActivity {
         loadEntrantWaitingLists();
 
         findViewById(R.id.return_button).setOnClickListener(v -> {
-            Intent intent = new Intent(MyWaitlistsActivity.this, EntrantScreenActivity.class);
-            startActivity(intent);
+            //Intent intent = new Intent(MyWaitlistsActivity.this, EntrantScreenActivity.class);
+            //startActivity(intent);
             finish();
         });
     }
@@ -65,12 +65,14 @@ public class MyWaitlistsActivity extends AppCompatActivity {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        lotteryResultsEvents.clear();
-                        lotteryPendingEvents.clear();
-                        acceptedEvents.clear();
+                        //lotteryResultsEvents.clear();
+                        //lotteryPendingEvents.clear();
+                        //acceptedEvents.clear();
 
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Event event = document.toObject(Event.class);
+                            lotteryResultsEvents.add(event);
+                            acceptedAdapter.notifyDataSetChanged();
 
                             // Logic to classify the event
                             // For example:

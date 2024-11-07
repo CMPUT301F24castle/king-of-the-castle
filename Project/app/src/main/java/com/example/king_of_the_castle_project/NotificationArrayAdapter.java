@@ -18,8 +18,11 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
-public class EventArrayAdapter extends ArrayAdapter<Event>  {
-    public EventArrayAdapter(@NonNull Context context, List<Event> events) {
+/**
+ * Class which acts as an adapter for notifications/invitations
+ */
+public class NotificationArrayAdapter extends ArrayAdapter<Event> {
+    public NotificationArrayAdapter(@NonNull Context context, List<Event> events) {
         super(context, 0, events);
     }
 
@@ -40,39 +43,22 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
         Event event = getItem(position);
         // Inflate the view if not reused
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.organizer_event_list_content, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.entrant_notification_list_content, parent, false);
         }
-        // Image view for QR Code
-        ImageView qrCodeImage = convertView.findViewById(R.id.organizer_event_qr_code);
         // Get views
-        TextView name = convertView.findViewById(R.id.organizer_event_name);
-        Button viewEntrantsButton = convertView.findViewById(R.id.view_entrants_button);
-        Button sampleEntrantsButton = convertView.findViewById(R.id.sample_entrants_button);
+        TextView name = convertView.findViewById(R.id.notification_event_name);
+        Button viewStatusButton = convertView.findViewById(R.id.view_status_button);
 
-        // Get QR Code
-        if (event.getQrCodeData() != null) {
-            byte[] decodedBytes = Base64.decode(event.getQrCodeData(), Base64.DEFAULT);
-            Bitmap qrCodeBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-            qrCodeImage.setImageBitmap(qrCodeBitmap);
-        } else {
-            Log.d("Failed to show QR code", "failure: " + event.getQrCodeData());
-        }
 
         if (event != null) {
             // For now just name, add others later
             name.setText(event.getName());
         }
 
-        viewEntrantsButton.setOnClickListener(v -> {
-            // make it go to entrants screen
+        viewStatusButton.setOnClickListener(v -> {
+
         });
 
-        sampleEntrantsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
 
         return convertView;
     }

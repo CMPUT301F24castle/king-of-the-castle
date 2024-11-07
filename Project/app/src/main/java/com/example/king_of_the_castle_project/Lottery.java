@@ -22,15 +22,18 @@ public class Lottery { ;
      */
     public void selectRandomEntrants(Event eventDetails) {
         int x = eventDetails.getMaxParticipants();
-        List<String> waitingList = eventDetails.getWaitList();
+        ArrayList<String> waitingList = eventDetails.getWaitList();  // Direct access to the private field
 
         Random random = new Random();
+        //ArrayList<Entrant> tempWaitingList = new ArrayList<Entrant>();
 
-        while (selectedAttendees.size() < x && !waitingList.isEmpty()) {
+        while (selectedAttendees.size() < x && waitingList.size() > 0) {
             int index = random.nextInt(waitingList.size());
-            String selectedEntrantId = waitingList.remove(index);
-            selectedAttendees.add(selectedEntrantId);
+            String selectedEntrant = waitingList.remove(index);
+            selectedAttendees.add(selectedEntrant);
+            //eventDetails.getAcceptedList().add(selectedEntrant);
         }
+
     }
 
     /**

@@ -22,6 +22,8 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScanner;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning;
 
+import java.util.List;
+
 /**
  * Activity that shows toolbar, buttons and navbar on Entrant Screen
  */
@@ -92,6 +94,8 @@ public class EntrantScreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+
+
             }
         });
 
@@ -100,16 +104,13 @@ public class EntrantScreenActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(EntrantScreenActivity.this, MyWaitlistsActivity.class);
                 startActivity(intent);
-                //finish();
+                finish();
             }
         });
 
         changeRolesBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //Intent intent = new Intent(EntrantScreenActivity.this, ChooseRoleActivity.class);
-                //startActivity(intent);
                 finish();
             }
         });

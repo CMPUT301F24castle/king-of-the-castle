@@ -20,6 +20,9 @@ public class Lottery { ;
      * @param eventDetails
      * this is the event object to use
      */
+    public void selectRandomEntrants(Event eventDetails) {
+        int x = eventDetails.getMaxParticipants();
+        WaitList waitingList = eventDetails.getWaitList();
     public void selectRandomEntrants(Event eventDetails) { //EventDetails will hold the values of the list of entrants (waiting list) as well as the number of participants needed for the event
         int x = eventDetails.getWaitList().size();  // Direct access to the private field
         ArrayList<Entrant> waitingList = eventDetails.getWaitList();  // Direct access to the private field
@@ -27,9 +30,9 @@ public class Lottery { ;
         Random random = new Random();
         ArrayList<Entrant> tempWaitingList = new ArrayList<Entrant>();
 
-        while (selectedAttendees.size() < x && tempWaitingList.size() > 0) {
-            int index = random.nextInt(tempWaitingList.size());
-            Entrant selectedEntrant = tempWaitingList.remove(index);
+        while (selectedAttendees.size() < x && waitingList.size() > 0) {
+            int index = random.nextInt(waitingList.size());
+            Entrant selectedEntrant = waitingList.remove(index);
             selectedAttendees.add(selectedEntrant);
         }
     }
@@ -41,5 +44,8 @@ public class Lottery { ;
     public List<Entrant> getSelectedAttendees() {
         return selectedAttendees; //returns the selected Attendees
     }
+
+
+
 
 }

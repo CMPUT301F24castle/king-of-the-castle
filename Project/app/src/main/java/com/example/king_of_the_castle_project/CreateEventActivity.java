@@ -9,6 +9,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -38,6 +39,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -144,7 +146,7 @@ public class CreateEventActivity extends AppCompatActivity {
                 byte[] byteArray = byteArrayOutputStream.toByteArray();
                 String stringConversion = Base64.encodeToString(byteArray, Base64.DEFAULT);
                 // Create empty waitlist
-                WaitList waitlist = new WaitList(number);
+                ArrayList<String> waitlist = new ArrayList<String>();
                 // Create event then send to firebase
                 Event newEvent = new Event(name, date, time, location, details, number, waitlist, geolocation_check);
                 // Putting QR stuff into event class
@@ -235,17 +237,20 @@ public class CreateEventActivity extends AppCompatActivity {
      */
     private void sendToFirebase(Event event, String androidId, String qrCodeData) {
         // Create a new object that can be stored for event that does not use waitlist because it will bug :)
+        String name = event.getName();
         Map<String, Object> eventData = new HashMap<>();
-        eventData.put("name", event.getName());
+        eventData.put("name", name);
         eventData.put("date", event.getDate());
         eventData.put("time", event.getTime());
         eventData.put("location", event.getLocation());
         eventData.put("details", event.getEventDetails());
         eventData.put("maxParticipants", event.getMaxParticipants());
+        eventData.put("waitList", event.getWaitList());
         eventData.put("qrCodeData", qrCodeData);
         // Create new document or add to collection
         db.collection(androidId)
-                .add(eventData)
+                .document(name)
+                .set(eventData)
                 .addOnSuccessListener(documentReference -> {
                     Log.d("Firestore", "Successful send to firebase");
                 })
@@ -253,5 +258,9 @@ public class CreateEventActivity extends AppCompatActivity {
                     Log.w("Firestore: ", "Failed to add event to firebase", e);
                     // displayToastNotification("Failed to add event" + e.getMessage());
                 });
+        // Add to collection of events
+        db.collection("events")
+                .document(name)
+                .set(eventData);
     }
 }

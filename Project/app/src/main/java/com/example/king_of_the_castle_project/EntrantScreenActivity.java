@@ -93,8 +93,8 @@ public class EntrantScreenActivity extends AppCompatActivity {
         viewInvitationsBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
+                Intent intent = new Intent(EntrantScreenActivity.this, MyNotificationsActivity.class);
+                startActivity(intent);
 
             }
         });
@@ -104,7 +104,7 @@ public class EntrantScreenActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(EntrantScreenActivity.this, MyWaitlistsActivity.class);
                 startActivity(intent);
-                finish();
+                //finish();
             }
         });
 

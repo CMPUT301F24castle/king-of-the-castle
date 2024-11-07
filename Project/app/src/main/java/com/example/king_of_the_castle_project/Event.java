@@ -1,6 +1,7 @@
 package com.example.king_of_the_castle_project;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +12,10 @@ public class Event {
     private String location;
     private String eventDetails;
     private int maxParticipants;
-    private WaitList waitList;
+    private ArrayList<String> waitList;
+    private ArrayList<String> acceptedList;
+    private ArrayList<String> declinedList;
+    private ArrayList<String> registeredList;
     private Boolean geolocation;
     private String qrCodeData;
 
@@ -223,5 +227,29 @@ public class Event {
      */
     public void setQrCodeData(String qrCodeData) {
         this.qrCodeData = qrCodeData;
+    }
+
+    public ArrayList<String> getAcceptedList() {
+        return acceptedList;
+    }
+
+    public ArrayList<String> getDeclinedList() {
+        return declinedList;
+    }
+
+    public ArrayList<String> getRegisteredList() {
+        return registeredList;
+    }
+
+    public void setAcceptedList(ArrayList<String> acceptedList) {
+        this.acceptedList = acceptedList;
+    }
+
+    public void setDeclinedList(ArrayList<String> declinedList) {
+        this.declinedList = declinedList;
+    }
+
+    public void setRegisteredList(ArrayList<String> registeredList) {
+        this.registeredList = registeredList;
     }
 }

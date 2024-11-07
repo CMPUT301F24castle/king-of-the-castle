@@ -9,6 +9,8 @@ activity = "1.9.2"
 constraintlayout = "2.1.4"
 junitJupiter = "5.8.1"
 firebaseFirestore = "25.1.1"
+espressoCoreVersion = "3.4.0"
+core = "1.6.1"
 
 [libraries]
 google-firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
@@ -21,6 +23,8 @@ activity = { group = "androidx.activity", name = "activity", version.ref = "acti
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCoreVersion" }
+androidx-core = { group = "androidx.test", name = "core", version.ref = "core" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

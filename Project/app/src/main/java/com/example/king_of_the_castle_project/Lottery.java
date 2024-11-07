@@ -9,7 +9,7 @@ import java.util.Random;
  * This is a class that defines the Lottery method to randomly choose x amount of entrants and add them to a list called selectedAttendees
  */
 public class Lottery { ;
-    private List<Entrant> selectedAttendees;
+    private List<String> selectedAttendees;
 
     public Lottery(){
         this.selectedAttendees = new ArrayList<>(); //selectedAttendees will be the list of entrants we randomly get from the waiting list

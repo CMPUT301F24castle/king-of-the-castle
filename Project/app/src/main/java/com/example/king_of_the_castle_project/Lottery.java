@@ -22,14 +22,14 @@ public class Lottery { ;
      */
     public void selectRandomEntrants(Event eventDetails) {
         int x = eventDetails.getMaxParticipants();
-        WaitList waitingList = eventDetails.getWaitList();
+        List<String> waitingList = eventDetails.getWaitList();
 
         Random random = new Random();
 
-        while (selectedAttendees.size() < x && waitingList.size() > 0) {
+        while (selectedAttendees.size() < x && !waitingList.isEmpty()) {
             int index = random.nextInt(waitingList.size());
-            Entrant selectedEntrant = waitingList.remove(index);
-            selectedAttendees.add(selectedEntrant);
+            String selectedEntrantId = waitingList.remove(index);
+            selectedAttendees.add(selectedEntrantId);
         }
     }
 
@@ -37,7 +37,7 @@ public class Lottery { ;
      * Returns the selectedAttendees list
      * @return
      */
-    public List<Entrant> getSelectedAttendees() {
+    public List<String> getSelectedAttendees() {
         return selectedAttendees; //returns the selected Attendees
     }
 

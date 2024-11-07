@@ -10,7 +10,7 @@ import java.util.List;
 public class LotteryTest {
 
     private Event testEvent;
-    private WaitList testwaitlist;
+    private ArrayList<String> testwaitlist;
    // private ArrayList<Entrant> testwaitlist = new ArrayList<>();
     private Lottery testlottery;
     private Event testevent;
@@ -18,33 +18,33 @@ public class LotteryTest {
 
     @Test
     public void testAddEntrantsToWaitList() {
-        testwaitlist = new WaitList();
+        testwaitlist = new ArrayList<String>();
         // Create some entrants
         Entrant entrant1 = new Entrant("Alice", "alice@example.com", "555-1234", "id1");
         Entrant entrant2 = new Entrant("Bob", "bob@example.com", "555-5678", "id2");
 
         // Add entrants to the waitlist
-        testwaitlist.add(entrant1);
-        testwaitlist.add(entrant2);
+        testwaitlist.add(entrant1.getId());
+        testwaitlist.add(entrant2.getId());
 
         // Assert the waitlist contains the correct number of entrants
         assertEquals(2, testwaitlist.size());
-        assertEquals("Alice", testwaitlist.get(0).getName());
-        assertEquals("Bob", testwaitlist.get(1).getName());
+        assertEquals("id1", testwaitlist.get(0));
+        assertEquals("id2", testwaitlist.get(1));
     }
 
     @Test
     public void testSelectCorrectNumberOfEntrants() {
-        testwaitlist = new WaitList();
+        testwaitlist = new ArrayList<String>();
         // Create some entrants
         Entrant entrant1 = new Entrant("Alice", "alice@example.com", "555-1234", "id1");
         Entrant entrant2 = new Entrant("Bob", "bob@example.com", "555-5678", "id2");
         Entrant entrant3 = new Entrant("carl", "carl@example.com", "555-5788", "id3");
 
         // Add entrants to the waitlist
-        testwaitlist.add(entrant1);
-        testwaitlist.add(entrant2);
-        testwaitlist.add(entrant3);
+        testwaitlist.add(entrant1.getId());
+        testwaitlist.add(entrant2.getId());
+        testwaitlist.add(entrant3.getId());
         testlottery = new Lottery();
 
         // Call the lottery selection method
@@ -53,13 +53,14 @@ public class LotteryTest {
         testlottery.selectRandomEntrants(testevent);
 
         // Verify that the correct number of entrants were selected (2 in this case)
-        List<Entrant> selectedAttendees = testlottery.getSelectedAttendees();
+        List<String> selectedAttendees = testlottery.getSelectedAttendees();
         assertEquals(testevent.getMaxParticipants(), selectedAttendees.size(),
                 "Lottery should select the correct number of entrants.");
-        System.out.println("Selected Entrants:");
-        for (Entrant entrant : selectedAttendees) {
-            System.out.println("Name: " + entrant.getName() + ", Email: " + entrant.getEmail());
-        }
+        //System.out.println("Selected Entrants:");
+
+        //for (String entrant : selectedAttendees) {
+        //    System.out.println("Name: " + entrant.getName() + ", Email: " + entrant.getEmail());
+        //}
 
     }
 

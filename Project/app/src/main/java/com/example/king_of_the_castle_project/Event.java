@@ -12,7 +12,10 @@ public class Event {
     private String location;
     private String eventDetails;
     private int maxParticipants;
-    private ArrayList<Entrant> waitList;
+    private ArrayList<String> waitList;
+    private ArrayList<String> acceptedList;
+    private ArrayList<String> declinedList;
+    private ArrayList<String> registeredList;
     private Boolean geolocation;
     private String qrCodeData;
 
@@ -53,7 +56,7 @@ public class Event {
      * @param geolocation
      *      Boolean to determine if the organizer would like to check entrant location for attending event
      */
-    public Event(String name, String date, String time, String location, String eventDetails, int maxParticipants, ArrayList<Entrant> waitList, Boolean geolocation) {
+    public Event(String name, String date, String time, String location, String eventDetails, int maxParticipants, ArrayList<String> waitList, Boolean geolocation) {
         this.name = name;
         this.date = date;
         this.time = time;
@@ -159,7 +162,7 @@ public class Event {
      * @return
      *      Returns a list of entrants
      */
-    public ArrayList<Entrant> getWaitList() {
+    public ArrayList<String> getWaitList() {
         return waitList;
     }
 
@@ -168,7 +171,7 @@ public class Event {
      * @param waitList
      *      Sets the data for the waitlist
      */
-    public void setWaitList(ArrayList<Entrant> waitList) {
+    public void setWaitList(ArrayList<String> waitList) {
         this.waitList = waitList;
     }
 
@@ -224,5 +227,29 @@ public class Event {
      */
     public void setQrCodeData(String qrCodeData) {
         this.qrCodeData = qrCodeData;
+    }
+
+    public ArrayList<String> getAcceptedList() {
+        return acceptedList;
+    }
+
+    public ArrayList<String> getDeclinedList() {
+        return declinedList;
+    }
+
+    public ArrayList<String> getRegisteredList() {
+        return registeredList;
+    }
+
+    public void setAcceptedList(ArrayList<String> acceptedList) {
+        this.acceptedList = acceptedList;
+    }
+
+    public void setDeclinedList(ArrayList<String> declinedList) {
+        this.declinedList = declinedList;
+    }
+
+    public void setRegisteredList(ArrayList<String> registeredList) {
+        this.registeredList = registeredList;
     }
 }

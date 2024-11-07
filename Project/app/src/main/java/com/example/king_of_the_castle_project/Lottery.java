@@ -9,7 +9,7 @@ import java.util.Random;
  * This is a class that defines the Lottery method to randomly choose x amount of entrants and add them to a list called selectedAttendees
  */
 public class Lottery { ;
-    private List<Entrant> selectedAttendees;
+    private List<String> selectedAttendees;
 
     public Lottery(){
         this.selectedAttendees = new ArrayList<>(); //selectedAttendees will be the list of entrants we randomly get from the waiting list
@@ -22,26 +22,25 @@ public class Lottery { ;
      */
     public void selectRandomEntrants(Event eventDetails) {
         int x = eventDetails.getMaxParticipants();
-        WaitList waitingList = eventDetails.getWaitList();
-    public void selectRandomEntrants(Event eventDetails) { //EventDetails will hold the values of the list of entrants (waiting list) as well as the number of participants needed for the event
-        int x = eventDetails.getWaitList().size();  // Direct access to the private field
-        ArrayList<Entrant> waitingList = eventDetails.getWaitList();  // Direct access to the private field
+        ArrayList<String> waitingList = eventDetails.getWaitList();  // Direct access to the private field
 
         Random random = new Random();
-        ArrayList<Entrant> tempWaitingList = new ArrayList<Entrant>();
+        //ArrayList<Entrant> tempWaitingList = new ArrayList<Entrant>();
 
         while (selectedAttendees.size() < x && waitingList.size() > 0) {
             int index = random.nextInt(waitingList.size());
-            Entrant selectedEntrant = waitingList.remove(index);
+            String selectedEntrant = waitingList.remove(index);
             selectedAttendees.add(selectedEntrant);
+            //eventDetails.getAcceptedList().add(selectedEntrant);
         }
+
     }
 
     /**
      * Returns the selectedAttendees list
      * @return
      */
-    public List<Entrant> getSelectedAttendees() {
+    public List<String> getSelectedAttendees() {
         return selectedAttendees; //returns the selected Attendees
     }
 

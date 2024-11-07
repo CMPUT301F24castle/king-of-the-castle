@@ -9,6 +9,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -144,7 +145,7 @@ public class CreateEventActivity extends AppCompatActivity {
                 byte[] byteArray = byteArrayOutputStream.toByteArray();
                 String stringConversion = Base64.encodeToString(byteArray, Base64.DEFAULT);
                 // Create empty waitlist
-                ArrayList<Entrant> waitlist = new ArrayList<Entrant>();
+                ArrayList<String> waitlist = new ArrayList<String>();
                 // Create event then send to firebase
                 Event newEvent = new Event(name, date, time, location, details, number, waitlist, geolocation_check);
                 // Putting QR stuff into event class

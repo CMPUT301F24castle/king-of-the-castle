@@ -1,11 +1,14 @@
 package com.example.king_of_the_castle_project;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,7 +30,7 @@ public class WaitingListAdapter extends RecyclerView.Adapter<WaitingListAdapter.
     @NonNull
     @Override
     public WaitlistViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_waitlist_pending, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.entrant_event_waitlist_lot_pending_content, parent, false);
         return new WaitlistViewHolder(view);
     }
 
@@ -37,14 +40,14 @@ public class WaitingListAdapter extends RecyclerView.Adapter<WaitingListAdapter.
         holder.eventTitle.setText(event.getName());
 
         holder.viewDetailsButton.setOnClickListener(v -> {
-            // Handle view details functionality if required
+            // not implemented yet
         });
 
         holder.leaveEventButton.setOnClickListener(v -> {
             new AlertDialog.Builder(holder.itemView.getContext())
                     .setTitle("Leave Event")
                     .setMessage("Are you sure you want to leave this event?")
-                    .setPositiveButton("Yes", (dialog, which) -> leaveEvent(event.getName(), position))
+                    .setPositiveButton("Yes", (dialog, which) -> leaveEvent(event.getName(), position, holder.itemView.getContext()))
                     .setNegativeButton("Cancel", null)
                     .show();
         });
@@ -55,15 +58,33 @@ public class WaitingListAdapter extends RecyclerView.Adapter<WaitingListAdapter.
         return events.size();
     }
 
-    private void leaveEvent(String eventName, int position) {
+    private void leaveEvent(String eventName, int position, Context context) {
         db.collection("events").document(eventName)
                 .update("waitingList", FieldValue.arrayRemove(entrantID))
                 .addOnSuccessListener(aVoid -> {
                     events.remove(position);
                     notifyItemRemoved(position);
+
+                    // Inflate custom toast layout
+                    LayoutInflater inflater = LayoutInflater.from(context);
+                    View layout = inflater.inflate(R.layout.toast_notification_layout, null);
+
+                    TextView toastText = layout.findViewById(R.id.toast_text);
+                    toastText.setText("You've left the waiting list for this event. ");
+
+                    // Create and show custom toast
+                    Toast customToast = new Toast(context);
+                    customToast.setDuration(Toast.LENGTH_SHORT);
+                    customToast.setView(layout);
+                    customToast.show();
                 })
                 .addOnFailureListener(e -> {
-                    // Handle error
+                    Toast.makeText(
+                            context,
+                            "Failed to leave the event. Please try again.",
+                            Toast.LENGTH_SHORT
+
+                    ).show();
                 });
     }
 
@@ -73,9 +94,9 @@ public class WaitingListAdapter extends RecyclerView.Adapter<WaitingListAdapter.
 
         WaitlistViewHolder(View itemView) {
             super(itemView);
-            eventTitle = itemView.findViewById(R.id.event_title);
-            viewDetailsButton = itemView.findViewById(R.id.view_details_button);
-            leaveEventButton = itemView.findViewById(R.id.leave_event_button);
+            eventTitle = itemView.findViewById(R.id.entrant_event_list_item_name);
+            viewDetailsButton = itemView.findViewById(R.id.entrant_event_list_details_button);
+            leaveEventButton = itemView.findViewById(R.id.entrant_event_list_leave_wait_button);
         }
     }
 }

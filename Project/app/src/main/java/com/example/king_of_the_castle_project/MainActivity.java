@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        Intent intent = new Intent(MainActivity.this, MyWaitlistsActivity.class);
+        Intent intent = new Intent(MainActivity.this, EventDetailsScreen.class);
         startActivity(intent);
         finish();
 

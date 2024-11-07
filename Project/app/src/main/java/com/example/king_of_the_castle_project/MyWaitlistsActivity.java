@@ -61,7 +61,7 @@ public class MyWaitlistsActivity extends AppCompatActivity {
 
     private void loadEntrantWaitingLists() {
         db.collection("events")
-                .whereArrayContains("waitingList", entrantID)
+                .whereArrayContains("waitList", entrantID)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -73,10 +73,7 @@ public class MyWaitlistsActivity extends AppCompatActivity {
                             Event event = document.toObject(Event.class);
 
                             // Logic to classify the event
-                            // For example:
-                            // if (event is pending) { lotteryPendingEvents.add(event); }
-                            // else if (event is accepted) { acceptedEvents.add(event); }
-                            // else { lotteryResultsEvents.add(event); }
+
                         }
 
 //                        // Notify adapters to refresh data

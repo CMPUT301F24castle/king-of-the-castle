@@ -11,7 +11,7 @@ public class Event {
     private String location;
     private String eventDetails;
     private int maxParticipants;
-    transient private WaitList waitList;
+    private WaitList waitList;
     private Boolean geolocation;
     private String qrCodeData;
 

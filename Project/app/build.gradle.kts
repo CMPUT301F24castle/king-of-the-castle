@@ -58,8 +58,8 @@ dependencies {
     implementation("com.google.android.gms:play-services-base:18.5.0")
 
     // ZXing dependencies for barcode scanning
-    implementation("com.google.zxing:core:3.4.1")
-    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+    implementation(libs.core)
+    implementation(libs.zxing.android.embedded)
 
     // Unit testing dependencies
     testImplementation(libs.junit)

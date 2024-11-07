@@ -1,6 +1,7 @@
 package com.example.king_of_the_castle_project;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +12,7 @@ public class Event {
     private String location;
     private String eventDetails;
     private int maxParticipants;
-    transient private WaitList waitList;
+    private ArrayList<Entrant> waitList;
     private Boolean geolocation;
     private String qrCodeData;
 
@@ -52,7 +53,7 @@ public class Event {
      * @param geolocation
      *      Boolean to determine if the organizer would like to check entrant location for attending event
      */
-    public Event(String name, String date, String time, String location, String eventDetails, int maxParticipants, WaitList waitList, Boolean geolocation) {
+    public Event(String name, String date, String time, String location, String eventDetails, int maxParticipants, ArrayList<Entrant> waitList, Boolean geolocation) {
         this.name = name;
         this.date = date;
         this.time = time;
@@ -158,7 +159,7 @@ public class Event {
      * @return
      *      Returns a list of entrants
      */
-    public WaitList getWaitList() {
+    public ArrayList<Entrant> getWaitList() {
         return waitList;
     }
 
@@ -167,7 +168,7 @@ public class Event {
      * @param waitList
      *      Sets the data for the waitlist
      */
-    public void setWaitList(WaitList waitList) {
+    public void setWaitList(ArrayList<Entrant> waitList) {
         this.waitList = waitList;
     }
 

@@ -47,6 +47,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
         // Get views
         TextView name = convertView.findViewById(R.id.organizer_event_name);
         Button viewEntrantsButton = convertView.findViewById(R.id.view_entrants_button);
+        Button sampleEntrantsButton = convertView.findViewById(R.id.sample_entrants_button);
 
         // Get QR Code
         if (event.getQrCodeData() != null) {
@@ -64,6 +65,13 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
 
         viewEntrantsButton.setOnClickListener(v -> {
             // make it go to entrants screen
+        });
+
+        sampleEntrantsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
         });
 
         return convertView;

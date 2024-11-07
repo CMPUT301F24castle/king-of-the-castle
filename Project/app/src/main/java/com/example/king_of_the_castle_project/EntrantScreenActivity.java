@@ -100,7 +100,7 @@ public class EntrantScreenActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(EntrantScreenActivity.this, MyWaitlistsActivity.class);
                 startActivity(intent);
-                finish();
+                //finish();
             }
         });
 
@@ -108,8 +108,8 @@ public class EntrantScreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(EntrantScreenActivity.this, MyWaitlistsActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(EntrantScreenActivity.this, ChooseRoleActivity.class);
+                //startActivity(intent);
                 finish();
             }
         });

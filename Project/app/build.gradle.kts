@@ -38,10 +38,29 @@ android {
 }
 
 dependencies {
+    testImplementation(libs.espresso.intents)
+    testImplementation(libs.ext.junit)
+    testImplementation(libs.test.core)
+    testImplementation(libs.ext.junit)
+    testImplementation(libs.test.core)
+    testImplementation(libs.monitor)
+    testImplementation(libs.ext.junit)
+    testImplementation(libs.espresso.core)
+    testImplementation(libs.androidx.core)
+    implementation(libs.ext.junit)
     // Espresso and Testing Dependencies
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.4.0")
+    //FOR NOTIF TESTING PURPOSES
+    testImplementation( "org.mockito:mockito-core:5.+")
+    androidTestImplementation ("org.mockito:mockito-android:5.+")
+    testImplementation("org.assertj:assertj-core:3.22.0")
+
+    androidTestImplementation ("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation ("androidx.test:core:1.5.0")
+    androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.1")
+
 
     // Regular implementation dependencies
     implementation(libs.appcompat)
@@ -66,5 +85,23 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     testImplementation ("org.junit.jupiter:junit-jupiter-api:5.0.1")
     testRuntimeOnly ("org.junit.jupiter:junit-jupiter-engine:5.0.1")
-}
 
+    // Intent testing dependencies
+    androidTestImplementation("androidx.test.espresso:espresso-intents:3.6.1")
+    androidTestImplementation("androidx.test:runner:1.6.1")
+    androidTestImplementation("androidx.test:rules:1.6.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    testImplementation ("junit:junit:4.13.2")
+    testImplementation (libs.mockito.core)
+    androidTestImplementation ("androidx.test.ext:junit:1.1.3")
+    androidTestImplementation ("androidx.test:core:1.4.0")
+
+    // Mockito dependencies for unit testing
+    testImplementation("org.mockito:mockito-core:5.5.0")
+    testImplementation("org.mockito:mockito-inline:5.5.0")
+    testImplementation("org.mockito:mockito-android:5.5.0")
+
+    // Google task dependencies
+    testImplementation("com.google.android.gms:play-services-tasks:18.2.0")
+
+}

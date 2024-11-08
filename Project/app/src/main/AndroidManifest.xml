@@ -56,6 +56,24 @@
         <activity
             android:name=".MyWaitlistsActivity">
         </activity>
+        <activity
+            android:name=".MyNotificationsActivity">
+        </activity>
+        <activity
+            android:name=".WinNotificationActivity">
+        </activity>
+        <activity
+            android:name=".MyLossNotificationsActivity">
+        </activity>
+        <activity
+            android:name=".LossNotificationActivity">
+        </activity>
+        <activity
+            android:name=".AdministratorDashboardActivity"
+            android:exported="true">
+        </activity>
+        <activity android:name=".BrowseEventsActivity">
+        </activity>
     </application>
 
 </manifest>

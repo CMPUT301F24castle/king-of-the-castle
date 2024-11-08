@@ -1,9 +1,13 @@
 package com.example.king_of_the_castle_project;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Event class holding metadata for any events created or accessed by users
+ */
 public class Event {
     private String name;
     private String date;
@@ -11,9 +15,13 @@ public class Event {
     private String location;
     private String eventDetails;
     private int maxParticipants;
-    transient private WaitList waitList;
+    private ArrayList<String> waitList;
+    private ArrayList<String> acceptedList;
+    private ArrayList<String> declinedList;
+    private ArrayList<String> registeredList;
     private Boolean geolocation;
     private String qrCodeData;
+    private String organizerID;
 
     /**
      * Empty event constructor necessary for passing data to firebase
@@ -31,7 +39,25 @@ public class Event {
         this.eventDetails = eventDetails;
         this.maxParticipants = maxParticipants;
         this.geolocation = geolocation;
+        this.waitList = new ArrayList<String>();
+        this.acceptedList = new ArrayList<String>();
+        this.declinedList = new ArrayList<String>();
+        this.registeredList = new ArrayList<String>();
+        this.organizerID = "";
     }
+
+    public Event(String name, String date, String time, String location, String eventDetails, int maxParticipants, Boolean geolocation, String organizerID) {
+        // Constructor with no waitlist because it was causing bugs
+        this.name = name;
+        this.date = date;
+        this.time = time;
+        this.location = location;
+        this.eventDetails = eventDetails;
+        this.maxParticipants = maxParticipants;
+        this.geolocation = geolocation;
+        this.organizerID = organizerID;
+    }
+
 
     /**
      * Event class storing metadata about events that users want to enter or create
@@ -52,7 +78,7 @@ public class Event {
      * @param geolocation
      *      Boolean to determine if the organizer would like to check entrant location for attending event
      */
-    public Event(String name, String date, String time, String location, String eventDetails, int maxParticipants, WaitList waitList, Boolean geolocation) {
+    public Event(String name, String date, String time, String location, String eventDetails, int maxParticipants, ArrayList<String> waitList, Boolean geolocation, String organizerID) {
         this.name = name;
         this.date = date;
         this.time = time;
@@ -61,6 +87,67 @@ public class Event {
         this.maxParticipants = maxParticipants;
         this.waitList = waitList;
         this.geolocation = geolocation;
+        this.acceptedList = new ArrayList<String>();
+        this.declinedList = new ArrayList<String>();
+        this.registeredList = new ArrayList<String>();
+    }
+
+    /**
+     * Constructor with everything
+     * @param name
+     *  The name of the event
+     * @param date
+     *  The date that the event is going to occur
+     * @param time
+     *  The time for which the event will happen
+     * @param location
+     *  Where the event is taking place
+     * @param eventDetails
+     *  Any extra notes from the organizer
+     * @param maxParticipants
+     *  Optional capacity limit on number of people who can participate in the event
+     * @param waitList
+     *  A list of entrants who want to enter the event
+     * @param geolocation
+     *  Boolean to determine if the organizer would like to check entrant location for attending event
+     * @param acceptedList
+     *  List of entrant ids accepted to the event
+     * @param declinedList
+     *  List of entrant ids declined from the event
+     * @param registeredList
+     *  List of entrant ids registered for the event
+     */
+    public Event(String name, String date, String time, String location, String eventDetails, int maxParticipants, ArrayList<String> waitList, ArrayList<String> acceptedList, ArrayList<String> declinedList, ArrayList<String> registeredList, Boolean geolocation) {
+        this.name = name;
+        this.date = date;
+        this.time = time;
+        this.location = location;
+        this.eventDetails = eventDetails;
+        this.maxParticipants = maxParticipants;
+        this.waitList = waitList;
+        this.acceptedList = acceptedList;
+        this.declinedList = declinedList;
+        this.registeredList = registeredList;
+        this.geolocation = geolocation;
+        this.organizerID = organizerID;
+    }
+
+    /**
+     * Getter for organizerID attribute
+     * @return
+     *      Returns organizer ID
+     */
+    public String getOrganizerID() {
+        return organizerID;
+    }
+
+    /**
+     * Setter for organizerID attribute
+     * @param organizerID
+     *      Desired organizerID
+     */
+    public void setOrganizerID(String organizerID) {
+        this.organizerID = organizerID;
     }
 
     /**
@@ -155,10 +242,10 @@ public class Event {
 
     /**
      * Getter for the entrant waitlist
-     * @return
-     *      Returns a list of entrants
+     *
+     * @return Returns a list of entrants
      */
-    public WaitList getWaitList() {
+    public ArrayList<String> getWaitList() {
         return waitList;
     }
 
@@ -167,7 +254,7 @@ public class Event {
      * @param waitList
      *      Sets the data for the waitlist
      */
-    public void setWaitList(WaitList waitList) {
+    public void setWaitList(ArrayList<String> waitList) {
         this.waitList = waitList;
     }
 
@@ -223,5 +310,59 @@ public class Event {
      */
     public void setQrCodeData(String qrCodeData) {
         this.qrCodeData = qrCodeData;
+    }
+
+    /**
+     * Gets list of accepted entrants
+     * @return
+     *  List of accepted entrant ids
+     */
+    public ArrayList<String> getAcceptedList() {
+        return acceptedList;
+    }
+
+    /**
+     * Gets list of declined/cancelled entrants
+     * @return
+     *  List of declined/cancelled entrant ids
+     */
+    public ArrayList<String> getDeclinedList() {
+        return declinedList;
+    }
+
+    /**
+     * Gets list of registered entrants
+     * @return
+     *  List of registered entrant ids
+     */
+    public ArrayList<String> getRegisteredList() {
+        return registeredList;
+    }
+
+    /**
+     * Sets list of accepted entrants
+     * @param acceptedList
+     *  List of accepted entrant ids
+     */
+    public void setAcceptedList(ArrayList<String> acceptedList) {
+        this.acceptedList = acceptedList;
+    }
+
+    /**
+     * Sets list of declined/cancelled entrants
+     * @param declinedList
+     *  List of declined/cancelled entrant ids
+     */
+    public void setDeclinedList(ArrayList<String> declinedList) {
+        this.declinedList = declinedList;
+    }
+
+    /**
+     * Sets list of registered entrants
+     * @param registeredList
+     *  List of registered entrant ids
+     */
+    public void setRegisteredList(ArrayList<String> registeredList) {
+        this.registeredList = registeredList;
     }
 }

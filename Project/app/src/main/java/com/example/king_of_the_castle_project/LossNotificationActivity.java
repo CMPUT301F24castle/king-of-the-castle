@@ -73,9 +73,14 @@ public class LossNotificationActivity extends AppCompatActivity {
         });
     }
 
-    private void leaveWaitList(String qrCodeData) {
+    /**
+     * Gets a user to leave the waitlist
+     * @param name
+     *  Name of the event
+     */
+    private void leaveWaitList(String name) {
         db.collection("events")
-                .whereEqualTo("name", qrCodeData)
+                .whereEqualTo("name", name)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

@@ -14,6 +14,9 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
+/**
+ * Class which acts as an adapter for events for which the user has lost the lottery
+ */
 public class NotificationLossArrayAdapter extends ArrayAdapter<Event> {
     public NotificationLossArrayAdapter(@NonNull Context context, List<Event> events) {
         super(context, 0, events);

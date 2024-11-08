@@ -15,6 +15,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 
+/**
+ * Specific activity for when the user is looking at their cancelled/declined events
+ */
 public class MyLossNotificationsActivity extends AppCompatActivity {
     private ListView listView;
     private NotificationLossArrayAdapter arrayAdapter;
@@ -22,6 +25,13 @@ public class MyLossNotificationsActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private String androidId;
 
+    /**
+     * On creation of an instance
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

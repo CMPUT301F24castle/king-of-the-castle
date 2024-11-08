@@ -272,26 +272,56 @@ public class Event {
         this.qrCodeData = qrCodeData;
     }
 
+    /**
+     * Gets list of accepted entrants
+     * @return
+     *  List of accepted entrant ids
+     */
     public ArrayList<String> getAcceptedList() {
         return acceptedList;
     }
 
+    /**
+     * Gets list of declined/cancelled entrants
+     * @return
+     *  List of declined/cancelled entrant ids
+     */
     public ArrayList<String> getDeclinedList() {
         return declinedList;
     }
 
+    /**
+     * Gets list of registered entrants
+     * @return
+     *  List of registered entrant ids
+     */
     public ArrayList<String> getRegisteredList() {
         return registeredList;
     }
 
+    /**
+     * Sets list of accepted entrants
+     * @param acceptedList
+     *  List of accepted entrant ids
+     */
     public void setAcceptedList(ArrayList<String> acceptedList) {
         this.acceptedList = acceptedList;
     }
 
+    /**
+     * Sets list of declined/cancelled entrants
+     * @param declinedList
+     *  List of declined/cancelled entrant ids
+     */
     public void setDeclinedList(ArrayList<String> declinedList) {
         this.declinedList = declinedList;
     }
 
+    /**
+     * Sets list of registered entrants
+     * @param registeredList
+     *  List of registered entrant ids
+     */
     public void setRegisteredList(ArrayList<String> registeredList) {
         this.registeredList = registeredList;
     }

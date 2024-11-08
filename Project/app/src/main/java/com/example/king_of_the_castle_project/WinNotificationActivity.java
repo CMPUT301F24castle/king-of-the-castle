@@ -82,9 +82,14 @@ public class WinNotificationActivity extends AppCompatActivity {
         });
     }
 
-    private void acceptInvite(String qrCodeData) {
+    /**
+     * Allows the user to accept the invitation
+     * @param name
+     *  Name of the event
+     */
+    private void acceptInvite(String name) {
         db.collection("events")
-                .whereEqualTo("name", qrCodeData)
+                .whereEqualTo("name", name)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -102,9 +107,13 @@ public class WinNotificationActivity extends AppCompatActivity {
         toastMessage.show();
     }
 
-    private void declineInvite(String qrCodeData) {
+    /**
+     * Allows the user to decline an invitation
+     * @param name
+     */
+    private void declineInvite(String name) {
         db.collection("events")
-                .whereEqualTo("name", qrCodeData)
+                .whereEqualTo("name", name)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

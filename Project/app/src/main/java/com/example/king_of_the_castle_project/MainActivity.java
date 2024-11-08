@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -17,17 +18,23 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Objects;
 
+/**
+ * Main activity screen that starts the app
+ */
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_NOTIFICATION_PERMISSION = 1;
     private FirebaseFirestore db;
     private String userID;
-    private Boolean recognize = Boolean.TRUE;
+    private Boolean recognize = Boolean.FALSE;
 
 
     @Override
@@ -41,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        db = FirebaseFirestore.getInstance();
+        userID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
 
         Button startButton = findViewById(R.id.start_button);
@@ -48,6 +57,14 @@ public class MainActivity extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                db.collection("entrants").document(userID)
+                        .get()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                recognize = Boolean.TRUE;
+                    }
+                });
+
                 if (recognize) {
                     Intent intent = new Intent(MainActivity.this, ChooseRoleActivity.class);
                     startActivity(intent);

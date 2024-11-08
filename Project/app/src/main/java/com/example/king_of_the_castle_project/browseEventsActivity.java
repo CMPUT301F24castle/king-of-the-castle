@@ -12,7 +12,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
-
+/*
+ * Administrator event browser handler
+ */
 public class browseEventsActivity extends AppCompatActivity {
     /**
      * Default method for basic startup logic

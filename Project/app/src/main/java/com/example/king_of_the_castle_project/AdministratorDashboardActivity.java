@@ -7,6 +7,9 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/*
+ * Landing page for administrators
+ */
 public class AdministratorDashboardActivity extends AppCompatActivity {
     /**
      * Default method for basic startup logic

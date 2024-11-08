@@ -18,6 +18,9 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
+/*
+ * ArrayAdapter to show list of events in the administrator browse
+ */
 public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
 
     /**

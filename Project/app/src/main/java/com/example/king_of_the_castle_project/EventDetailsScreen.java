@@ -59,6 +59,8 @@ public class EventDetailsScreen extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 joinWaitlist();
+                Intent intent = new Intent(EventDetailsScreen.this, MyWaitlistsActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -94,6 +96,7 @@ public class EventDetailsScreen extends AppCompatActivity {
                                 .update("waitList", FieldValue.arrayUnion(entrantID))
                                 .addOnSuccessListener(aVoid ->
                                         Toast.makeText(this, "You have joined the waitlist!", Toast.LENGTH_SHORT).show())
+
                                 .addOnFailureListener(e ->
                                         Toast.makeText(this, "Failed to join waitlist: " + e.getMessage(), Toast.LENGTH_SHORT).show());
                     } else {

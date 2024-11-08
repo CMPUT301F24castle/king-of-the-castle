@@ -3,6 +3,7 @@ package com.example.king_of_the_castle_project;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +34,8 @@ public class MyWaitlistsActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         entrantID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        Log.d("MyWaitlistsActivity", "Entrant ID: " + entrantID);
+
 
         lotteryResultsRecycler = findViewById(R.id.lottery_results_recycler);
         lotteryPendingRecycler = findViewById(R.id.lottery_pending_recycler);
@@ -53,8 +56,6 @@ public class MyWaitlistsActivity extends AppCompatActivity {
         loadEntrantWaitingLists();
 
         findViewById(R.id.return_button).setOnClickListener(v -> {
-            //Intent intent = new Intent(MyWaitlistsActivity.this, EntrantScreenActivity.class);
-            //startActivity(intent);
             finish();
         });
     }
@@ -65,14 +66,16 @@ public class MyWaitlistsActivity extends AppCompatActivity {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
+                        Log.d("MyWaitlistsActivity", " goes in here " + entrantID);
+
                         //lotteryResultsEvents.clear();
-                        //lotteryPendingEvents.clear();
+                        lotteryPendingEvents.clear();
                         //acceptedEvents.clear();
 
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Event event = document.toObject(Event.class);
-                            lotteryResultsEvents.add(event);
-                            acceptedAdapter.notifyDataSetChanged();
+                            lotteryPendingEvents.add(event);
+                            pendingAdapter.notifyDataSetChanged();
 
                             // Logic to classify the event
 

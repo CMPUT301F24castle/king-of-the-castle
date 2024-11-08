@@ -36,15 +36,13 @@ public class MainActivity extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ChooseRoleActivity.class);
+                Intent intent = new Intent(MainActivity.this, LoginScreenActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
 
-        //Intent intent = new Intent(MainActivity.this, MyWaitlistsActivity.class);
-        //startActivity(intent);
-        //finish();
+
 
         //notification permissions
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

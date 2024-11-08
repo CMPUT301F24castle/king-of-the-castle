@@ -17,16 +17,33 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
+/**
+ * Adapter for displaying a list of events on the waiting list in a RecyclerView.
+ * Allows entrants to view event details (if implemented) or leave the waitlist for an event.
+ */
 public class WaitingListAdapter extends RecyclerView.Adapter<WaitingListAdapter.WaitlistViewHolder> {
     private final List<Event> events;
     private final String entrantID;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    /**
+     * Constructs a new WaitingListAdapter.
+     *
+     * @param events   The list of events the entrant is on the waitlist for.
+     * @param entrantID The unique ID of the entrant, used for identifying their waitlist status.
+     */
     public WaitingListAdapter(List<Event> events, String entrantID) {
         this.events = events;
         this.entrantID = entrantID;
     }
 
+    /**
+     * Called when RecyclerView needs a new ViewHolder to represent an item.
+     *
+     * @param parent   The parent ViewGroup.
+     * @param viewType The view type of the new View.
+     * @return A new WaitlistViewHolder that holds a View for each waitlist item.
+     */
     @NonNull
     @Override
     public WaitlistViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -34,15 +51,23 @@ public class WaitingListAdapter extends RecyclerView.Adapter<WaitingListAdapter.
         return new WaitlistViewHolder(view);
     }
 
+    /**
+     * Binds data to the view for each event on the waitlist, setting up button actions.
+     *
+     * @param holder   The ViewHolder to bind data to.
+     * @param position The position of the event in the list.
+     */
     @Override
     public void onBindViewHolder(@NonNull WaitlistViewHolder holder, int position) {
         Event event = events.get(position);
         holder.eventTitle.setText(event.getName());
 
+        // Set up View Details button (functionality not yet implemented)
         holder.viewDetailsButton.setOnClickListener(v -> {
-            // not implemented yet
+            // Placeholder for view details functionality
         });
 
+        // Set up Leave Event button with a confirmation dialog
         holder.leaveEventButton.setOnClickListener(v -> {
             new AlertDialog.Builder(holder.itemView.getContext())
                     .setTitle("Leave Event")
@@ -53,11 +78,23 @@ public class WaitingListAdapter extends RecyclerView.Adapter<WaitingListAdapter.
         });
     }
 
+    /**
+     * Returns the total number of events on the waitlist.
+     *
+     * @return The size of the events list.
+     */
     @Override
     public int getItemCount() {
         return events.size();
     }
 
+    /**
+     * Removes the entrant from the specified event's waitlist in Firestore, and displays a custom toast notification.
+     *
+     * @param eventName The name of the event to leave.
+     * @param position  The position of the event in the RecyclerView.
+     * @param context   The context for displaying the toast notification.
+     */
     private void leaveEvent(String eventName, int position, Context context) {
         db.collection("events").document(eventName)
                 .update("waitingList", FieldValue.arrayRemove(entrantID))
@@ -70,7 +107,7 @@ public class WaitingListAdapter extends RecyclerView.Adapter<WaitingListAdapter.
                     View layout = inflater.inflate(R.layout.toast_notification_layout, null);
 
                     TextView toastText = layout.findViewById(R.id.toast_text);
-                    toastText.setText("You've left the waiting list for this event. ");
+                    toastText.setText("You've left the waiting list for this event.");
 
                     // Create and show custom toast
                     Toast customToast = new Toast(context);
@@ -83,15 +120,23 @@ public class WaitingListAdapter extends RecyclerView.Adapter<WaitingListAdapter.
                             context,
                             "Failed to leave the event. Please try again.",
                             Toast.LENGTH_SHORT
-
                     ).show();
                 });
     }
 
+    /**
+     * ViewHolder class that represents each event item on the waitlist.
+     * Provides access to UI elements such as the event title and buttons for viewing details or leaving the event.
+     */
     static class WaitlistViewHolder extends RecyclerView.ViewHolder {
         TextView eventTitle;
         Button viewDetailsButton, leaveEventButton;
 
+        /**
+         * Initializes the ViewHolder, finding the necessary UI elements for interaction.
+         *
+         * @param itemView The view representing each event item in the RecyclerView.
+         */
         WaitlistViewHolder(View itemView) {
             super(itemView);
             eventTitle = itemView.findViewById(R.id.entrant_event_list_item_name);

@@ -1,4 +1,9 @@
 package com.example.king_of_the_castle_project;
+import android.app.NotificationManager;
+import android.content.Context;
+
+import androidx.core.app.NotificationCompat;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -43,6 +48,8 @@ public class Lottery { ;
     public List<String> getSelectedAttendees() {
         return selectedAttendees; //returns the selected Attendees
     }
+
+
 
 
 

@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+
+
         Button startButton = findViewById(R.id.start_button);
 
         startButton.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //notification permissions
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+      /*  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             String notificationPermission = "android.permission.POST_NOTIFICATIONS";
             if (ContextCompat.checkSelfPermission(this, notificationPermission)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -71,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             sendLotteryNotifications();
-        }
+        }*/
 
 
     }

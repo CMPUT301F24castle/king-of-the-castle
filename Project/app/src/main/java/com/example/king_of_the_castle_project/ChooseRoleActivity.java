@@ -17,6 +17,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/*
+Screen to change between being an entrant/admin/organizer
+ */
 public class ChooseRoleActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     @Override

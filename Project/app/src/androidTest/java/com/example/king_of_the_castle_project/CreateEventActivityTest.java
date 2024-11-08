@@ -48,7 +48,7 @@ public class CreateEventActivityTest {
 
     @Test
     public void testCreateEventTransition() {
-        // Start the ActivityScenario for the activity you're testing
+        // Start activity
         try (ActivityScenario<CreateEventActivity> scenario = ActivityScenario.launch(CreateEventActivity.class)) {
 
             // Fill in the event details
@@ -58,7 +58,7 @@ public class CreateEventActivityTest {
             onView(withId(R.id.event_details_edit_text)).perform(typeText("Test Details"));
             onView(withId(R.id.event_max_participants_edit_text)).perform(typeText("100"));
 
-            // Set the geolocation checkbox
+            // Try geolocation checkbox
             onView(withId(R.id.event_geolocation_checkbox)).perform(click());
 
             // Click the "Create Event" button

@@ -1,7 +1,13 @@
 package com.example.king_of_the_castle_project;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
+/**
+ * Event class holding metadata for any events created or accessed by users
+ */
 public class Event {
     private String name;
     private String date;

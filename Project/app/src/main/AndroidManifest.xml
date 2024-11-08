@@ -68,6 +68,12 @@
         <activity
             android:name=".LossNotificationActivity">
         </activity>
+        <activity
+            android:name=".AdministratorDashboardActivity"
+            android:exported="true">
+        </activity>
+        <activity android:name=".BrowseEventsActivity">
+        </activity>
     </application>
 
 </manifest>

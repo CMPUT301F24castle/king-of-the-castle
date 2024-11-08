@@ -8,6 +8,9 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/*
+ * Class used to handle facility creation and editing
+ */
 public class ManageFacilityActivity extends AppCompatActivity {
     /**
      * Default method for basic startup logic
@@ -36,10 +39,7 @@ public class ManageFacilityActivity extends AppCompatActivity {
                 // if not
                 Facility facility = new Facility(facilityName, facilityLocation, facilityNumber);
                 // Send facility to firebase
-                /* else
-                getFacility somehow, then facility.setName(facilityName, location, etc);
-                Update facility in firebase
-                 */
+
                 Intent resultIntent = new Intent();
                 // Put the data to pass back
                 resultIntent.putExtra("facilityModified", facilityName);

@@ -45,6 +45,9 @@ import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Map;
 
+/*
+ * Class that handles the event screen for creating events, QR Code and sending to firebase
+ */
 public class CreateEventActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> imageSelectorLauncher;
     protected boolean geolocation_check = false;

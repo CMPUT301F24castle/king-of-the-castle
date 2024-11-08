@@ -1,5 +1,8 @@
 package com.example.king_of_the_castle_project;
 
+/**
+ * Facility class holding metadata for any facilities created or accessed by users
+ */
 public class Facility {
     private String name;
     private String location;

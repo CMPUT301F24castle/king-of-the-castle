@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Event class holding metadata for any events created or accessed by users
+ */
 public class Event {
     private String name;
     private String date;
@@ -24,17 +27,6 @@ public class Event {
      */
     public Event() {
         // Empty constructor for firebase
-    }
-
-    public Event(String name, String date, String time, String location, String eventDetails, int maxParticipants, Boolean geolocation) {
-        // Constructor with no waitlist because it was causing bugs
-        this.name = name;
-        this.date = date;
-        this.time = time;
-        this.location = location;
-        this.eventDetails = eventDetails;
-        this.maxParticipants = maxParticipants;
-        this.geolocation = geolocation;
     }
 
     /**

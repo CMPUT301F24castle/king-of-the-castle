@@ -18,6 +18,9 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
+/*
+ * ArrayAdapter used to format the eventlist in ManageEventsActivity
+ */
 public class EventArrayAdapter extends ArrayAdapter<Event>  {
     public EventArrayAdapter(@NonNull Context context, List<Event> events) {
         super(context, 0, events);

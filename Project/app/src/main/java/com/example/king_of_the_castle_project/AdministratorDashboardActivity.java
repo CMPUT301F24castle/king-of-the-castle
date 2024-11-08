@@ -35,7 +35,7 @@ public class AdministratorDashboardActivity extends AppCompatActivity {
 
         browseEventsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(AdministratorDashboardActivity.this, browseEventsActivity.class);
+                Intent intent = new Intent(AdministratorDashboardActivity.this, BrowseEventsActivity.class);
                 startActivity(intent);
             }
         });

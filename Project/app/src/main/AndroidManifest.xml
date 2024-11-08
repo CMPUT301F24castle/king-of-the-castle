@@ -63,7 +63,7 @@
             android:name=".AdministratorDashboardActivity"
             android:exported="true">
         </activity>
-        <activity android:name=".browseEventsActivity">
+        <activity android:name=".BrowseEventsActivity">
         </activity>
     </application>
 

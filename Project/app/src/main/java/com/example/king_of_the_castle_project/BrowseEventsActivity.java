@@ -1,7 +1,6 @@
 package com.example.king_of_the_castle_project;
 
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 /*
  * Administrator event browser handler
  */
-public class browseEventsActivity extends AppCompatActivity {
+public class BrowseEventsActivity extends AppCompatActivity {
     /**
      * Default method for basic startup logic
      * @param savedInstanceState

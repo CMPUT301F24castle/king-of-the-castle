@@ -38,6 +38,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.ext.junit)
     // Espresso and Testing Dependencies
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
@@ -65,7 +66,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     testImplementation ("org.junit.jupiter:junit-jupiter-api:5.0.1")
-    androidTestImplementation(libs.junit.jupiter)
     testRuntimeOnly ("org.junit.jupiter:junit-jupiter-engine:5.0.1")
 
     // Intent testing dependencies
@@ -74,4 +74,3 @@ dependencies {
     androidTestImplementation("androidx.test:rules:1.6.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 }
-

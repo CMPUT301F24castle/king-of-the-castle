@@ -38,6 +38,8 @@ android {
 }
 
 dependencies {
+    testImplementation(libs.espresso.intents)
+    testImplementation(libs.ext.junit)
     // Espresso and Testing Dependencies
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
@@ -72,5 +74,14 @@ dependencies {
     androidTestImplementation("androidx.test:runner:1.6.1")
     androidTestImplementation("androidx.test:rules:1.6.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+
+    // Mockito dependencies for unit testing
+    testImplementation("org.mockito:mockito-core:5.5.0")
+    testImplementation("org.mockito:mockito-inline:5.5.0")
+    testImplementation("org.mockito:mockito-android:5.5.0")
+
+    // Google task dependencies
+    testImplementation("com.google.android.gms:play-services-tasks:18.2.0")
+
 }
 

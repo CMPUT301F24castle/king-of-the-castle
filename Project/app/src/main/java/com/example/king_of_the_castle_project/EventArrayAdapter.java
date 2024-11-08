@@ -10,13 +10,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.List;
+import android.app.AlertDialog;
 
 public class EventArrayAdapter extends ArrayAdapter<Event>  {
     public EventArrayAdapter(@NonNull Context context, List<Event> events) {
@@ -48,6 +52,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
         TextView name = convertView.findViewById(R.id.organizer_event_name);
         Button viewEntrantsButton = convertView.findViewById(R.id.view_entrants_button);
         Button sampleEntrantsButton = convertView.findViewById(R.id.sample_entrants_button);
+        Button sendNotificationsButton = convertView.findViewById(R.id.send_notifications_button);
 
         // Get QR Code
         if (event.getQrCodeData() != null) {
@@ -71,6 +76,58 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
             @Override
             public void onClick(View v) {
 
+            }
+        });
+
+        sendNotificationsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // inflate dialog layout
+                AlertDialog.Builder builder = new AlertDialog.Builder(parent.getContext());
+                View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.notify_entrants_dialog, null);
+                builder.setView(dialogView);
+
+                // get views inside dialog
+                EditText messageEditText = dialogView.findViewById(R.id.sample_entrants_edittext);
+                Spinner roleSpinner = dialogView.findViewById(R.id.choose_role_spinner);
+                Button selectSpecificButton = dialogView.findViewById(R.id.notify_entrants_dialog_select_specific_button);
+                Button okButton = dialogView.findViewById(R.id.notify_entrants_dialogue_button);
+
+                // allow edit text to be editable
+                messageEditText.setFocusableInTouchMode(true);
+
+                // create and show dialog
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+                // setup spinner
+                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                        v.getContext(),
+                        R.array.notify_entrants_spinner,
+                        android.R.layout.simple_spinner_item
+                );
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                roleSpinner.setAdapter(adapter);
+
+                // add on click listeners for buttons
+                selectSpecificButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(v.getContext(), "Not yet implemented", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                okButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // message to send/notify with
+                        String message = messageEditText.getText().toString();
+                        // type of entrant to notify in string (Waitlist Entrants, Cancelled Entrants, Invited Entrants, Enrolled Entrants)
+                        String selectedRole = roleSpinner.getSelectedItem().toString();
+                        // ANGELA TEST NOTIFICATIONS HERE
+                        dialog.dismiss();
+                    }
+                });
             }
         });
 

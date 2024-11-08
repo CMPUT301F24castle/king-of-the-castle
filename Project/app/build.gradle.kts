@@ -65,6 +65,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     testImplementation ("org.junit.jupiter:junit-jupiter-api:5.0.1")
+    androidTestImplementation(libs.junit.jupiter)
     testRuntimeOnly ("org.junit.jupiter:junit-jupiter-engine:5.0.1")
 
     // Intent testing dependencies

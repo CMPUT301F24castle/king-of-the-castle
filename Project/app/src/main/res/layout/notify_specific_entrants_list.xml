@@ -7,20 +7,18 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="  My Events"
+        android:text="  List of Entrants"
         android:textColor="@color/light_green"
         android:background="@color/dark_grey"
         android:textSize="36sp"
         android:textStyle="bold"
         android:padding="15dp"
-        android:layout_marginBottom="10dp"
         />
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:id="@+id/event_list"
-        android:layout_gravity="center"/>
+        android:id="@+id/notify_entrants_list"/>
 
 
     <androidx.appcompat.widget.AppCompatButton

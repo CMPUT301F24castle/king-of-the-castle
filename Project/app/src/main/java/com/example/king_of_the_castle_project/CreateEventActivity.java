@@ -130,7 +130,7 @@ public class CreateEventActivity extends AppCompatActivity {
                     displayToastNotification("Invalid or no max participants set, automatically set to max.");
                 }
                 // Create QR code
-                String qrCodeText = String.format("EventDetails: %s", name);
+                String qrCodeText = name;
 
                 try {
                     qrCodeBitmap = createQRCode(qrCodeText);
@@ -144,14 +144,15 @@ public class CreateEventActivity extends AppCompatActivity {
                 qrCodeBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
                 byte[] byteArray = byteArrayOutputStream.toByteArray();
                 String stringConversion = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                // Get android ID
+                androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
                 // Create empty waitlist
                 ArrayList<String> waitlist = new ArrayList<String>();
                 // Create event then send to firebase
-                Event newEvent = new Event(name, date, time, location, details, number, waitlist, geolocation_check);
+                Event newEvent = new Event(name, date, time, location, details, number, waitlist, geolocation_check, androidId);
                 // Putting QR stuff into event class
                 newEvent.setQrCodeData(stringConversion);
                 // Sending to firebase
-                androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
                 sendToFirebase(newEvent, androidId, stringConversion);
                 // Passing data back
                 Intent resultIntent = new Intent();
@@ -246,6 +247,7 @@ public class CreateEventActivity extends AppCompatActivity {
         eventData.put("maxParticipants", event.getMaxParticipants());
         eventData.put("waitList", event.getWaitList());
         eventData.put("qrCodeData", qrCodeData);
+        eventData.put("organizerID", androidId);
         // Create new document or add to collection
         db.collection(androidId)
                 .document(name)

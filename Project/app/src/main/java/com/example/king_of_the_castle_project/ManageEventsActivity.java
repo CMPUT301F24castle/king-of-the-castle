@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -54,25 +55,37 @@ public class ManageEventsActivity extends AppCompatActivity {
         arrayAdapter = new EventArrayAdapter(this, events);
         listView.setAdapter(arrayAdapter);
         // Fetch events from firebase, then events.add
-        db.collection(androidId)
-                        .get()
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Event event = document.toObject(Event.class);
-//                                    String qrCodeDataString = document.getString("qrCode");
-//                                    // Convert back to QR code
-//                                    byte[] decodedBytes = Base64.decode(qrCodeDataString, Base64.DEFAULT);
-//                                    Bitmap qrCodebitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-//                                    // put it into the image view
-//                                    ImageView qrCodeImage = findViewById(R.id.organizer_event_qr_code);
-//                                    qrCodeImage.setImageBitmap(qrCodebitmap);
+        db.collection("events")
+                .whereEqualTo("organizerID", androidId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // Check if the query returned any results
+                        if (task.getResult() != null && !task.getResult().isEmpty()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                // Convert the document to an Event object
+                                Event event = document.toObject(Event.class);
 
-                                    events.add(event);
-                                    arrayAdapter.notifyDataSetChanged();
-                                }
+                                // Add the event to the events list
+                                events.add(event);
                             }
-                        });
+                            // Notify the adapter to refresh the ListView
+                            arrayAdapter.notifyDataSetChanged();
+                        } else {
+                            // No events found for the organizer
+                            Toast.makeText(this, "No events found for this organizer", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        // Task failed, show an error message
+                        Toast.makeText(this, "Failed to retrieve events: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e("FirestoreError", "Error fetching events", task.getException());
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // Handle any failure of the Firestore query
+                    Toast.makeText(this, "Failed to retrieve events: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("FirestoreError", "Error fetching events", e);
+                });
 
         // Return button
         returnButton.setOnClickListener(new View.OnClickListener() {

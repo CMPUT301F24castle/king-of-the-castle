@@ -17,6 +17,10 @@ import com.google.android.gms.common.moduleinstall.ModuleInstallResponse;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import android.content.Context;
+import android.widget.Toast;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.mlkit.vision.barcode.common.Barcode;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanner;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions;
@@ -24,21 +28,29 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScanning;
 
 import java.util.List;
 
-/**
- * Activity that shows toolbar, buttons and navbar on Entrant Screen
+/*
+ * Activity shows the options for a user to scan a qr code, view their invitations to events,
+ * and view their waitinglist. It also allows users to navigate between the home screen, their
+ * profile screen and their waitinglist. Users are also able to click a button to go to the role
+ * change screen
  */
 public class EntrantScreenActivity extends AppCompatActivity {
-
-
     private BottomNavigationView bottomNavView;
-    private AppCompatButton qrCodeBut;
+    AppCompatButton qrCodeBut;
     private AppCompatButton viewInvitationsBut;
     private AppCompatButton waitingListBut;
     private Button changeRolesBut;
 
     private boolean isScannedInstalled = false;
     private GmsBarcodeScanner scanner;
-    private String scannnedCode;
+    String scannnedCode;
+    boolean changeActivity;
+
+    private FirebaseFirestore db;
+
+    public void setChangeActivity(boolean value) {
+        changeActivity = value;
+    }
 
     /**
      * Default method that performs basic application startup logic
@@ -74,17 +86,17 @@ public class EntrantScreenActivity extends AppCompatActivity {
             return false;
         });*/
 
+        db = FirebaseFirestore.getInstance();
+
         // Installs, initializes and sets on click listener for Google QR code scanner
         // When the code is scanned a Toast is displayed on the screen showing the raw value it returns
         //The raw value is stored in scannnedCode
         installGoogleScanner();
         initVars();
+
         qrCodeBut.setOnClickListener(v -> {
             if (isScannedInstalled) {
                 startScanning();
-                Intent intent = new Intent(getApplicationContext(), EventDetailsScreen.class);
-                intent.putExtra("qr_result", scannnedCode);
-                startActivity(intent);
             } else {
                 Toast.makeText(EntrantScreenActivity.this, "Please try again...", Toast.LENGTH_SHORT).show();
             }
@@ -111,9 +123,14 @@ public class EntrantScreenActivity extends AppCompatActivity {
         changeRolesBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                Intent intent = new Intent(EntrantScreenActivity.this, ChooseRoleActivity.class);
+                startActivity(intent);
             }
         });
+    }
+
+    public void setFirestoreInstance(FirebaseFirestore firestore) {
+        this.db = firestore;
     }
 
     /**
@@ -175,7 +192,9 @@ public class EntrantScreenActivity extends AppCompatActivity {
                         String result = barcode.getRawValue();
                         if (result != null) {
                             scannnedCode = result;
-                            Toast.makeText(EntrantScreenActivity.this, scannnedCode, Toast.LENGTH_SHORT).show();
+
+                            // search for qr code in database
+                            searchForQRCode();
                         }
                     }
                 })
@@ -187,4 +206,47 @@ public class EntrantScreenActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    /**
+     * Searches the database for the name of the event scanned. If it finds it it opens a new
+     * activity that shows the event's details. If it doesn't find it, the scanner closes and users
+     * are brout back to the EntrantScreenActivity
+     */
+    void searchForQRCode() {
+        // fetch firebase reference
+        if (db == null) {
+            db = FirebaseFirestore.getInstance();
+        }
+
+        // query the QR code
+        db.collection("events")
+                .whereEqualTo("name", scannnedCode)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        setChangeActivity(false);
+                        boolean eventFound = false;
+
+                        // Iterate through the results
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Toast.makeText(getApplicationContext(), "Found event: " + scannnedCode, Toast.LENGTH_SHORT).show();
+                            setChangeActivity(true);
+                            eventFound = true;
+                            break; // Stop after finding the first match
+                        }
+
+                        if (eventFound) {
+                            // Move to the next activity if event is found
+                            Intent intent = new Intent(getApplicationContext(), EventDetailsScreen.class);
+                            intent.putExtra("qr result", scannnedCode);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Event doesn't exist", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Error fetching data", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 }
+

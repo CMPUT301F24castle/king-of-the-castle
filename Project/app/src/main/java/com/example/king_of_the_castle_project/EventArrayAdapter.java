@@ -1,6 +1,9 @@
 package com.example.king_of_the_castle_project;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -16,6 +19,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EventArrayAdapter extends ArrayAdapter<Event>  {
@@ -65,6 +69,9 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
 
         viewEntrantsButton.setOnClickListener(v -> {
             // make it go to entrants screen
+            Intent i = new Intent(getContext(), ListOfEntrantsInEventScreen.class);
+            i.putExtra("Waitlist", event.getWaitList());
+            getContext().startActivity(i);
         });
 
         sampleEntrantsButton.setOnClickListener(new View.OnClickListener() {

@@ -13,6 +13,31 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
+public class WaitListAdapter extends ArrayAdapter<String> {
+    public WaitListAdapter(@NonNull Context context, ArrayList<String> entrants) {
+        super(context, 0, entrants);
+    }
+
+    @NonNull
+    @Override
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup
+            parent) {
+        View view;
+        if (convertView == null) {
+            view = LayoutInflater.from(getContext()).inflate(R.layout.organizer_waitlist_content_temp,
+                    parent, false);
+        } else {
+            view = convertView;
+        }
+        String entrant = getItem(position);
+        TextView entrantID = view.findViewById(R.id.entrant_id_LOE_screen);
+
+        entrantID.setText(entrant);
+        return view;
+    }
+}
+
+/*
 public class WaitListAdapter extends ArrayAdapter<Entrant> {
     public WaitListAdapter(@NonNull Context context, ArrayList<Entrant> entrants) {
         super(context, 0, entrants);
@@ -37,4 +62,5 @@ public class WaitListAdapter extends ArrayAdapter<Entrant> {
         entrantPhoneNumber.setText(entrant.getPhoneNumber());
         return view;
     }
-}
+**/
+

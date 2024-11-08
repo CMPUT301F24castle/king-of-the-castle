@@ -18,6 +18,7 @@ public class Event {
     private ArrayList<String> registeredList;
     private Boolean geolocation;
     private String qrCodeData;
+    private String organizerID;
 
     /**
      * Empty event constructor necessary for passing data to firebase
@@ -26,7 +27,7 @@ public class Event {
         // Empty constructor for firebase
     }
 
-    public Event(String name, String date, String time, String location, String eventDetails, int maxParticipants, Boolean geolocation) {
+    public Event(String name, String date, String time, String location, String eventDetails, int maxParticipants, Boolean geolocation, String organizerID) {
         // Constructor with no waitlist because it was causing bugs
         this.name = name;
         this.date = date;
@@ -35,6 +36,7 @@ public class Event {
         this.eventDetails = eventDetails;
         this.maxParticipants = maxParticipants;
         this.geolocation = geolocation;
+        this.organizerID = organizerID;
     }
 
     /**
@@ -56,7 +58,7 @@ public class Event {
      * @param geolocation
      *      Boolean to determine if the organizer would like to check entrant location for attending event
      */
-    public Event(String name, String date, String time, String location, String eventDetails, int maxParticipants, ArrayList<String> waitList, Boolean geolocation) {
+    public Event(String name, String date, String time, String location, String eventDetails, int maxParticipants, ArrayList<String> waitList, Boolean geolocation, String organizerID) {
         this.name = name;
         this.date = date;
         this.time = time;
@@ -65,6 +67,25 @@ public class Event {
         this.maxParticipants = maxParticipants;
         this.waitList = waitList;
         this.geolocation = geolocation;
+        this.organizerID = organizerID;
+    }
+
+    /**
+     * Getter for organizerID attribute
+     * @return
+     *      Returns organizer ID
+     */
+    public String getOrganizerID() {
+        return organizerID;
+    }
+
+    /**
+     * Setter for organizerID attribute
+     * @param organizerID
+     *      Desired organizerID
+     */
+    public void setOrganizerID(String organizerID) {
+        this.organizerID = organizerID;
     }
 
     /**

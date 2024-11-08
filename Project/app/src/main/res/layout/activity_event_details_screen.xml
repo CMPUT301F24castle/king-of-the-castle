@@ -18,30 +18,148 @@
         android:text="Event Details"
         android:background="@color/dark_grey"
         android:textColor="@color/light_green"
-        android:fontFamily="@font/inter_semibold"
-        android:layout_marginBottom="20dp"/>
+        android:fontFamily="@font/inter_semibold" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/event_details_frame"
+        android:background="@drawable/frame_style"
         android:layout_below="@id/header"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/frame_style"
-        android:padding="20dp"
+        android:id="@+id/event_details_frame"
+        android:orientation="vertical"
+        android:layout_margin="30dp"
         >
 
-        <TextView
-            android:id="@+id/event_details"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:padding="15dp"
+            android:padding="10dp"
+            android:layout_marginBottom="-20dp"
             android:layout_gravity="center_horizontal"
-            android:text="Event Name"
+            >
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:id="@+id/qr_image"
+                android:src="@drawable/missing_image_icon"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/rounded_corner"
+                android:layout_marginEnd="-10dp"
+                />
+
+
+            <TextView
+                android:id="@+id/event_name_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:padding="15dp"
+                android:layout_gravity="center"
+                android:text="Event Name"
+                android:background="@drawable/rounded_corner"
+                android:fontFamily="@font/inter_semibold"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:background="@drawable/rounded_corner"
-            android:fontFamily="@font/inter_semibold"
-            android:textColor="@color/black"/>
+            android:padding="6dp"
+            android:layout_margin="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/details"
+                android:text="Details"
+                android:fontFamily="@font/inter_semibold"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="3dp"
+                android:textColor="@color/black"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date &amp; Time: "
+                android:fontFamily="@font/inter_semibold"
+                android:textSize="13dp"
+                android:textColor="@color/black"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/date_TV"
+                android:text="  \u2022 Date: "
+                android:fontFamily="@font/inter_semibold"
+                android:textSize="13dp"
+                android:textColor="@color/black"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/time_TV"
+                android:text="  \u2022 Time: "
+                android:fontFamily="@font/inter_semibold"
+                android:textSize="13dp"
+                android:textColor="@color/black"
+                />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/location_TV"
+                android:text="Location:"
+                android:fontFamily="@font/inter_semibold"
+                android:textSize="13dp"
+                android:textColor="@color/black"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/venue_TV"
+                android:text="  \u2022 Venue: "
+                android:fontFamily="@font/inter_semibold"
+                android:textSize="13dp"
+                android:textColor="@color/black"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Organizer's Notes"
+                android:fontFamily="@font/inter_semibold"
+                android:textSize="13dp"
+                android:textColor="@color/black"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/notes_TV"
+                android:text="  \u2022 "
+                android:fontFamily="@font/inter_semibold"
+                android:textSize="13dp"
+                android:textColor="@color/black"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/max_participants_TV"
+                android:text="Max Participants: "
+                android:fontFamily="@font/inter_semibold"
+                android:textSize="13dp"
+                android:textColor="@color/black"
+                />
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -51,18 +169,20 @@
         android:layout_below="@id/event_details_frame"
         android:layout_centerHorizontal="true"
         android:orientation="vertical"
-        android:layout_margin="35dp"
-        android:background="@drawable/frame_style">
+        android:background="@drawable/frame_style"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Would you like to join this even'ts waiting list?"
-            android:layout_margin="15dp"
+            android:layout_margin="16dp"
 
             android:textColor="@color/black"
             android:fontFamily="@font/inter_semibold"
-            android:textSize="20dp"
+            android:textSize="15dp"
             android:background="@drawable/rounded_corner"
             android:padding="8dp"/>
 
@@ -78,7 +198,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Yes"
-                android:textSize="25sp"
+                android:textSize="18sp"
                 android:layout_gravity="center_horizontal"
                 android:fontFamily="@font/inter_semibold"
                 android:layout_margin="6dp"
@@ -89,7 +209,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
-                android:textSize="25sp"
+                android:textSize="18sp"
                 android:layout_gravity="center_horizontal"
                 android:fontFamily="@font/inter_semibold"
                 android:layout_margin="6dp"
@@ -103,7 +223,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/retun_button"
+        android:id="@+id/return_button"
         android:text="RETURN"
         android:textSize="30dp"
         android:background="@color/dark_grey"

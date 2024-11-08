@@ -20,18 +20,6 @@
         android:layout_weight="1"
         android:id="@+id/notification_list"/>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/more_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/light_green"
-        android:background="@color/dark_grey"
-        android:text="More"
-        android:letterSpacing="0.1"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        android:padding="12dp"/>
-
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/return_button"

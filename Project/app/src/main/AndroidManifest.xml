@@ -62,6 +62,12 @@
         <activity
             android:name=".WinNotificationActivity">
         </activity>
+        <activity
+            android:name=".MyLossNotificationsActivity">
+        </activity>
+        <activity
+            android:name=".LossNotificationActivity">
+        </activity>
     </application>
 
 </manifest>

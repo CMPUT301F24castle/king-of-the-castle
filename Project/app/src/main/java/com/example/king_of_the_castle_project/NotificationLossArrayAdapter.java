@@ -2,17 +2,11 @@ package com.example.king_of_the_castle_project;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.provider.Settings;
-import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,11 +14,8 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
-/**
- * Class which acts as an adapter for notifications/invitations
- */
-public class NotificationArrayAdapter extends ArrayAdapter<Event> {
-    public NotificationArrayAdapter(@NonNull Context context, List<Event> events) {
+public class NotificationLossArrayAdapter extends ArrayAdapter<Event> {
+    public NotificationLossArrayAdapter(@NonNull Context context, List<Event> events) {
         super(context, 0, events);
         this.context = context;
     }
@@ -60,7 +51,7 @@ public class NotificationArrayAdapter extends ArrayAdapter<Event> {
         }
 
         viewStatusButton.setOnClickListener(v -> {
-            Intent intent = new Intent(context, WinNotificationActivity.class);
+            Intent intent = new Intent(context, LossNotificationActivity.class);
             //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("event", event.getQrCodeData());
             intent.putExtra("name", event.getName());

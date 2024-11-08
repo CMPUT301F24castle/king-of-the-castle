@@ -31,6 +31,7 @@
             android:padding="10dp">
 
             <TextView
+                android:id="@+id/name_textview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textColor="@color/black"
@@ -122,6 +123,13 @@
                 android:text="Notes">
 
             </TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:text="Max Participants"></TextView>
 
             <TextView
                 android:id="@+id/max_participants_textview"

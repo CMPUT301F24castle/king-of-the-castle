@@ -32,6 +32,10 @@ public class Event {
         this.eventDetails = eventDetails;
         this.maxParticipants = maxParticipants;
         this.geolocation = geolocation;
+        this.waitList = new ArrayList<String>();
+        this.acceptedList = new ArrayList<String>();
+        this.declinedList = new ArrayList<String>();
+        this.registeredList = new ArrayList<String>();
     }
 
     /**
@@ -61,6 +65,48 @@ public class Event {
         this.eventDetails = eventDetails;
         this.maxParticipants = maxParticipants;
         this.waitList = waitList;
+        this.geolocation = geolocation;
+        this.acceptedList = new ArrayList<String>();
+        this.declinedList = new ArrayList<String>();
+        this.registeredList = new ArrayList<String>();
+    }
+
+    /**
+     * Constructor with everything
+     * @param name
+     *  The name of the event
+     * @param date
+     *  The date that the event is going to occur
+     * @param time
+     *  The time for which the event will happen
+     * @param location
+     *  Where the event is taking place
+     * @param eventDetails
+     *  Any extra notes from the organizer
+     * @param maxParticipants
+     *  Optional capacity limit on number of people who can participate in the event
+     * @param waitList
+     *  A list of entrants who want to enter the event
+     * @param geolocation
+     *  Boolean to determine if the organizer would like to check entrant location for attending event
+     * @param acceptedList
+     *  List of entrant ids accepted to the event
+     * @param declinedList
+     *  List of entrant ids declined from the event
+     * @param registeredList
+     *  List of entrant ids registered for the event
+     */
+    public Event(String name, String date, String time, String location, String eventDetails, int maxParticipants, ArrayList<String> waitList, ArrayList<String> acceptedList, ArrayList<String> declinedList, ArrayList<String> registeredList, Boolean geolocation) {
+        this.name = name;
+        this.date = date;
+        this.time = time;
+        this.location = location;
+        this.eventDetails = eventDetails;
+        this.maxParticipants = maxParticipants;
+        this.waitList = waitList;
+        this.acceptedList = acceptedList;
+        this.declinedList = declinedList;
+        this.registeredList = registeredList;
         this.geolocation = geolocation;
     }
 

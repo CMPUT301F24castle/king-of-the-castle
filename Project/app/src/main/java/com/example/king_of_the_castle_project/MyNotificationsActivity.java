@@ -55,6 +55,18 @@ public class MyNotificationsActivity extends AppCompatActivity {
                         }
                     }
                 });
+        db.collection("events")
+                .whereArrayContains("declinedList", androidId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Event event = document.toObject(Event.class);
+                            events.add(event);
+                            arrayAdapter.notifyDataSetChanged();
+                        }
+                    }
+                });
 
         // Return button
         returnButton.setOnClickListener(new View.OnClickListener() {

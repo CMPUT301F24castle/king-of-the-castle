@@ -148,7 +148,7 @@ public class CreateEventActivity extends AppCompatActivity {
                 // Create empty waitlist
                 ArrayList<String> waitlist = new ArrayList<String>();
                 // Create event then send to firebase
-                Event newEvent = new Event(name, date, time, location, details, number, waitlist, geolocation_check);
+                Event newEvent = new Event(name, date, time, location, details, number, waitlist, waitlist, waitlist, waitlist, geolocation_check);
                 // Putting QR stuff into event class
                 newEvent.setQrCodeData(stringConversion);
                 // Sending to firebase
@@ -246,6 +246,9 @@ public class CreateEventActivity extends AppCompatActivity {
         eventData.put("details", event.getEventDetails());
         eventData.put("maxParticipants", event.getMaxParticipants());
         eventData.put("waitList", event.getWaitList());
+        eventData.put("acceptedList", event.getAcceptedList());
+        eventData.put("declinedList", event.getDeclinedList());
+        eventData.put("registeredList", event.getRegisteredList());
         eventData.put("qrCodeData", qrCodeData);
         // Create new document or add to collection
         db.collection(androidId)

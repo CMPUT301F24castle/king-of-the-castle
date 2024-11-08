@@ -58,25 +58,28 @@ public class EventDetailsScreen extends AppCompatActivity {
         yesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                joinWaitlist();
+                joinWaitlist(scannedResult);
                 Intent intent = new Intent(EventDetailsScreen.this, MyWaitlistsActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
         noButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), EntrantScreenActivity.class);
-                startActivity(intent);
+                finish();
+                //Intent intent = new Intent(getApplicationContext(), EntrantScreenActivity.class);
+                //startActivity(intent);
             }
         });
 
         returnBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), EntrantScreenActivity.class);
-                startActivity(intent);
+                finish();
+                //Intent intent = new Intent(getApplicationContext(), EntrantScreenActivity.class);
+                //startActivity(intent);
             }
         });
     }
@@ -84,9 +87,9 @@ public class EventDetailsScreen extends AppCompatActivity {
     /**
      * Adds the entrant to the event waitlist in Firebase Firestore
      */
-    private void joinWaitlist() {
+    private void joinWaitlist(String qr_code) {
         db.collection("events")
-                .whereEqualTo("name", "Anxiety")
+                .whereEqualTo("qrCodeData", qr_code)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {

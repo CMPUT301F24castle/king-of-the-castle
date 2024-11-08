@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,9 +17,17 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_NOTIFICATION_PERMISSION = 1;
+    private FirebaseFirestore db;
+    private String userID;
+    private Boolean recognize = Boolean.TRUE;
 
 
     @Override
@@ -36,9 +46,14 @@ public class MainActivity extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LoginScreenActivity.class);
-                startActivity(intent);
-                finish();
+                if (recognize) {
+                    Intent intent = new Intent(MainActivity.this, ChooseRoleActivity.class);
+                    startActivity(intent);
+                    //finish();
+                } else {
+                    Intent intent = new Intent(MainActivity.this, LoginScreenActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 

@@ -85,12 +85,12 @@ public class MyWaitlistsActivity extends AppCompatActivity {
                         Log.d("MyWaitlistsActivity", "Loaded waitlists for entrant ID: " + entrantID);
 
                         // Clear pending events to refresh data
-                        lotteryPendingEvents.clear();
+                        this.lotteryPendingEvents.clear();
 
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Event event = document.toObject(Event.class);
-                            lotteryPendingEvents.add(event);
-                            pendingAdapter.notifyDataSetChanged();
+                            this.lotteryPendingEvents.add(event);
+                            this.pendingAdapter.notifyDataSetChanged();
 
                             // Logic to classify the event could be added here
                         }

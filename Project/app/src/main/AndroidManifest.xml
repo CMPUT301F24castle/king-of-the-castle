@@ -59,6 +59,9 @@
         <activity
             android:name=".MyNotificationsActivity">
         </activity>
+        <activity
+            android:name=".WinNotificationActivity">
+        </activity>
     </application>
 
 </manifest>

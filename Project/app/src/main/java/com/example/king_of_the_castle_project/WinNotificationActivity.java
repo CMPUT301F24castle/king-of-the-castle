@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -20,6 +21,9 @@ import java.util.ArrayList;
  */
 public class WinNotificationActivity extends AppCompatActivity {
     private Toast toastMessage;
+    private String qrCode;
+    private FirebaseFirestore db;
+    private String entrantId;
 
     /**
      * Creates the activity
@@ -35,10 +39,15 @@ public class WinNotificationActivity extends AppCompatActivity {
         Button acceptButton = findViewById(R.id.accept_invite_button);
         Button declineButton = findViewById(R.id.decline_invite_button);
 
+        db = FirebaseFirestore.getInstance();
+        entrantId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        qrCode = getIntent().getStringExtra("event");
+
         acceptButton.setOnClickListener(v -> {
             toastMessage = Toast.makeText(this, "You have accepted the invitation", Toast.LENGTH_SHORT);
             toastMessage.show();
-            // Add code adding entrant to registrered list
+            // Add code adding entrant to registered list
+
             finish();
         });
 
@@ -50,4 +59,29 @@ public class WinNotificationActivity extends AppCompatActivity {
 
         });
     }
+
+    private void acceptInvite() {
+        db.collection("events")
+                .whereEqualTo("qrCodeData", qrCode)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        String documentId = queryDocumentSnapshots.getDocuments().get(0).getId();
+
+                        db.collection("events").document(documentId)
+                                .update("registeredList", FieldValue.arrayUnion(entrantId))
+                                //});.update("registeredList", FieldValue.arrayUnion(entrantId))
+                                .addOnSuccessListener(aVoid ->
+                                        Toast.makeText(this, "You have accepted the invitation", Toast.LENGTH_SHORT).show())
+
+                                .addOnFailureListener(e ->
+                                        Toast.makeText(this, "Failed to accept the invitation: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                    } else {
+                        Toast.makeText(this, "Event not found for the invitation", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Failed to retrieve event: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+    }
+
 }

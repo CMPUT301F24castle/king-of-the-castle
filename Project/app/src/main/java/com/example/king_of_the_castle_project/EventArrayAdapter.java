@@ -147,7 +147,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                 testwaitlist.add(entrant2.getId());
                 testwaitlist.add(entrant3.getId());
                 testevent = new Event("Castle Tour", "2024-11-15", "10:00 AM", "Castle Grounds",
-                        "A guided tour of the castle", 2, testwaitlist, true);
+                        "A guided tour of the castle", 2, testwaitlist, true,"id");
                 testlottery = new Lottery();
                 testlottery.selectRandomEntrants(testevent);
 

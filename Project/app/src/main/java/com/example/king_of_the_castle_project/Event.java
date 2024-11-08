@@ -1,9 +1,6 @@
 package com.example.king_of_the_castle_project;
 
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class Event {
     private String name;
@@ -159,8 +156,8 @@ public class Event {
 
     /**
      * Getter for the entrant waitlist
-     * @return
-     *      Returns a list of entrants
+     *
+     * @return Returns a list of entrants
      */
     public ArrayList<String> getWaitList() {
         return waitList;

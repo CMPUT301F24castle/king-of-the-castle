@@ -89,7 +89,6 @@
             android:textStyle="bold"
             android:padding="10dp"/>
 
-<!--        <include layout="@layout/entrant_event_waitlist_accepted_content"/>-->
 
 
         <androidx.recyclerview.widget.RecyclerView

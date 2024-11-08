@@ -38,6 +38,12 @@ android {
 }
 
 dependencies {
+    testImplementation(libs.test.core)
+    testImplementation(libs.ext.junit)
+    testImplementation(libs.test.core)
+    testImplementation(libs.monitor)
+    testImplementation(libs.ext.junit)
+    testImplementation(libs.espresso.core)
     // Espresso and Testing Dependencies
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
@@ -58,8 +64,8 @@ dependencies {
     implementation("com.google.android.gms:play-services-base:18.5.0")
 
     // ZXing dependencies for barcode scanning
-    implementation("com.google.zxing:core:3.4.1")
-    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+    implementation(libs.core)
+    implementation(libs.zxing.android.embedded)
 
     // Unit testing dependencies
     testImplementation(libs.junit)
@@ -72,5 +78,9 @@ dependencies {
     androidTestImplementation("androidx.test:runner:1.6.1")
     androidTestImplementation("androidx.test:rules:1.6.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    testImplementation ("junit:junit:4.13.2")
+    testImplementation (libs.mockito.core)
+    androidTestImplementation ("androidx.test.ext:junit:1.1.3")
+    androidTestImplementation ("androidx.test:core:1.4.0")
 }
 

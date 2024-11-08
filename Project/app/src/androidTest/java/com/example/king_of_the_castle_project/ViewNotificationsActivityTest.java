@@ -27,10 +27,32 @@ public class ViewNotificationsActivityTest {
         ActivityScenario.launch(MyNotificationsActivity.class);  // launch activity
     }
 
+    @Test
+    public void testReturnButton() {
+        // click spinner/dropdown
+        onView(withId(R.id.return_button)).perform(click());
+
+        // verify that EntrantScreenActivity started
+        Intents.intended(IntentMatchers.hasComponent(EntrantScreenActivity.class.getName()));
+    }
+
+    @Test
+    public void testOrganizerRoleNavigation() {
+        // click spinner
+        onView(withId(R.id.choose_role_spinner)).perform(click());
+        // click organizer
+        onView(withText("Organizer")).perform(click());
+
+        // click confirm button
+        onView(withId(R.id.confirm_role_button)).perform(click());
+
+        // verify that OrganizerActivity started
+        Intents.intended(IntentMatchers.hasComponent(OrganizerActivity.class.getName()));
+    }
+
     @After
     public void tearDown() {
         Intents.release();  // release intents after tests
     }
-
 }
 

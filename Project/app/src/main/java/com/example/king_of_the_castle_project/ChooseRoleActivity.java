@@ -17,6 +17,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/*
+Screen to change between being an entrant/admin/organizer
+ */
 public class ChooseRoleActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     @Override
@@ -70,7 +73,8 @@ public class ChooseRoleActivity extends AppCompatActivity {
 //
 //                                        }
 //                                    })
-                    Toast.makeText(ChooseRoleActivity.this, "Not yet implemented", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(ChooseRoleActivity.this, AdministratorDashboardActivity.class);
+                    startActivity(intent);
 
                 } else {
                     LayoutInflater inflater = getLayoutInflater();

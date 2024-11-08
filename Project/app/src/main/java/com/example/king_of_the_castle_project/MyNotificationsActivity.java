@@ -1,5 +1,6 @@
 package com.example.king_of_the_castle_project;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
@@ -17,6 +18,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class for viewing an entrants'  invitations
+ */
 public class MyNotificationsActivity extends AppCompatActivity {
     private ListView listView;
     private NotificationArrayAdapter arrayAdapter;
@@ -24,12 +28,20 @@ public class MyNotificationsActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private String androidId;
 
+    /**
+     * On creation of an instance
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.entrant_view_invitations_screen);
         // Button
         Button returnButton = findViewById(R.id.return_button);
+        Button moreButton = findViewById(R.id.more_button);
         // Get android id
         androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         // Initialize the firebase
@@ -55,6 +67,11 @@ public class MyNotificationsActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+        moreButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MyLossNotificationsActivity.class);
+            startActivity(intent);
+        });
 
         // Return button
         returnButton.setOnClickListener(new View.OnClickListener() {

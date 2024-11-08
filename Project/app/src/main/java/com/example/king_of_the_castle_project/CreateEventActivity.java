@@ -21,6 +21,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -45,6 +46,9 @@ import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Map;
 
+/*
+ * Class that handles the event screen for creating events, QR Code and sending to firebase
+ */
 public class CreateEventActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> imageSelectorLauncher;
     protected boolean geolocation_check = false;
@@ -246,6 +250,9 @@ public class CreateEventActivity extends AppCompatActivity {
         eventData.put("details", event.getEventDetails());
         eventData.put("maxParticipants", event.getMaxParticipants());
         eventData.put("waitList", event.getWaitList());
+        eventData.put("acceptedList", event.getAcceptedList());
+        eventData.put("declinedList", event.getDeclinedList());
+        eventData.put("registeredList", event.getRegisteredList());
         eventData.put("qrCodeData", qrCodeData);
         eventData.put("organizerID", androidId);
         // Create new document or add to collection

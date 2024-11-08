@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_purple">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="My Notifications"
+        android:textColor="@color/light_green"
+        android:background="@color/dark_grey"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:padding="15dp"
+        />
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:id="@+id/notification_list"/>
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/return_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/light_green"
+        android:background="@color/dark_grey"
+        android:text="Return"
+        android:letterSpacing="0.1"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:padding="12dp"/>
+
+</LinearLayout>

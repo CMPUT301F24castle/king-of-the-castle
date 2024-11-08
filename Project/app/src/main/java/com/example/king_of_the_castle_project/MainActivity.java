@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -15,9 +18,23 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Objects;
+
+/**
+ * Main activity screen that starts the app
+ */
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_NOTIFICATION_PERMISSION = 1;
+    private FirebaseFirestore db;
+    private String userID;
+    private Boolean recognize = Boolean.FALSE;
 
 
     @Override
@@ -31,23 +48,38 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        db = FirebaseFirestore.getInstance();
+        userID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
+
         Button startButton = findViewById(R.id.start_button);
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ChooseRoleActivity.class);
-                startActivity(intent);
-                finish();
+                db.collection("entrants").document(userID)
+                        .get()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                recognize = Boolean.TRUE;
+                    }
+                });
+
+                if (recognize) {
+                    Intent intent = new Intent(MainActivity.this, ChooseRoleActivity.class);
+                    startActivity(intent);
+                    //finish();
+                } else {
+                    Intent intent = new Intent(MainActivity.this, LoginScreenActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
-        //Intent intent = new Intent(MainActivity.this, MyWaitlistsActivity.class);
-        //startActivity(intent);
-        //finish();
+
 
         //notification permissions
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+      /*  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             String notificationPermission = "android.permission.POST_NOTIFICATIONS";
             if (ContextCompat.checkSelfPermission(this, notificationPermission)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -58,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             sendLotteryNotifications();
-        }
+        }*/
 
 
     }

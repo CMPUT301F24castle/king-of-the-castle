@@ -10,8 +10,15 @@ constraintlayout = "2.1.4"
 junitJupiter = "5.8.1"
 firebaseFirestore = "25.1.1"
 espressoIntents = "3.6.1"
+mockitoCore = "4.0.0"
+zxingAndroidEmbedded = "4.3.0"
+coreVersion = "1.6.1"
+monitor = "1.7.1"
+espressoCoreVersion = "3.4.0"
+core = "1.6.1"
 
 [libraries]
+core = { module = "com.google.zxing:core", version.ref = "core" }
 google-firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -22,6 +29,12 @@ activity = { group = "androidx.activity", name = "activity", version.ref = "acti
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCore" }
+zxing-android-embedded = { module = "com.journeyapps:zxing-android-embedded", version.ref = "zxingAndroidEmbedded" }
+test-core = { group = "androidx.test", name = "core", version.ref = "coreVersion" }
+monitor = { group = "androidx.test", name = "monitor", version.ref = "monitor" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCoreVersion" }
+androidx-core = { group = "androidx.test", name = "core", version.ref = "core" }
 espresso-intents = { group = "androidx.test.espresso", name = "espresso-intents", version.ref = "espressoIntents" }
 
 [plugins]

@@ -9,9 +9,8 @@ import java.util.List;
 
 public class LotteryTest {
 
-    private Event testEvent;
+
     private ArrayList<String> testwaitlist;
-   // private ArrayList<Entrant> testwaitlist = new ArrayList<>();
     private Lottery testlottery;
     private Event testevent;
 

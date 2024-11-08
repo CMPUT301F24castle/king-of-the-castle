@@ -14,6 +14,9 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+/*
+ * Class used to handle the landing screen for organizers
+ */
 public class OrganizerActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> activityResultLauncher;
 

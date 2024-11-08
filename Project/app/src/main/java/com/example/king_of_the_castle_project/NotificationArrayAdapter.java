@@ -1,8 +1,10 @@
 package com.example.king_of_the_castle_project;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,7 +26,9 @@ import java.util.List;
 public class NotificationArrayAdapter extends ArrayAdapter<Event> {
     public NotificationArrayAdapter(@NonNull Context context, List<Event> events) {
         super(context, 0, events);
+        this.context = context;
     }
+    private Context context;
 
     /**
      * Sets the view for an item in the list
@@ -56,7 +60,17 @@ public class NotificationArrayAdapter extends ArrayAdapter<Event> {
         }
 
         viewStatusButton.setOnClickListener(v -> {
-
+            Intent intent = new Intent(context, WinNotificationActivity.class);
+            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra("event", event.getQrCodeData());
+            intent.putExtra("name", event.getName());
+            intent.putExtra("date", event.getDate());
+            intent.putExtra("time", event.getTime());
+            intent.putExtra("location", event.getLocation());
+            intent.putExtra("notes", event.getEventDetails());
+            intent.putExtra("max", event.getMaxParticipants());
+            context.startActivity(intent);
+            this.notifyDataSetChanged();
         });
 
 

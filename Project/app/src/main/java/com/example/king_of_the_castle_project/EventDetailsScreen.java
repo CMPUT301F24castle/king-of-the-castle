@@ -3,7 +3,6 @@ package com.example.king_of_the_castle_project;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Base64;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Base64;
@@ -92,16 +91,18 @@ public class EventDetailsScreen extends AppCompatActivity {
         noButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), EntrantScreenActivity.class);
-                startActivity(intent);
+                finish();
+                //Intent intent = new Intent(getApplicationContext(), EntrantScreenActivity.class);
+                //startActivity(intent);
             }
         });
 
         returnBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), EntrantScreenActivity.class);
-                startActivity(intent);
+                finish();
+                //Intent intent = new Intent(getApplicationContext(), EntrantScreenActivity.class);
+                //startActivity(intent);
             }
         });
     }

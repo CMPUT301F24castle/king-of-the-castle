@@ -24,6 +24,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * Class used to manage the screen for viewing organizer's activities. Pulls from firebase
+ */
 public class ManageEventsActivity extends AppCompatActivity {
     private ListView listView;
     private EventArrayAdapter arrayAdapter;

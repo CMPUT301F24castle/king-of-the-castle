@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="350dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@drawable/dialogue_notification_bg"
+    android:layout_gravity="center">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter your message below:"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="10dp"/>
+    <EditText
+        android:id="@+id/sample_entrants_edittext"
+        android:layout_width="290dp"
+        android:layout_height="110dp"
+        android:background="@drawable/light_green_rounded_corners_bg"
+        android:inputType="text"
+        android:layout_gravity="center"
+        android:gravity="left"
+        android:textColor="@color/black"
+        android:scrollHorizontally="false"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select who to notify:"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="10dp"/>
+    <Spinner
+        android:id="@+id/choose_role_spinner"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_marginStart="10dp"
+        android:padding="10dp"
+        android:spinnerMode="dropdown"
+        android:background="@drawable/light_green_rounded_corners_bg"/>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/notify_entrants_dialog_select_specific_button"
+        android:layout_width="170dp"
+        android:layout_height="40dp"
+        android:text="Select Specific"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@null"
+        android:background="@drawable/light_green_rounded_corners_bg"
+        android:textColor="@color/black"
+        android:layout_marginStart="10dp"/>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/notify_entrants_dialogue_button"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:text="OK"
+        android:backgroundTint="@null"
+        android:background="@drawable/sample_entrants_dialogue_button_bg"
+        android:textColor="@color/white"
+        android:layout_gravity="end"
+        android:layout_marginStart="10dp"/>
+
+</LinearLayout>

@@ -59,6 +59,12 @@
         <activity
             android:name=".MyNotificationsActivity">
         </activity>
+        <activity
+            android:name=".AdministratorDashboardActivity"
+            android:exported="true">
+        </activity>
+        <activity android:name=".browseEventsActivity">
+        </activity>
     </application>
 
 </manifest>

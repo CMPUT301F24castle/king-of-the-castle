@@ -19,13 +19,20 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 import android.app.AlertDialog;
 
 public class EventArrayAdapter extends ArrayAdapter<Event>  {
     public EventArrayAdapter(@NonNull Context context, List<Event> events) {
         super(context, 0, events);
+
     }
+
+    //ANGELA TESTING VARIABLES//
+    private ArrayList<String> testwaitlist;
+    private Lottery testlottery;
+    private Event testevent;
 
     /**
      * Sets the view for an item in the list
@@ -117,6 +124,25 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                     }
                 });
 
+
+
+                // ANGELA TEST NOTIFICATIONS HERE
+                testwaitlist = new ArrayList<String>();
+                // Create some entrants
+                Entrant entrant1 = new Entrant("Alice", "alice@example.com", "555-1234", "id1");
+                Entrant entrant2 = new Entrant("Bob", "bob@example.com", "555-5678", "id2");
+                Entrant entrant3 = new Entrant("carl", "carl@example.com", "555-5788", "id3");
+
+                // Add entrants to the waitlist
+                testwaitlist.add(entrant1.getId());
+                testwaitlist.add(entrant2.getId());
+                testwaitlist.add(entrant3.getId());
+                testevent = new Event("Castle Tour", "2024-11-15", "10:00 AM", "Castle Grounds",
+                        "A guided tour of the castle", 2, testwaitlist, true);
+                testlottery = new Lottery();
+                testlottery.selectRandomEntrants(testevent);
+
+
                 okButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -124,7 +150,13 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                         String message = messageEditText.getText().toString();
                         // type of entrant to notify in string (Waitlist Entrants, Cancelled Entrants, Invited Entrants, Enrolled Entrants)
                         String selectedRole = roleSpinner.getSelectedItem().toString();
-                        // ANGELA TEST NOTIFICATIONS HERE
+
+                        //ANGELA TEST//
+                        Notif2_5_1 notifier = new Notif2_5_1(v.getContext());
+                        notifier.sendLotteryNotification(testlottery);
+
+
+
                         dialog.dismiss();
                     }
                 });

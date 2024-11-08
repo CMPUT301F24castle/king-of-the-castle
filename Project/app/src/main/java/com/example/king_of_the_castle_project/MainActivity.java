@@ -31,15 +31,6 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        Event eventDetails = new Event("Sample Event", "2024-11-07", "10:00 AM", "Sample Location", 5);
-
-        // Create an instance of Lottery and call selectRandomEntrants to select the attendees
-        Lottery lottery = new Lottery();
-        lottery.selectRandomEntrants(eventDetails);  // Populate the selectedAttendees list
-
-        // Now create an instance of Notifications and send notifications
-        Notifications notifications = new Notifications(this);
-        notifications.sendLotteryNotification(lottery);
 
 
         Button startButton = findViewById(R.id.start_button);
@@ -58,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         //finish();
 
         //notification permissions
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+      /*  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             String notificationPermission = "android.permission.POST_NOTIFICATIONS";
             if (ContextCompat.checkSelfPermission(this, notificationPermission)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -69,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             sendLotteryNotifications();
-        }
+        }*/
 
 
     }

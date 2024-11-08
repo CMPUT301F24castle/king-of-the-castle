@@ -38,10 +38,20 @@ android {
 }
 
 dependencies {
+    testImplementation(libs.androidx.core)
     // Espresso and Testing Dependencies
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.4.0")
+    //FOR NOTIF TESTING PURPOSES
+    testImplementation( "org.mockito:mockito-core:5.+")
+    androidTestImplementation ("org.mockito:mockito-android:5.+")
+    testImplementation("org.assertj:assertj-core:3.22.0")
+
+    androidTestImplementation ("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation ("androidx.test:core:1.5.0")
+    androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.1")
+
 
     // Regular implementation dependencies
     implementation(libs.appcompat)

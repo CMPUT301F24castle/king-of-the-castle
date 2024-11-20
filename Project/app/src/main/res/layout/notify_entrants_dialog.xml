@@ -45,16 +45,6 @@
         android:spinnerMode="dropdown"
         android:background="@drawable/light_green_rounded_corners_bg"/>
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/notify_entrants_dialog_select_specific_button"
-        android:layout_width="170dp"
-        android:layout_height="40dp"
-        android:text="Select Specific"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="@null"
-        android:background="@drawable/light_green_rounded_corners_bg"
-        android:textColor="@color/black"
-        android:layout_marginStart="10dp"/>
-    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/notify_entrants_dialogue_button"
         android:layout_width="60dp"
         android:layout_height="40dp"
@@ -64,5 +54,4 @@
         android:textColor="@color/white"
         android:layout_gravity="end"
         android:layout_marginStart="10dp"/>
-
 </LinearLayout>

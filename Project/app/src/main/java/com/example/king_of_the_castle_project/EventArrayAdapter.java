@@ -106,7 +106,6 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                 // get views inside dialog
                 EditText messageEditText = dialogView.findViewById(R.id.sample_entrants_edittext);
                 Spinner roleSpinner = dialogView.findViewById(R.id.choose_role_spinner);
-                Button selectSpecificButton = dialogView.findViewById(R.id.notify_entrants_dialog_select_specific_button);
                 Button okButton = dialogView.findViewById(R.id.notify_entrants_dialogue_button);
 
                 // allow edit text to be editable
@@ -125,13 +124,6 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 roleSpinner.setAdapter(adapter);
 
-                // add on click listeners for buttons
-                selectSpecificButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(v.getContext(), "Not yet implemented", Toast.LENGTH_SHORT).show();
-                    }
-                });
 
 
 
@@ -163,9 +155,6 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                         //ANGELA TEST//
                         Notif2_5_1 notifier = new Notif2_5_1(v.getContext());
                         notifier.sendLotteryNotification(testlottery);
-
-
-
                         dialog.dismiss();
                     }
                 });

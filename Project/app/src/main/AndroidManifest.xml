@@ -74,6 +74,8 @@
         </activity>
         <activity android:name=".BrowseEventsActivity">
         </activity>
+        <activity android:name=".ListOfFilteredEntrantsInEventScreen">
+        </activity>
     </application>
 
 </manifest>

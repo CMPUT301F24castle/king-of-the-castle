@@ -11,7 +11,7 @@ public class Entrant extends User {
     /**
      * Empty constructor necessary to pass information to firebase
      */
-    public void Entrant() {
+    public Entrant() {
         // Empty constructor for firebase
     }
 

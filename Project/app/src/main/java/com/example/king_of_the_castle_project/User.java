@@ -16,6 +16,13 @@ public abstract class User implements Serializable {
     private String id;
 
     /**
+     * Empty constructor necessary to pass information to firebase
+     */
+    public User(){
+        // Empty constructor for firebase
+    }
+
+    /**
      * Constructor of the User
      * @param name
      *  Name of user

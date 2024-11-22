@@ -30,6 +30,7 @@ public class EventDetailsScreen extends AppCompatActivity {
     private TextView eventLocationTV;
     private TextView eventMaxParticipantsTV;
     private TextView eventNotesTV;
+    private TextView geolocationNoticeTV;
     private ImageView qrImage;
 
     private AppCompatButton yesButton;
@@ -47,6 +48,7 @@ public class EventDetailsScreen extends AppCompatActivity {
     private String eventTime;
     private String eventNotes;
     private String qrCodeString;
+    //private Boolean hasGeolocation;
 
 
     /**
@@ -67,7 +69,9 @@ public class EventDetailsScreen extends AppCompatActivity {
         eventLocationTV = findViewById(R.id.venue_TV);
         eventMaxParticipantsTV = findViewById(R.id.max_participants_TV);
         eventNotesTV = findViewById(R.id.notes_TV);
+        //geolocationNoticeTV = findViewById(R.id.geolocation_notice);
         qrImage = findViewById(R.id.qr_image);
+
 
         yesButton = findViewById(R.id.button_yes);
         noButton = findViewById((R.id.button_no));
@@ -91,18 +95,18 @@ public class EventDetailsScreen extends AppCompatActivity {
         noButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
-                //Intent intent = new Intent(getApplicationContext(), EntrantScreenActivity.class);
-                //startActivity(intent);
+                //finish();
+                Intent intent = new Intent(getApplicationContext(), EntrantScreenActivity.class);
+                startActivity(intent);
             }
         });
 
         returnBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
-                //Intent intent = new Intent(getApplicationContext(), EntrantScreenActivity.class);
-                //startActivity(intent);
+                //finish();
+                Intent intent = new Intent(getApplicationContext(), EntrantScreenActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -142,7 +146,7 @@ public class EventDetailsScreen extends AppCompatActivity {
      */
     private void showDetails() {
         // fetch firebase reference
-        db = FirebaseFirestore.getInstance();
+        //db = FirebaseFirestore.getInstance();
 
         // query the QR code
         db.collection("events")
@@ -161,8 +165,11 @@ public class EventDetailsScreen extends AppCompatActivity {
                             eventLocation = document.getString("location");
                             eventMaxParticipants = document.contains("maxParticipants")
                                     ? document.getLong("maxParticipants").intValue()
-                                    : 0;                            eventTime = document.getString("time");
+                                    : 0;
+                            eventTime = document.getString("time");
                             qrCodeString = document.getString("qrCodeData");
+                            //hasGeolocation = document.getBoolean("geolocation");
+
 
                             eventNameTV.setText(eventName);
                             eventDateTV.append(eventDate);
@@ -170,7 +177,13 @@ public class EventDetailsScreen extends AppCompatActivity {
                             eventLocationTV.append(eventLocation);
                             eventMaxParticipantsTV.append(String.valueOf(eventMaxParticipants));
                             eventNotesTV.append(eventNotes != null ? eventNotes : "N/A");
-
+                            /*if (hasGeolocation) {
+                                geolocationNoticeTV.setVisibility(View.VISIBLE);
+                            }
+                            else {
+                                geolocationNoticeTV.setVisibility(View.INVISIBLE);
+                            }
+*/
                             if (qrCodeString != null && !qrCodeString.isEmpty()) {
                                 try {
                                     byte[] decodedBytes = Base64.decode(qrCodeString, Base64.DEFAULT);

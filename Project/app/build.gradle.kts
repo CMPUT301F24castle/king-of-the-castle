@@ -5,6 +5,15 @@ plugins {
 }
 
 android {
+    packaging {
+        resources.excludes.addAll(
+            listOf(
+                "META-INF/LICENSE.md",
+                "META-INF/LICENSE-notice.md",
+        )
+        )
+    }
+
     namespace = "com.example.king_of_the_castle_project"
     compileSdk = 34
 
@@ -52,6 +61,8 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.4.0")
+    androidTestImplementation("androidx.test.espresso:espresso-idling-resource:3.4.0")
+
     //FOR NOTIF TESTING PURPOSES
     testImplementation( "org.mockito:mockito-core:5.+")
     androidTestImplementation ("org.mockito:mockito-android:5.+")
@@ -70,6 +81,7 @@ dependencies {
 
     // Firebase dependencies
     implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
+    androidTestImplementation("com.google.firebase:firebase-firestore:24.4.0")
     implementation(libs.google.firebase.firestore)
 
     // Google Play Services dependencies
@@ -83,8 +95,9 @@ dependencies {
     // Unit testing dependencies
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
-    testImplementation ("org.junit.jupiter:junit-jupiter-api:5.0.1")
-    testRuntimeOnly ("org.junit.jupiter:junit-jupiter-engine:5.0.1")
+    testImplementation ("org.junit.jupiter:junit-jupiter-api:5.5.1")
+    androidTestImplementation(libs.junit.jupiter)
+    testRuntimeOnly ("org.junit.jupiter:junit-jupiter-engine:5.5.1")
 
     // Intent testing dependencies
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.6.1")

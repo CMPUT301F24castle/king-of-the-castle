@@ -44,13 +44,12 @@ public class ListOfFilteredEntrantsInEventScreen extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_of_entrants_in_event_screen);
+        setContentView(R.layout.organizer_entrant_list_screen);
 
         // get views
         listOfEntrants = findViewById(R.id.list_of_entrants);
         returnBtn = findViewById(R.id.return_button_LOE_screen);
         noResults = findViewById(R.id.no_results_textview);
-        searchBar = findViewById(R.id.search_bar);
 
         // get and store intent
         entrant_id_list = (ArrayList<String>) getIntent().getSerializableExtra("entrant_id_list");

@@ -56,6 +56,7 @@ public class WaitListAdapter extends ArrayAdapter<String> {
 
         // Get entrants from the database
         getUser(entrant, position, view);
+        notifyDataSetChanged();
 
         return view;
     }

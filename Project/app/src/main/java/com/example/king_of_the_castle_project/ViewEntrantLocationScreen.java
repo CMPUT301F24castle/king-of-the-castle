@@ -59,6 +59,17 @@ public class ViewEntrantLocationScreen extends AppCompatActivity {
         });
     }
 
+    /**
+     * Places a location pin on a map bitmap based on the given latitude and longitude.
+     *
+     * <p>This method overlays a pin bitmap onto a map bitmap at a position corresponding to the
+     * specified latitude and longitude. It uses an equirectangular map projection for the calculations.</p>
+     *
+     * @param latitude  the latitude of the location (-90 to 90 degrees)
+     * @param longitude the longitude of the location (-180 to 180 degrees)
+     * @param context   the context used to load the map and pin resources
+     * @return a {@link Bitmap} object representing the map with the pin placed at the specified location
+     */
     public Bitmap placePinOnMap(double latitude, double longitude, Context context) {
         // load pngs as bitmaps
         Bitmap map = BitmapFactory.decodeResource(context.getResources(), R.drawable.equirectangular_map);

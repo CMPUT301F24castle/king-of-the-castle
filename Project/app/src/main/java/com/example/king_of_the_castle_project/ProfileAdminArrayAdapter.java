@@ -17,6 +17,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
+/*
+ * ArrayAdapter used to format the entrant list in BrowseProfilesActivity
+ */
 public class ProfileAdminArrayAdapter extends ArrayAdapter<Entrant> {
     private Context context;
     private ArrayList<Entrant> entrants;

@@ -39,5 +39,12 @@ public class AdministratorDashboardActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        browseProfilesButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(AdministratorDashboardActivity.this, BrowseProfilesActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

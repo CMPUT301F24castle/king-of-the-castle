@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_purple">
+
+    <TextView
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="  Profiles"
+        android:textColor="@color/light_green"
+        android:background="@color/dark_grey"
+        android:textSize="36sp"
+        android:fontFamily="@font/inter_semibold"
+        android:padding="15dp"
+        android:layout_alignParentTop="true" />
+
+    <ListView
+        android:id="@+id/list_of_entrants"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/header"
+        android:layout_above="@id/return_button_LOE_screen"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/return_button_LOE_screen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Return"
+        android:textColor="@color/light_green"
+        android:background="@color/dark_grey"
+        android:letterSpacing="0.1"
+        android:textSize="32sp"
+        android:fontFamily="@font/inter_semibold"
+        android:padding="12dp"
+        android:layout_alignParentBottom="true" />
+
+    <TextView
+        android:id="@+id/no_results_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No Results"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:textSize="20sp"
+        android:fontFamily="@font/inter_semibold" />
+
+</RelativeLayout>

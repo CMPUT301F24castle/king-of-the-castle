@@ -1,7 +1,5 @@
 package com.example.king_of_the_castle_project;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,14 +15,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import android.app.AlertDialog;
+import android.widget.Toast;
 
 /*
  * ArrayAdapter used to format the eventlist in ManageEventsActivity
@@ -82,11 +82,78 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
         }
 
         viewEntrantsButton.setOnClickListener(v -> {
-            // make it go to entrants screen
-            Intent i = new Intent(getContext(), ListOfEntrantsInEventScreen.class);
-            i.putExtra("Waitlist", event.getWaitList());
-            getContext().startActivity(i);
+            // get context
+            Context context = v.getContext();
+
+            // inflate dialog layout
+            AlertDialog.Builder builder = new AlertDialog.Builder(parent.getContext());
+            View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.organizer_entrant_list_type_dialogue_style, null);
+            builder.setView(dialogView);
+
+            // get views in dialog
+            AppCompatButton waitlistButton = dialogView.findViewById(R.id.view_waitlist_entrants_button);
+            AppCompatButton invitedButton = dialogView.findViewById(R.id.view_invited_entrants_button);
+            AppCompatButton cancelledButton = dialogView.findViewById(R.id.view_cancelled_entrants_button);
+            AppCompatButton enrolledButton = dialogView.findViewById(R.id.view_enrolled_entrants_button);
+            TextView cancelTextView = dialogView.findViewById(R.id.choose_entrant_type_cancel);
+
+            // create and show dialog
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+            // set on click listeners
+            // handle view waitlist entrants
+            waitlistButton.setOnClickListener(view -> {
+                // dismiss dialog
+                dialog.dismiss();
+                // change screen
+                Intent i = new Intent(context, ListOfEntrantsInEventScreen.class);
+                i.putExtra("Waitlist", event.getWaitList());
+                context.startActivity(i);
+            });
+
+            // handle view invited entrants
+            invitedButton.setOnClickListener(view -> {
+                // dismiss dialog
+                dialog.dismiss();
+                // change screen
+                Intent i = new Intent(context, ListOfFilteredEntrantsInEventScreen.class);
+//                i.putExtra("entrant_id_list", event.getAcceptedList());
+                ArrayList<String> acceptedList = new ArrayList<>(Arrays.asList("21cd01a5f09d6e83"));
+                i.putExtra("entrant_id_list",acceptedList);
+                context.startActivity(i);
+            });
+
+            // handle view cancelled entrants
+            cancelledButton.setOnClickListener(view -> {
+                // dismiss dialog
+                dialog.dismiss();
+                // change screen
+                Intent i = new Intent(context, ListOfFilteredEntrantsInEventScreen.class);
+//                i.putExtra("entrant_id_list", event.getDeclinedList());
+                ArrayList<String> declinedList = new ArrayList<>(Arrays.asList("80f328806d47ddbb"));
+                i.putExtra("entrant_id_list",declinedList);
+                context.startActivity(i);
+            });
+
+            // handle view enrolled entrants
+            enrolledButton.setOnClickListener(view -> {
+                // dismiss dialog
+                dialog.dismiss();
+                // change screen
+                Intent i = new Intent(context, ListOfFilteredEntrantsInEventScreen.class);
+//                i.putExtra("entrant_id_list", event.getRegisteredList());
+                ArrayList<String> registeredList = new ArrayList<>(Arrays.asList("2b075d2817445df8", "cc10cc7754d9fe8a"));
+                i.putExtra("entrant_id_list",registeredList);
+                context.startActivity(i);
+            });
+
+            cancelTextView.setOnClickListener(view -> {
+                // dismiss dialog
+                dialog.dismiss();
+            });
         });
+
 
         sampleEntrantsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +173,6 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                 // get views inside dialog
                 EditText messageEditText = dialogView.findViewById(R.id.sample_entrants_edittext);
                 Spinner roleSpinner = dialogView.findViewById(R.id.choose_role_spinner);
-                Button selectSpecificButton = dialogView.findViewById(R.id.notify_entrants_dialog_select_specific_button);
                 Button okButton = dialogView.findViewById(R.id.notify_entrants_dialogue_button);
 
                 // allow edit text to be editable
@@ -125,13 +191,6 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 roleSpinner.setAdapter(adapter);
 
-                // add on click listeners for buttons
-                selectSpecificButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(v.getContext(), "Not yet implemented", Toast.LENGTH_SHORT).show();
-                    }
-                });
 
 
 
@@ -163,9 +222,6 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                         //ANGELA TEST//
                         Notif2_5_1 notifier = new Notif2_5_1(v.getContext());
                         notifier.sendLotteryNotification(testlottery);
-
-
-
                         dialog.dismiss();
                     }
                 });

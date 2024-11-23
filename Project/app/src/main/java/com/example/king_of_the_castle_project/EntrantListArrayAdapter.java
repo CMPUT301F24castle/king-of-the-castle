@@ -1,6 +1,7 @@
 package com.example.king_of_the_castle_project;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,15 +47,28 @@ public class EntrantListArrayAdapter extends ArrayAdapter<Entrant>{
 
 
         // set views
-//        entrantPFP.setImageResource(entrant.getPFP()); IMPLEMENT LATER
-
-
         entrantInfo.setText(entrant_info_text);
+        //entrantPFP.setImageResource(entrant.getPFP()); IMPLEMENT LATER
 
         // set on click for location button
         viewEntrantLocationButton.setOnClickListener(v -> {
-            // view entrants location
+            // get context
+            Context context = v.getContext();
 
+            // get map screen
+            Intent i = new Intent(context, ViewEntrantLocationScreen.class);
+
+            //edmonton: 53.5461, -113.4937
+            //brazil capital: -15.7975, -47.8919
+            //moscow: 55.7558, 37.6173
+            //sydney: -33.8688, 151.2093
+
+            // send latitude and longitude
+            i.putExtra("latitude", -33.8688);
+            i.putExtra("longitude", 151.2093);
+
+            // start map screen
+            context.startActivity(i);
         });
 
         // return

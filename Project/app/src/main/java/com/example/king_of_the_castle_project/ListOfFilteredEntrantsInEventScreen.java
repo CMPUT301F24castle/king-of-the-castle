@@ -35,7 +35,7 @@ public class ListOfFilteredEntrantsInEventScreen extends AppCompatActivity{
     private WaitListAdapter waitListAdapter;
     private TextView noResults;
     private SearchView searchBar;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     /**
      * Default method that performs basic application startup logic
      * @param savedInstanceState

@@ -19,7 +19,7 @@ public class ViewEntrantLocationScreen extends AppCompatActivity {
 
     private double latitude;
     private double longitude;
-    private float scroll_x_units;
+    public float scroll_x_units;
 
     /**
      * Default method for basic startup logic

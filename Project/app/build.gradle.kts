@@ -87,6 +87,7 @@ dependencies {
     // Google Play Services dependencies
     implementation("com.google.android.gms:play-services-code-scanner:16.1.0")
     implementation("com.google.android.gms:play-services-base:18.5.0")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 
     // ZXing dependencies for barcode scanning
     implementation("com.google.zxing:core:3.4.1")
@@ -113,8 +114,4 @@ dependencies {
     testImplementation("org.mockito:mockito-core:5.5.0")
     testImplementation("org.mockito:mockito-inline:5.5.0")
     testImplementation("org.mockito:mockito-android:5.5.0")
-
-    // Google task dependencies
-    testImplementation("com.google.android.gms:play-services-tasks:18.2.0")
-
 }

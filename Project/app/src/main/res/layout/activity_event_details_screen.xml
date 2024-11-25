@@ -185,16 +185,32 @@
         android:layout_marginTop="10dp">
 
         <TextView
+            android:id="@+id/join_waitlist_tv_no_warning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Would you like to join this even'ts waiting list?"
+            android:text="Would you like to join this event's waiting list?"
             android:layout_margin="16dp"
 
             android:textColor="@color/black"
             android:fontFamily="@font/inter_semibold"
             android:textSize="15dp"
             android:background="@drawable/rounded_corner"
-            android:padding="8dp"/>
+            android:padding="8dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/join_waitlist_tv_with_warning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/join_waitlist_with_warning"
+            android:layout_margin="16dp"
+
+            android:textColor="@color/black"
+            android:fontFamily="@font/inter_semibold"
+            android:textSize="15dp"
+            android:background="@drawable/rounded_corner"
+            android:padding="8dp"
+            android:visibility="gone"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -228,7 +244,6 @@
         </LinearLayout>
 
     </LinearLayout>
-
 
     <androidx.appcompat.widget.AppCompatButton
         android:layout_width="match_parent"

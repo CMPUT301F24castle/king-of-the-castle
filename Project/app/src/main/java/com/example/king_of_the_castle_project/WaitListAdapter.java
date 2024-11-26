@@ -22,9 +22,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.Console;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class WaitListAdapter extends ArrayAdapter<String> {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     public WaitListAdapter(@NonNull Context context, ArrayList<String> entrants) {
         super(context, 0, entrants);
     }

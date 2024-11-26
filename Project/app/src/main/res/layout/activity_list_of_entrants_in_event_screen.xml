@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:iconifiedByDefault="false"
-        android:queryHint="Search"
+        android:queryHint="Search by name"
         android:background="@drawable/searchbar_background"
         android:layout_below="@id/header"
         android:layout_margin="8dp"

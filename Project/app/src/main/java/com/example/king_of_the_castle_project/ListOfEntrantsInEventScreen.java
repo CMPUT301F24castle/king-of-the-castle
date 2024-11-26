@@ -16,9 +16,12 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.Firebase;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Activity that shows the organiser a list of entrants in a specific waitlist
@@ -31,6 +34,8 @@ public class ListOfEntrantsInEventScreen extends AppCompatActivity {
     private WaitListAdapter waitListAdapter;
     private TextView noResults;
     private SearchView searchBar;
+    private Map<String, String> idToNameMap = new HashMap<>();
+    private FirebaseFirestore db;
 
     /**
      * Default method that performs basic application startup logic
@@ -50,11 +55,28 @@ public class ListOfEntrantsInEventScreen extends AppCompatActivity {
         waitlist = (ArrayList<String>) getIntent().getSerializableExtra("Waitlist");
         filteredList = new ArrayList<>(waitlist);
 
+        // Set the adapter after data is loaded
         waitListAdapter = new WaitListAdapter(this, filteredList);
         listOfEntrants.setAdapter(waitListAdapter);
 
+        db = FirebaseFirestore.getInstance();
+        idToNameMap = new HashMap<>();
+
+        db.collection("entrants")
+                .whereIn("id", waitlist)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String id = document.getString("id");
+                            String name = document.getString("name");
+                            idToNameMap.put(id, name);
+                        }
+                    }
+                });
+
         // shows no result textview if the waitlist is empty
-        if (filteredList.size() == 0) {
+        if (filteredList.isEmpty()) {
             noResults.setVisibility(View.VISIBLE);
             listOfEntrants.setVisibility(View.GONE);
         }
@@ -83,6 +105,7 @@ public class ListOfEntrantsInEventScreen extends AppCompatActivity {
         });
     }
 
+
     /**
      * Shows a list of entrants based on the text in the searchbar
      * @param query
@@ -93,9 +116,10 @@ public class ListOfEntrantsInEventScreen extends AppCompatActivity {
         if (query.isEmpty()) {
             filteredList.addAll(waitlist);
         } else {
-            for (String entrant : waitlist) {
-                if (entrant.toLowerCase().contains(query.toLowerCase())) {
-                    filteredList.add(entrant);
+            for (String id: waitlist) {
+                String name = idToNameMap.get(id).toLowerCase();
+                if (name.contains(query.toLowerCase())) {
+                    filteredList.add(id);
                 }
             }
         }

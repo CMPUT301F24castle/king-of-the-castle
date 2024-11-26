@@ -255,6 +255,7 @@ public class CreateEventActivity extends AppCompatActivity {
         eventData.put("registeredList", event.getRegisteredList());
         eventData.put("qrCodeData", qrCodeData);
         eventData.put("organizerID", androidId);
+        eventData.put("geolocation", this.geolocation_check);
         // Create new document or add to collection
         db.collection(androidId)
                 .document(name)

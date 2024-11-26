@@ -17,6 +17,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class for viewing an entrants'  invitations
@@ -61,7 +62,21 @@ public class MyNotificationsActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         events.clear();
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            Event event = document.toObject(Event.class);
+                            // get waitlist
+                            ArrayList<String> entrantIds = new ArrayList<>();
+                            ArrayList<Map<String, Object>> waitlist = (ArrayList<Map<String, Object>>) document.get("waitList");
+                            if (waitlist != null) {
+                                for (Map<String, Object> entry : waitlist) {
+                                    // Extract the "entrantID" field
+                                    if (entry.containsKey("entrantID")) {
+                                        entrantIds.add((String) entry.get("entrantID"));
+                                    }
+                                }
+                            }
+
+                            // add waitlist and other fields to Event object
+                            Event event = new Event(document.getString("name"), document.getString("date"), document.getString("time"), document.getString("location"), document.getString("eventDetails"), document.getLong("maxParticipants").intValue(), entrantIds, (ArrayList<String>) document.get("acceptedList"), (ArrayList<String>) document.get("declinedList"), (ArrayList<String>) document.get("registeredList"), document.getBoolean("geolocation"), document.getString("qrCodeData"), document.getString("organizerID"));
+
                             events.add(event);
                             arrayAdapter.notifyDataSetChanged();
                         }

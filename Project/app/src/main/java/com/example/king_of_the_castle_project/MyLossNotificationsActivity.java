@@ -14,6 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Specific activity for when the user is looking at their cancelled/declined events
@@ -57,7 +58,21 @@ public class MyLossNotificationsActivity extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            Event event = document.toObject(Event.class);
+                            // get waitlist
+                            ArrayList<String> entrantIds = new ArrayList<>();
+                            ArrayList<Map<String, Object>> waitlist = (ArrayList<Map<String, Object>>) document.get("waitList");
+                            if (waitlist != null) {
+                                for (Map<String, Object> entry : waitlist) {
+                                    // Extract the "entrantID" field
+                                    if (entry.containsKey("entrantID")) {
+                                        entrantIds.add((String) entry.get("entrantID"));
+                                    }
+                                }
+                            }
+
+                            // add waitlist and other fields to Event object
+                            Event event = new Event(document.getString("name"), document.getString("date"), document.getString("time"), document.getString("location"), document.getString("eventDetails"), document.getLong("maxParticipants").intValue(), entrantIds, (ArrayList<String>) document.get("acceptedList"), (ArrayList<String>) document.get("declinedList"), (ArrayList<String>) document.get("registeredList"), document.getBoolean("geolocation"), document.getString("qrCodeData"), document.getString("organizerID"));
+
                             events.add(event);
                             arrayAdapter.notifyDataSetChanged();
                         }

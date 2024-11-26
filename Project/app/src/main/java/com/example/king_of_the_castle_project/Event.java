@@ -132,6 +132,22 @@ public class Event {
         this.organizerID = organizerID;
     }
 
+    public Event(String name, String date, String time, String location, String eventDetails, int maxParticipants, ArrayList<String> waitList, ArrayList<String> acceptedList, ArrayList<String> declinedList, ArrayList<String> registeredList, Boolean geolocation, String qrCodeData, String organizerID) {
+        this.name = name;
+        this.date = date;
+        this.time = time;
+        this.location = location;
+        this.eventDetails = eventDetails;
+        this.maxParticipants = maxParticipants;
+        this.waitList = waitList;
+        this.acceptedList = acceptedList;
+        this.declinedList = declinedList;
+        this.registeredList = registeredList;
+        this.geolocation = geolocation;
+        this.organizerID = organizerID;
+        this.qrCodeData = qrCodeData;
+    }
+
     /**
      * Getter for organizerID attribute
      * @return

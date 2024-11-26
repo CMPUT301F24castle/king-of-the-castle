@@ -17,16 +17,12 @@ import com.google.android.gms.common.moduleinstall.ModuleInstallResponse;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import android.content.Context;
-import android.widget.Toast;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.mlkit.vision.barcode.common.Barcode;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanner;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning;
-
-import java.util.List;
 
 /*
  * Activity shows the options for a user to scan a qr code, view their invitations to events,
@@ -36,14 +32,14 @@ import java.util.List;
  */
 public class EntrantScreenActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavView;
-    AppCompatButton qrCodeBut;
+    private AppCompatButton qrCodeBut;
     private AppCompatButton viewInvitationsBut;
     private AppCompatButton waitingListBut;
     private Button changeRolesBut;
 
     private boolean isScannedInstalled = false;
     private GmsBarcodeScanner scanner;
-    String scannnedCode;
+    private String scannnedCode;
     boolean changeActivity;
 
     private FirebaseFirestore db;
@@ -63,28 +59,30 @@ public class EntrantScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_entrant_screen);
 
         bottomNavView = findViewById(R.id.bottom_nav);
-        bottomNavView.setSelectedItemId(R.id.home);
+        bottomNavView.setSelectedItemId(R.id.bottom_home);
 
         qrCodeBut = findViewById(R.id.qr_button);
         viewInvitationsBut = findViewById(R.id.invitations_button);
         waitingListBut = findViewById(R.id.waitinglist_button);
         changeRolesBut = findViewById(R.id.change_roles_button);
 
-        /*bottomNavView.setOnItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.home:
-                    return true;
-                case R.id.profile:
-                    startActivity(new Intent(getApplicationContext(), ProfileScreenActivity.class));
-                    finish();
-                    return true;
-                case R.id.settings:
-                    startActivity(new Intent(getApplicationContext(), SettingsScreenActivity.class));
-                    finish();
-                    return true;
+        bottomNavView.setOnItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.bottom_home) {
+                // Handle Home action
+                return true;
+
+            } else if (item.getItemId() == R.id.bottom_profile) {
+                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                return true;
+
+            } else if (item.getItemId() == R.id.bottom_settings) {
+                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+                return true;
+
+            } else {
+                return false;
             }
-            return false;
-        });*/
+        });
 
         db = FirebaseFirestore.getInstance();
 
@@ -127,10 +125,6 @@ public class EntrantScreenActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
-
-    public void setFirestoreInstance(FirebaseFirestore firestore) {
-        this.db = firestore;
     }
 
     /**
@@ -212,7 +206,7 @@ public class EntrantScreenActivity extends AppCompatActivity {
      * activity that shows the event's details. If it doesn't find it, the scanner closes and users
      * are brout back to the EntrantScreenActivity
      */
-    void searchForQRCode() {
+    private void searchForQRCode() {
         // fetch firebase reference
         if (db == null) {
             db = FirebaseFirestore.getInstance();

@@ -1,5 +1,6 @@
 package com.example.king_of_the_castle_project;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -15,7 +16,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Activity that displays the entrant's waiting lists for events.
@@ -47,26 +47,26 @@ public class MyWaitlistsActivity extends AppCompatActivity {
         Log.d("MyWaitlistsActivity", "Entrant ID: " + entrantID);
 
         // Initialize RecyclerViews for each category
-        lotteryResultsRecycler = findViewById(R.id.lottery_results_recycler);
         lotteryPendingRecycler = findViewById(R.id.lottery_pending_recycler);
+        lotteryResultsRecycler = findViewById(R.id.lottery_results_recycler);
         acceptedRecycler = findViewById(R.id.lottery_accepted_recycler);
 
-        lotteryResultsRecycler.setLayoutManager(new LinearLayoutManager(this));
+
         lotteryPendingRecycler.setLayoutManager(new LinearLayoutManager(this));
+        lotteryResultsRecycler.setLayoutManager(new LinearLayoutManager(this));
         acceptedRecycler.setLayoutManager(new LinearLayoutManager(this));
 
         // Set up adapters for each category
-        resultsAdapter = new WaitingListAdapter(lotteryResultsEvents, entrantID);
         pendingAdapter = new WaitingListAdapter(lotteryPendingEvents, entrantID);
+        resultsAdapter = new WaitingListAdapter(lotteryResultsEvents, entrantID);
         acceptedAdapter = new WaitingListAdapter(acceptedEvents, entrantID);
 
-        lotteryResultsRecycler.setAdapter(resultsAdapter);
         lotteryPendingRecycler.setAdapter(pendingAdapter);
+        lotteryResultsRecycler.setAdapter(resultsAdapter);
         acceptedRecycler.setAdapter(acceptedAdapter);
 
         loadEntrantWaitingLists();
 
-        // Set up the return button to finish the activity and return to the previous screen
         findViewById(R.id.return_button).setOnClickListener(v -> {
             finish();
         });
@@ -83,32 +83,15 @@ public class MyWaitlistsActivity extends AppCompatActivity {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Log.d("MyWaitlistsActivity", "Loaded waitlists for entrant ID: " + entrantID);
-
-                        // Clear pending events to refresh data
                         this.lotteryPendingEvents.clear();
 
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            // get waitlist
-                            ArrayList<String> entrantIds = new ArrayList<>();
-                            ArrayList<Map<String, Object>> waitlist = (ArrayList<Map<String, Object>>) document.get("waitList");
-                            if (waitlist != null) {
-                                for (Map<String, Object> entry : waitlist) {
-                                    // Extract the "entrantID" field
-                                    if (entry.containsKey("entrantID")) {
-                                        entrantIds.add((String) entry.get("entrantID"));
-                                    }
-                                }
-                            }
-
-                            // add waitlist and other fields to Event object
-                            Event event = new Event(document.getString("name"), document.getString("date"), document.getString("time"), document.getString("location"), document.getString("eventDetails"), document.getLong("maxParticipants").intValue(), entrantIds, (ArrayList<String>) document.get("acceptedList"), (ArrayList<String>) document.get("declinedList"), (ArrayList<String>) document.get("registeredList"), document.getBoolean("geolocation"), document.getString("qrCodeData"), document.getString("organizerID"));
-
+                            Event event = document.toObject(Event.class);
                             this.lotteryPendingEvents.add(event);
-                            this.pendingAdapter.notifyDataSetChanged();
 
-                            // Logic to classify the event could be added here
                         }
+                        this.pendingAdapter.notifyDataSetChanged();
+
 
                     } else {
                         // Handle any errors encountered during Firestore query

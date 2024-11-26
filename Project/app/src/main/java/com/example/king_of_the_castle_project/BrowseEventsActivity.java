@@ -57,7 +57,7 @@ public class BrowseEventsActivity extends AppCompatActivity {
                             // get waitlist
                             ArrayList<String> entrantIds = new ArrayList<>();
                             ArrayList<Map<String, Object>> waitlist = (ArrayList<Map<String, Object>>) document.get("waitList");
-                            if (waitlist != null) {
+                            if (waitlist != null && !waitlist.isEmpty()) {
                                 for (Map<String, Object> entry : waitlist) {
                                     // Extract the "entrantID" field
                                     if (entry.containsKey("entrantID")) {

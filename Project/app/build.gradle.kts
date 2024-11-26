@@ -1,8 +1,20 @@
+import com.android.build.gradle.internal.ide.dependencies.getBuildPath
+
 plugins {
     alias(libs.plugins.android.application)
     //    id("com.android.application")
     id("com.google.gms.google-services")
 }
+
+buildscript {
+    repositories {
+        maven {
+            url = uri("http://dl.bintray.com/amulyakhare/maven")
+            isAllowInsecureProtocol = true
+        }
+    }
+}
+
 
 android {
     packaging {
@@ -116,5 +128,9 @@ dependencies {
 
     // Google task dependencies
     testImplementation("com.google.android.gms:play-services-tasks:18.2.0")
+
+    // Image profile defaults
+    implementation("com.amulyakhare:com.amulyakhare.textdrawable:1.0.1")
+    implementation("com.squareup.picasso:picasso:2.8")
 
 }

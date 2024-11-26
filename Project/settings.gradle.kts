@@ -16,6 +16,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url = uri("http://dl.bintray.com/amulyakhare/maven")
+                isAllowInsecureProtocol = true}
     }
 }
 

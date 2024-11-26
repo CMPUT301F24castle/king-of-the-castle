@@ -140,6 +140,8 @@ public class ListOfFilteredEntrantsInEventScreen extends AppCompatActivity{
      */
     private void filterEntrants(String query) {
         filteredList.clear();
+
+        // get the list of entrants that should be shown based on the query
         if (query.isEmpty()) {
             filteredList.addAll(entrant_list);
         } else {
@@ -150,6 +152,8 @@ public class ListOfFilteredEntrantsInEventScreen extends AppCompatActivity{
                 }
             }
         }
+
+        // update what is shown on the screen
         entrantListAdapter.notifyDataSetChanged();
 
         if (filteredList.isEmpty()){

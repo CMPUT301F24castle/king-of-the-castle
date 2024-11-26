@@ -21,6 +21,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+/**
+ *  Activity to allow an entrant to view the current values of their profile (photo, name, email, phone number)
+ */
 public class ProfileActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavView;
     private TextView entrantNameTV;
@@ -32,11 +35,21 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private String androidID;
 
+    /**
+     * Default method that performs basic application startup logic
+     * @param savedInstanceState
+     *          If there was an Instance saved, saved instances restores it
+     *
+     * @see EditProfileActivity
+     * @see EntrantScreenActivity
+     * @see SettingsActivity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        // get views
         bottomNavView = findViewById(R.id.bottom_nav);
         bottomNavView.setSelectedItemId(R.id.bottom_profile);
 
@@ -46,9 +59,11 @@ public class ProfileActivity extends AppCompatActivity {
         entrantPhotoIV = findViewById(R.id.profile_photo_IV);
         editProfileButton = findViewById(R.id.edit_profile_button);
 
+        // get database reference and the current user's android id
         db = FirebaseFirestore.getInstance();
         androidID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
+        // set up bottom navigation between home, profile and settings
         bottomNavView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.bottom_home) {
                 startActivity(new Intent(getApplicationContext(), EntrantScreenActivity.class));
@@ -66,8 +81,10 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        // get user profile from database and sett textviews
         showProfile();
 
+        // button to start edit profile activity
         editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,13 +94,19 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Shows the user's current profile data on the screen
+     */
     private void showProfile() {
+        // get user from firebase
         db.collection("entrants")
                 .whereEqualTo("id", androidID)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
+
+                            // set textviews
                             entrantNameTV.append(document.getString("name"));
                             entrantEmailTV.append(document.getString("email"));
                             String phone = document.getString("phone");

@@ -24,7 +24,7 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScanner;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning;
 
-/*
+/**
  * Activity shows the options for a user to scan a qr code, view their invitations to events,
  * and view their waitinglist. It also allows users to navigate between the home screen, their
  * profile screen and their waitinglist. Users are also able to click a button to go to the role
@@ -52,12 +52,16 @@ public class EntrantScreenActivity extends AppCompatActivity {
      * Default method that performs basic application startup logic
      * @param savedInstanceState
      *          If there was an Instance saved, saved instances restores it
+     *
+     * @see ProfileActivity
+     * @see SettingsActivity
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entrant_screen);
 
+        // get views
         bottomNavView = findViewById(R.id.bottom_nav);
         bottomNavView.setSelectedItemId(R.id.bottom_home);
 
@@ -66,6 +70,7 @@ public class EntrantScreenActivity extends AppCompatActivity {
         waitingListBut = findViewById(R.id.waitinglist_button);
         changeRolesBut = findViewById(R.id.change_roles_button);
 
+        // set up bottom navigation between home, profile and settings
         bottomNavView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.bottom_home) {
                 // Handle Home action
@@ -84,6 +89,7 @@ public class EntrantScreenActivity extends AppCompatActivity {
             }
         });
 
+        // get firebase instance
         db = FirebaseFirestore.getInstance();
 
         // Installs, initializes and sets on click listener for Google QR code scanner
@@ -92,6 +98,7 @@ public class EntrantScreenActivity extends AppCompatActivity {
         installGoogleScanner();
         initVars();
 
+        // button to open the qr code scanner
         qrCodeBut.setOnClickListener(v -> {
             if (isScannedInstalled) {
                 startScanning();
@@ -100,6 +107,7 @@ public class EntrantScreenActivity extends AppCompatActivity {
             }
         });
 
+        // button to check entrant's list of invitations
         viewInvitationsBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,6 +117,7 @@ public class EntrantScreenActivity extends AppCompatActivity {
             }
         });
 
+        // button to check what waitlists a user is currently on
         waitingListBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -118,6 +127,7 @@ public class EntrantScreenActivity extends AppCompatActivity {
             }
         });
 
+        // button to go back to ChangeRolesActivity
         changeRolesBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -60,14 +60,14 @@ public class MainActivity extends AppCompatActivity {
                 db.collection("entrants").document(userID)
                         .get()
                         .addOnCompleteListener(task -> {
-//                            if (task.isSuccessful()) {
-//                                Intent intent = new Intent(MainActivity.this, ChooseRoleActivity.class);
-//                                startActivity(intent);
-//                    }
-//                            else {
+                            if (task.isSuccessful()) {
+                                Intent intent = new Intent(MainActivity.this, ChooseRoleActivity.class);
+                                startActivity(intent);
+                    }
+                            else {
                                 Intent intent = new Intent(MainActivity.this, LoginScreenActivity.class);
                                 startActivity(intent);
-//                            }
+                            }
                 });
 
             }

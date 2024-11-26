@@ -22,7 +22,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Activity that shows the organiser a list of entrants filtered by invited/cancelled/enrolled status
@@ -30,12 +32,13 @@ import java.util.List;
 public class ListOfFilteredEntrantsInEventScreen extends AppCompatActivity{
     private ListView listOfEntrants;
     private ArrayList<String> entrant_id_list;
+    private ArrayList<Entrant> filteredList;
     private ArrayList<Entrant> entrant_list;
     private Button returnBtn;
-    private WaitListAdapter waitListAdapter;
     private TextView noResults;
     private SearchView searchBar;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    EntrantListArrayAdapter entrantListAdapter;
     /**
      * Default method that performs basic application startup logic
      * @param savedInstanceState
@@ -50,6 +53,7 @@ public class ListOfFilteredEntrantsInEventScreen extends AppCompatActivity{
         listOfEntrants = findViewById(R.id.list_of_entrants);
         returnBtn = findViewById(R.id.return_button_LOE_screen);
         noResults = findViewById(R.id.no_results_textview);
+        searchBar = findViewById(R.id.search_bar);
 
         // get and store intent
         entrant_id_list = (ArrayList<String>) getIntent().getSerializableExtra("entrant_id_list");
@@ -61,6 +65,25 @@ public class ListOfFilteredEntrantsInEventScreen extends AppCompatActivity{
             // get all entrant objects from firebase and display them
             queryEntrants(entrant_id_list);
         }
+
+        // Set up the SearchView to filter the ListView
+        searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (!entrant_list.isEmpty()){
+                    filterEntrants(query);
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (!entrant_list.isEmpty()){
+                    filterEntrants(newText);
+                }
+                return false;
+            }
+        });
 
         returnBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,8 +120,8 @@ public class ListOfFilteredEntrantsInEventScreen extends AppCompatActivity{
                                     entrant_list.add(entrant);
                                 }
                             }
-
-                            EntrantListArrayAdapter entrantListAdapter = new EntrantListArrayAdapter(this, entrant_list);
+                            filteredList = new ArrayList<>(entrant_list);
+                            entrantListAdapter = new EntrantListArrayAdapter(this, filteredList);
                             listOfEntrants.setAdapter(entrantListAdapter);
                         }
                     } else {
@@ -106,5 +129,35 @@ public class ListOfFilteredEntrantsInEventScreen extends AppCompatActivity{
                         Toast.makeText(getApplicationContext(), "Query failed", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    /**
+     * Shows a list of entrants based on the text in the searchbar
+     * @param query
+     *          the text in the search bar
+     *
+     * @see Entrant
+     */
+    private void filterEntrants(String query) {
+        filteredList.clear();
+        if (query.isEmpty()) {
+            filteredList.addAll(entrant_list);
+        } else {
+            for (Entrant entrant: entrant_list) {
+                String name = entrant.getName();
+                if (name.contains(query.toLowerCase())) {
+                    filteredList.add(entrant);
+                }
+            }
+        }
+        entrantListAdapter.notifyDataSetChanged();
+
+        if (filteredList.isEmpty()){
+            noResults.setVisibility(View.VISIBLE);
+            listOfEntrants.setVisibility(View.GONE);
+        } else {
+            noResults.setVisibility(View.GONE);
+            listOfEntrants.setVisibility(View.VISIBLE);
+        }
     }
 }

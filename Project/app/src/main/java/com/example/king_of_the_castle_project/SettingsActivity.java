@@ -1,7 +1,9 @@
 package com.example.king_of_the_castle_project;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.Switch;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +21,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class SettingsActivity extends AppCompatActivity {
     private SwitchCompat geolocationSwitch;
     private SwitchCompat notificationSwitch;
+    private static final String PREFS_NAME = "user_preferences";
+    private static final String KEY_NOTIFICATIONS = "notifications_enabled";
     private BottomNavigationView bottomNavView;
 
     private FirebaseFirestore db;
@@ -39,6 +43,18 @@ public class SettingsActivity extends AppCompatActivity {
         // get views
         geolocationSwitch = findViewById(R.id.switch_geolocation);
         notificationSwitch = findViewById(R.id.switch_notifications);
+        // Load saved notifications preference
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        boolean isNotificationsEnabled = sharedPreferences.getBoolean(KEY_NOTIFICATIONS, false);  // Default to false
+        notificationSwitch.setChecked(isNotificationsEnabled);
+        // Save notifications preference when Switch is toggled
+        notificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean(KEY_NOTIFICATIONS, isChecked);
+            editor.apply();
+        });
+
+
 
         bottomNavView = findViewById(R.id.bottom_nav);
         bottomNavView.setSelectedItemId(R.id.bottom_settings);
@@ -60,6 +76,8 @@ public class SettingsActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+
 
     }
 }

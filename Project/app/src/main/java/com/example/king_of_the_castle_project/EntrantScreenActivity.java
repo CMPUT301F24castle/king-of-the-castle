@@ -50,9 +50,7 @@ public class EntrantScreenActivity extends AppCompatActivity {
         changeActivity = value;
     }
 
-    private Switch notificationsSwitch;
-    private static final String PREFS_NAME = "user_preferences";
-    private static final String KEY_NOTIFICATIONS = "notifications_enabled";
+
 
 
     /**
@@ -106,21 +104,6 @@ public class EntrantScreenActivity extends AppCompatActivity {
         initVars();
 
 
-        // Load saved notifications preference
-        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        boolean isNotificationsEnabled = sharedPreferences.getBoolean(KEY_NOTIFICATIONS, false);  // Default to false
-        notificationsSwitch = findViewById(R.id.switch_notifications);
-
-
-        notificationsSwitch.setChecked(isNotificationsEnabled);
-
-
-        // Save notifications preference when Switch is toggled
-        notificationsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean(KEY_NOTIFICATIONS, isChecked);
-            editor.apply();
-        });
 
 
 

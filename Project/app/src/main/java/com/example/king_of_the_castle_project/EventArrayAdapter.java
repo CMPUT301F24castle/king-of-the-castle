@@ -220,9 +220,9 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                         String selectedRole = roleSpinner.getSelectedItem().toString();
 
                         //ANGELA TEST//
-                        Notif2_5_1 notifier = new Notif2_5_1(v.getContext());
-                        notifier.sendLotteryNotification(testlottery);
-                        dialog.dismiss();
+                        // Notif2_5_1 notifier = new Notif2_5_1(v.getContext());
+                        // notifier.sendLotteryNotification(testlottery);
+                        // dialog.dismiss();
                     }
                 });
             }

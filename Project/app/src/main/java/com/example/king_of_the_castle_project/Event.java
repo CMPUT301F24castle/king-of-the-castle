@@ -5,6 +5,7 @@ import com.google.protobuf.Any;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Dictionary;
 import java.util.List;
 
 /**
@@ -24,6 +25,7 @@ public class Event {
     private Boolean geolocation;
     private String qrCodeData;
     private String organizerID;
+    private String hashIdentifier;
 
     /**
      * Empty event constructor necessary for passing data to firebase
@@ -163,7 +165,7 @@ public class Event {
      * @param organizerID
      *  A string used to hold the android ID of the organizer
      */
-    public Event(String name, String date, String time, String location, String eventDetails, int maxParticipants, ArrayList<String> waitList, ArrayList<String> acceptedList, ArrayList<String> declinedList, ArrayList<String> registeredList, Boolean geolocation, String qrCodeData, String organizerID) {
+    public Event(String name, String date, String time, String location, String eventDetails, int maxParticipants, ArrayList<String> waitList, ArrayList<String> acceptedList, ArrayList<String> declinedList, ArrayList<String> registeredList, Boolean geolocation, String qrCodeData, String organizerID, String hashIdentifier) {
         this.name = name;
         this.date = date;
         this.time = time;
@@ -177,6 +179,7 @@ public class Event {
         this.geolocation = geolocation;
         this.organizerID = organizerID;
         this.qrCodeData = qrCodeData;
+        this.hashIdentifier = hashIdentifier;
     }
 
     /**
@@ -411,5 +414,23 @@ public class Event {
      */
     public void setRegisteredList(ArrayList<String> registeredList) {
         this.registeredList = registeredList;
+    }
+
+    /**
+     * Returns the identifier for the event
+     * @return
+     *      Hashed identifier for the event
+     */
+    public String getHashIdentifier() {
+        return hashIdentifier;
+    }
+
+    /**
+     * Sets the unique hash identifier of the current event
+     * @param hashIdentifier
+     *      An identifier created by a hash function
+     */
+    public void setHashIdentifier(String hashIdentifier) {
+        this.hashIdentifier = hashIdentifier;
     }
 }

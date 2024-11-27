@@ -82,7 +82,7 @@ public class ManageEventsActivity extends AppCompatActivity {
                                 }
 
                                 // add waitlist and other fields to Event object
-                                Event event = new Event(document.getString("name"), document.getString("date"), document.getString("time"), document.getString("location"), document.getString("eventDetails"), document.getLong("maxParticipants").intValue(), entrantIds, (ArrayList<String>) document.get("acceptedList"), (ArrayList<String>) document.get("declinedList"), (ArrayList<String>) document.get("registeredList"), document.getBoolean("geolocation"), document.getString("qrCodeData"), document.getString("organizerID"));
+                                Event event = new Event(document.getString("name"), document.getString("date"), document.getString("time"), document.getString("location"), document.getString("eventDetails"), document.getLong("maxParticipants").intValue(), entrantIds, (ArrayList<String>) document.get("acceptedList"), (ArrayList<String>) document.get("declinedList"), (ArrayList<String>) document.get("registeredList"), document.getBoolean("geolocation"), document.getString("qrCodeData"), document.getString("organizerID"), document.getString("hashIdentifier"));
 
                                 // Add the event to the events list
                                 events.add(event);

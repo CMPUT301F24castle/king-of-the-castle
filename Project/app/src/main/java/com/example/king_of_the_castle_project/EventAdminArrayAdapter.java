@@ -81,15 +81,24 @@ public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
 
             removeEventButton.setOnClickListener(v -> {
                 String organizerID = event.getOrganizerID();
-                String eventToRemove = event.getName();
+                String eventToRemove = event.getHashIdentifier();
+
+                Log.d("RemoveEvent", "Hash Identifier: " + eventToRemove);
+
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
 
                 // delete from database
-                db.collection("events").document(eventToRemove)
-                        .delete();
-                db.collection(organizerID).document(eventToRemove)
-                        .delete();
-                ((Activity)context).finish();
+                try {
+                    db.collection("events").document(eventToRemove)
+                            .delete();
+                    db.collection(organizerID).document(eventToRemove)
+                            .delete();
+                    ((Activity) context).finish();
+                } catch (Exception e) {
+                    Log.d("This is fucking stupid", "Fuck:" + event.getHashIdentifier());
+                    Log.d("Does the other one work", "Shit:" + event.getOrganizerID());
+                    ((Activity) context).finish();
+                }
             });
 
             return convertView;

@@ -204,7 +204,6 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                         // type of entrant to notify in string (Waitlist Entrants, Cancelled Entrants, Invited Entrants, Enrolled Entrants)
                         String selectedRole = roleSpinner.getSelectedItem().toString();
 
-
                         dialog.dismiss();
                     }
                 });

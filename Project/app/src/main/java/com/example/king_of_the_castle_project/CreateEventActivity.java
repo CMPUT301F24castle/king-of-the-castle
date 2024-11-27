@@ -33,6 +33,7 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -45,6 +46,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Map;
+import java.security.MessageDigest;
 
 /*
  * Class that handles the event screen for creating events, QR Code and sending to firebase
@@ -133,11 +135,14 @@ public class CreateEventActivity extends AppCompatActivity {
                     // Throw toast dialogue, set participants to max
                     displayToastNotification("Invalid or no max participants set, automatically set to max.");
                 }
+                // Create the base to be hashed
+                String base = name + details + date + time;
                 // Create QR code
-                String qrCodeText = name;
+                String eventIdentifier = hashFunction(base);
 
+                // Create the QR Code
                 try {
-                    qrCodeBitmap = createQRCode(qrCodeText);
+                    qrCodeBitmap = createQRCode(eventIdentifier);
                 } catch (WriterException | IOException e) {
                     e.printStackTrace();
                     displayToastNotification("Error: Failed to generate QR Code");
@@ -156,6 +161,7 @@ public class CreateEventActivity extends AppCompatActivity {
                 Event newEvent = new Event(name, date, time, location, details, number, waitlist, geolocation_check, androidId);
                 // Putting QR stuff into event class
                 newEvent.setQrCodeData(stringConversion);
+                newEvent.setHashIdentifier(eventIdentifier);
                 // Sending to firebase
                 sendToFirebase(newEvent, androidId, stringConversion);
                 // Passing data back
@@ -203,6 +209,29 @@ public class CreateEventActivity extends AppCompatActivity {
     }
 
     /**
+     * Hashing function used to guarantee uniqueness of event identifier and QR Code
+     * @param base
+     *      String to be hashed, will use eventName + eventDetails + maxParticipants + Location
+     * @return
+     *      Returns a string, the hash identifier for the event
+     */
+    private String hashFunction(String base) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            final byte[] hash = digest.digest(base.getBytes("UTF-8"));
+            StringBuilder hexString = new StringBuilder();
+            for (int i = 0; i < hash.length; i++) {
+                String hex = Integer.toHexString(0xff & hash[i]);
+                if(hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    /**
      * Method that creates and returns the QRcode data, generates QR code.
      * @param qrCodeText
      *      Takes in data for what the QR code should display
@@ -241,9 +270,9 @@ public class CreateEventActivity extends AppCompatActivity {
      */
     private void sendToFirebase(Event event, String androidId, String qrCodeData) {
         // Create a new object that can be stored for event that does not use waitlist because it will bug :)
-        String name = event.getName();
+        String document_name = event.getHashIdentifier();
         Map<String, Object> eventData = new HashMap<>();
-        eventData.put("name", name);
+        eventData.put("name", event.getName());
         eventData.put("date", event.getDate());
         eventData.put("time", event.getTime());
         eventData.put("location", event.getLocation());
@@ -256,9 +285,10 @@ public class CreateEventActivity extends AppCompatActivity {
         eventData.put("qrCodeData", qrCodeData);
         eventData.put("organizerID", androidId);
         eventData.put("geolocation", this.geolocation_check);
+        eventData.put("hashIdentifier", document_name);
         // Create new document or add to collection
         db.collection(androidId)
-                .document(name)
+                .document(document_name)
                 .set(eventData)
                 .addOnSuccessListener(documentReference -> {
                     Log.d("Firestore", "Successful send to firebase");
@@ -269,7 +299,7 @@ public class CreateEventActivity extends AppCompatActivity {
                 });
         // Add to collection of events
         db.collection("events")
-                .document(name)
+                .document(document_name)
                 .set(eventData);
     }
 }

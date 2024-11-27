@@ -47,6 +47,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.preference)
     testImplementation(libs.espresso.intents)
     testImplementation(libs.ext.junit)
     testImplementation(libs.test.core)
@@ -105,7 +106,7 @@ dependencies {
     androidTestImplementation("androidx.test:rules:1.6.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     testImplementation ("junit:junit:4.13.2")
-    testImplementation (libs.mockito.core)
+
     androidTestImplementation ("androidx.test.ext:junit:1.1.3")
     androidTestImplementation ("androidx.test:core:1.4.0")
 

@@ -4,22 +4,24 @@ package com.example.king_of_the_castle_project;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
+import androidx.preference.PreferenceManager;
 
 import java.util.List;
 
 /**
- * This will send a notification to all entrants on the waiting list, whether they have been chosen or not
- * 2.7.1: As an organiser I want to send notifications to all entrants on the waiting list
+ * This sends a notification to all cancelled entrants
+ * 2.7.3: As an organiser I want to send a notification to all cancelled entrants
  */
-//2.7.1: As an organiser I want to send notifications to all entrants on the waiting list
-public class Notif2_7_1 {
+//2.7.3: As an organiser I want to send a notification to all cancelled entrants
+public class notifyCancelledEntrants {
     private Context context;
-    private static final String CHANEL_ID = "notifyWaitingListEntrants";
+    private static final String CHANEL_ID = "notifyCancelledEntrants";
 
-    public Notif2_7_1(Context context) {
+    public notifyCancelledEntrants(Context context) {
         this.context = context;
         createNotificationChannel();
     }
@@ -28,8 +30,8 @@ public class Notif2_7_1 {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is not in the Support Library.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "notifyWaitingListEntrants";
-            String description = "Notifications for all entrants on waiting list";
+            CharSequence name = "notifyCancelledEntrants";
+            String description = "Notifications for all enntrants who cancelled their invitation";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(CHANEL_ID, name, importance);
             channel.setDescription(description);
@@ -38,15 +40,21 @@ public class Notif2_7_1 {
         }
     }
 
-    public void notifyWaitingListEntrants(Event event) {
+    public void notifyCancelledEntrants(Event event) {
 
-        List<String> waitingList = event.getWaitList();
+        List<String> cancelledList = event.getDeclinedList();
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean isNotificationsEnabled = sharedPreferences.getBoolean("notifications_enabled", true);
 
-        for (String userID : waitingList) {
-            //(ADD) the message will be a text that the organizer will input
+        if (!isNotificationsEnabled) {
+            return; // Don't send the notification
+        }
+        for (String userID : cancelledList) {
             String message = "notification description";
+            //(ADD) the message will be a text that the organizer inputs
+
 
             //builds the notification
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANEL_ID)
@@ -59,6 +67,7 @@ public class Notif2_7_1 {
             notificationManager.notify(userID.hashCode(), builder.build());
         }
     }
+
 
 
 

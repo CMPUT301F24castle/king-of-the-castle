@@ -1,9 +1,11 @@
 package com.example.king_of_the_castle_project;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -37,6 +39,7 @@ import java.util.List;
 public class EntrantScreenActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavView;
     AppCompatButton qrCodeBut;
+    private Switch notificationsSwitch;
     private AppCompatButton viewInvitationsBut;
     private AppCompatButton waitingListBut;
     private Button changeRolesBut;
@@ -47,6 +50,9 @@ public class EntrantScreenActivity extends AppCompatActivity {
     boolean changeActivity;
 
     private FirebaseFirestore db;
+
+    private static final String PREFS_NAME = "user_preferences";
+    private static final String KEY_NOTIFICATIONS = "notifications_enabled";
 
     public void setChangeActivity(boolean value) {
         changeActivity = value;
@@ -86,6 +92,8 @@ public class EntrantScreenActivity extends AppCompatActivity {
             return false;
         });*/
 
+
+
         db = FirebaseFirestore.getInstance();
 
         // Installs, initializes and sets on click listener for Google QR code scanner
@@ -93,6 +101,20 @@ public class EntrantScreenActivity extends AppCompatActivity {
         //The raw value is stored in scannnedCode
         installGoogleScanner();
         initVars();
+
+        // Load saved notifications preference
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        boolean isNotificationsEnabled = sharedPreferences.getBoolean(KEY_NOTIFICATIONS, false);  // Default to false
+        notificationsSwitch = findViewById(R.id.switch_notifications);
+
+        notificationsSwitch.setChecked(isNotificationsEnabled);
+
+        // Save notifications preference when Switch is toggled
+        notificationsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean(KEY_NOTIFICATIONS, isChecked);
+            editor.apply();
+        });
 
         qrCodeBut.setOnClickListener(v -> {
             if (isScannedInstalled) {

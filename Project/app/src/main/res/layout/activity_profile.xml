@@ -24,12 +24,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/dark_grey"
-                android:minHeight="?attr/actionBarSize" />
+                android:minHeight="?attr/actionBarSize"
+                />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Home"
+                android:text="Profile"
                 android:textSize="30dp"
                 android:textColor="@color/light_green"
                 android:layout_centerVertical="true"
@@ -54,107 +55,92 @@
         android:paddingEnd="6dp"
         android:radius = "10dp">
 
-        <TextView
-            android:id="@+id/hello_username"
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/profile_photo_IV"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="30dp"
             android:background="@drawable/rounded_corner"
-            android:fontFamily="@font/inter_semibold"
             android:padding="18dp"
-            android:paddingStart="28dp"
-            android:paddingEnd="28dp"
-            android:text="Hello Username!"
-            android:textColor="@color/black"
-            android:textSize="20dp" />
+            android:src="@drawable/missing_image_icon"/>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/qr_button"
-
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
-
-            android:background="@drawable/button_border_and_background"
-            android:drawableLeft="@drawable/baseline_qr_code_24"
-            android:drawablePadding="-15sp"
-            android:fontFamily="@font/inter_semibold"
-            android:text="Scan QR Code"
-            android:textColor="@color/black"
-            android:textSize="15dp"
-            android:textAllCaps="false"/>
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/invitations_button"
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner"
             android:layout_gravity="center_horizontal"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="10dp"
+            android:orientation="vertical"
+            android:padding="10dp"
+            >
 
-            android:background="@drawable/button_border_and_background"
-            android:drawableLeft="@drawable/baseline_mail_outline_24"
-            android:drawablePadding="-15sp"
-            android:fontFamily="@font/inter_semibold"
-            android:text="View Invitations"
-            android:textColor="@color/black"
-            android:textSize="15dp"
-            android:textAllCaps="false"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="User Information\n"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/inter_semibold"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:textAllCaps="false"/>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/waitinglist_button"
+            <TextView
+                android:id="@+id/name_TV_profile_screen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_semibold"
+                android:text="Name: "
+                android:textColor="@color/black"
+                android:textSize="14dp"
+                android:textAllCaps="false"
+                android:padding="10dp"/>
 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="10dp"
+            <TextView
+                android:id="@+id/email_TV_profile_screen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_semibold"
+                android:text="Email: "
+                android:textColor="@color/black"
+                android:textSize="14dp"
+                android:textAllCaps="false"
+                android:padding="10dp"/>
 
-            android:background="@drawable/button_border_and_background"
-            android:drawableLeft="@drawable/baseline_format_list_bulleted_24"
-            android:drawablePadding="-15sp"
-            android:fontFamily="@font/inter_semibold"
-            android:text="My Waiting Lists"
-            android:textColor="@color/black"
-            android:textSize="15dp"
-            android:textAllCaps="false"/>
+            <TextView
+                android:id="@+id/phone_number_TV_profile_screen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_semibold"
+                android:text="Phone Number: "
+                android:textColor="@color/black"
+                android:textSize="14dp"
+                android:textAllCaps="false"
+                android:padding="10dp"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/change_roles_button"
+        android:id="@+id/edit_profile_button"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/dashboard_buttons"
         android:layout_gravity="center_horizontal"
         android:layout_centerHorizontal="true"
-        android:layout_margin="20dp"
+        android:layout_margin="40dp"
 
         android:background="@drawable/button_style"
         android:fontFamily="@font/inter_semibold"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:text="Change Roles"
+        android:text="Edit Profile"
         android:textColor="@color/black"
         android:textSize="15dp"
         android:textAllCaps="false"/>
-
-    <Switch
-        android:id="@+id/switch_notifications"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/change_roles_button"
-        android:layout_alignBaseline="@id/change_roles_button"
-        android:layout_marginStart="16dp"
-        android:text="Enable Notifications" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"

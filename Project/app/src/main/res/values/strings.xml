@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">king-of-the-castle-project</string>
+    <string name="join_waitlist_with_warning"><font fgcolor="black">Would you like to join this event\'s waiting list?\n</font><font fgcolor="red">Warning: This event uses geolocation. By clicking yes you agree to share your location with the event\'s organizer.</font></string>
 
     <string-array name="roles_list_spinner">
         <item>Role</item>

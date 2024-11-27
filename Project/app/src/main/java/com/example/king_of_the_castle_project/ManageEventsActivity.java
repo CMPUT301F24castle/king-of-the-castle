@@ -23,6 +23,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /*
  * Class used to manage the screen for viewing organizer's activities. Pulls from firebase
@@ -66,8 +67,22 @@ public class ManageEventsActivity extends AppCompatActivity {
                         // Check if the query returned any results
                         if (task.getResult() != null && !task.getResult().isEmpty()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                // Convert the document to an Event object
-                                Event event = document.toObject(Event.class);
+                                // Parse the document
+
+                                // get waitlist
+                                ArrayList<String> entrantIds = new ArrayList<>();
+                                ArrayList<Map<String, Object>> waitlist = (ArrayList<Map<String, Object>>) document.get("waitList");
+                                if (waitlist != null) {
+                                    for (Map<String, Object> entry : waitlist) {
+                                        // Extract the "entrantID" field
+                                        if (entry.containsKey("entrantID")) {
+                                            entrantIds.add((String) entry.get("entrantID"));
+                                        }
+                                    }
+                                }
+
+                                // add waitlist and other fields to Event object
+                                Event event = new Event(document.getString("name"), document.getString("date"), document.getString("time"), document.getString("location"), document.getString("eventDetails"), document.getLong("maxParticipants").intValue(), entrantIds, (ArrayList<String>) document.get("acceptedList"), (ArrayList<String>) document.get("declinedList"), (ArrayList<String>) document.get("registeredList"), document.getBoolean("geolocation"), document.getString("qrCodeData"), document.getString("organizerID"));
 
                                 // Add the event to the events list
                                 events.add(event);

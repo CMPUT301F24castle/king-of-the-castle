@@ -107,8 +107,8 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                 // dismiss dialog
                 dialog.dismiss();
                 // change screen
-                Intent i = new Intent(context, ListOfEntrantsInEventScreen.class);
-                i.putExtra("Waitlist", event.getWaitList());
+                Intent i = new Intent(context, ListOfFilteredEntrantsInEventScreen.class);
+                i.putExtra("entrant_id_list", event.getWaitList());
                 context.startActivity(i);
             });
 
@@ -118,9 +118,9 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                 dialog.dismiss();
                 // change screen
                 Intent i = new Intent(context, ListOfFilteredEntrantsInEventScreen.class);
-//                i.putExtra("entrant_id_list", event.getAcceptedList());
-                ArrayList<String> acceptedList = new ArrayList<>(Arrays.asList("21cd01a5f09d6e83"));
-                i.putExtra("entrant_id_list",acceptedList);
+                i.putExtra("entrant_id_list", event.getAcceptedList());
+                //ArrayList<String> acceptedList = new ArrayList<>(Arrays.asList("21cd01a5f09d6e83"));
+                //i.putExtra("entrant_id_list",acceptedList);
                 context.startActivity(i);
             });
 

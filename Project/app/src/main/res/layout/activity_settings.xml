@@ -111,10 +111,9 @@
                     android:id="@+id/switch_notifications"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textOn="Enabled"
-                    android:textOff="Disabled"
                     android:layout_gravity="center_horizontal"
-                    />
+                    android:textOff="Disabled"
+                    android:textOn="Enabled" />
 
                 <TextView
                     android:layout_width="wrap_content"

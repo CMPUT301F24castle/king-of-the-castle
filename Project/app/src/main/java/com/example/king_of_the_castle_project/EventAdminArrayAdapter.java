@@ -1,10 +1,12 @@
 package com.example.king_of_the_castle_project;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +14,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
@@ -22,7 +27,7 @@ import java.util.List;
  * ArrayAdapter to show list of events in the administrator browse
  */
 public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
-
+    private final Context context;
     /**
      * Array adapter constructor
      * @param context
@@ -32,6 +37,7 @@ public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
      */
     public EventAdminArrayAdapter(@NonNull Context context, List<Event> events) {
             super(context, 0, events);
+            this.context = context;
         }
 
         /**
@@ -74,7 +80,16 @@ public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
             }
 
             removeEventButton.setOnClickListener(v -> {
-                // make it go to entrants screen
+                String organizerID = event.getOrganizerID();
+                String eventToRemove = event.getName();
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                // delete from database
+                db.collection("events").document(eventToRemove)
+                        .delete();
+                db.collection(organizerID).document(eventToRemove)
+                        .delete();
+                ((Activity)context).finish();
             });
 
             return convertView;

@@ -1,9 +1,13 @@
 package com.example.king_of_the_castle_project;
 
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,7 +27,7 @@ public class BrowseEventsActivity extends AppCompatActivity {
      *      If there was an Instance saved, saved instances restores it
      */
     private ListView listView;
-    private EventArrayAdapter arrayAdapter;
+    private EventAdminArrayAdapter arrayAdapter;
     private ArrayList<Event> events;
     private FirebaseFirestore db;
 
@@ -46,7 +50,7 @@ public class BrowseEventsActivity extends AppCompatActivity {
         // Initialize the events array
         events = new ArrayList<>();
         // Adapter
-        arrayAdapter = new EventArrayAdapter(this, events);
+        arrayAdapter = new EventAdminArrayAdapter(this, events);
         listView.setAdapter(arrayAdapter);
         // Fetch events from firebase, then events.add
         db.collection("events")
@@ -88,5 +92,23 @@ public class BrowseEventsActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });*/
+
+    }
+    /*
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }*/
+    protected void displayToastNotification(String message) {
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.toast_notification_layout, findViewById(R.id.custom_toast_container));
+        TextView text = layout.findViewById(R.id.toast_text);
+        text.setText(message);
+        Toast toast = new Toast(getApplicationContext());
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.setGravity(Gravity.BOTTOM, 0, 100);
+        toast.show();
     }
 }

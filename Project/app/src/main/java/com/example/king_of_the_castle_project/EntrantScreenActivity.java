@@ -1,9 +1,11 @@
 package com.example.king_of_the_castle_project;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -47,6 +49,11 @@ public class EntrantScreenActivity extends AppCompatActivity {
     public void setChangeActivity(boolean value) {
         changeActivity = value;
     }
+
+    private Switch notificationsSwitch;
+    private static final String PREFS_NAME = "user_preferences";
+    private static final String KEY_NOTIFICATIONS = "notifications_enabled";
+
 
     /**
      * Default method that performs basic application startup logic
@@ -97,6 +104,26 @@ public class EntrantScreenActivity extends AppCompatActivity {
         //The raw value is stored in scannnedCode
         installGoogleScanner();
         initVars();
+
+
+        // Load saved notifications preference
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        boolean isNotificationsEnabled = sharedPreferences.getBoolean(KEY_NOTIFICATIONS, false);  // Default to false
+        notificationsSwitch = findViewById(R.id.switch_notifications);
+
+
+        notificationsSwitch.setChecked(isNotificationsEnabled);
+
+
+        // Save notifications preference when Switch is toggled
+        notificationsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean(KEY_NOTIFICATIONS, isChecked);
+            editor.apply();
+        });
+
+
+
 
         // button to open the qr code scanner
         qrCodeBut.setOnClickListener(v -> {

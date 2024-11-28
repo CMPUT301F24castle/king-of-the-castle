@@ -1,11 +1,13 @@
 package com.example.king_of_the_castle_project;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -15,6 +17,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.amulyakhare.textdrawable.TextDrawable;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -30,11 +33,10 @@ public class EditProfileActivity extends AppCompatActivity {
     private AppCompatButton returnBut;
     private Button updatePhotoBtn;
     private Button deletePhotoBtn;
+    private ImageView profilePhotoIV;
 
     private FirebaseFirestore db;
     private String androidID;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,7 @@ public class EditProfileActivity extends AppCompatActivity {
         nameET = findViewById(R.id.entrant_name_edit_text_EP);
         emailET = findViewById(R.id.entrant_email_edit_text_EP);
         phoneET = findViewById(R.id.entrant_phone_edit_text_EP);
+        profilePhotoIV = findViewById(R.id.profile_photo_IV);
 
         confirmBtn = findViewById(R.id.confirm_button_EP);
         updatePhotoBtn = findViewById(R.id.update_photo_button_EP);
@@ -56,6 +59,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         // set all edit texts to current values
         setCurrentValues();
+        showProfileImg();
 
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,5 +136,28 @@ public class EditProfileActivity extends AppCompatActivity {
                     Toast.makeText(this, "Failed to save data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
         startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+    }
+
+    private void showProfileImg() {
+        db.collection("entrants")
+                .whereEqualTo("id", androidID)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String letter = document.getString("name").substring(0, 1);
+                            TextDrawable drawable = new TextDrawable.Builder()
+                                    .setColor(Color.parseColor("#C7C2EE"))
+                                    .setShape(TextDrawable.SHAPE_ROUND_RECT)
+                                    .setRadius(10)
+                                    .setText(letter)
+                                    .setTextColor(Color.BLACK)
+                                    .build();
+                            profilePhotoIV.setImageDrawable(drawable);
+                        }
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Error fetching data", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

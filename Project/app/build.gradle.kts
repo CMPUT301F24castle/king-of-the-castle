@@ -8,11 +8,20 @@ plugins {
 
 buildscript {
     repositories {
+        /*
         maven {
             url = uri("http://dl.bintray.com/amulyakhare/maven")
             isAllowInsecureProtocol = true
         }
+
+         */
+        maven { url = uri("https://jitpack.io") }
     }
+    /*
+    dependencies {
+        classpath("com.github.alvinhkh:TextDrawable:c1c2b5b")
+    }
+     */
 }
 
 
@@ -133,7 +142,8 @@ dependencies {
     testImplementation("com.google.android.gms:play-services-tasks:18.2.0")
 
     // Image profile defaults
-    implementation("com.amulyakhare:com.amulyakhare.textdrawable:1.0.1")
+    //implementation("com.amulyakhare:com.amulyakhare.textdrawable:1.0.1")
     implementation("com.squareup.picasso:picasso:2.8")
+    implementation("com.github.alvinhkh:TextDrawable:c1c2b5b")
 
 }

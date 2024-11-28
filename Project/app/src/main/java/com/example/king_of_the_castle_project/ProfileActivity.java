@@ -1,6 +1,7 @@
 package com.example.king_of_the_castle_project;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
@@ -16,10 +17,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.amulyakhare.textdrawable.TextDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import org.w3c.dom.Text;
 
 public class ProfileActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavView;
@@ -67,6 +71,17 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         showProfile();
+        /*
+        String letter = entrantNameTV.toString().substring(0, 1).toUpperCase();
+        TextDrawable drawable = new TextDrawable.Builder()
+                .setColor(Color.parseColor("#C7C2EE"))
+                .setShape(TextDrawable.SHAPE_ROUND_RECT)
+                .setText(letter)
+                .build();
+
+        entrantPhotoIV.setImageDrawable(drawable);
+
+         */
 
         editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +107,15 @@ public class ProfileActivity extends AppCompatActivity {
                             } else {
                                 entrantPhoneTV.append("No phone number provided");
                             }
+                            String letter = document.getString("name").substring(0, 1);
+                            TextDrawable drawable = new TextDrawable.Builder()
+                                    .setColor(Color.parseColor("#C7C2EE"))
+                                    .setShape(TextDrawable.SHAPE_ROUND_RECT)
+                                    .setRadius(10)
+                                    .setText(letter)
+                                    .setTextColor(Color.BLACK)
+                                    .build();
+                            entrantPhotoIV.setImageDrawable(drawable);
                         }
                     } else {
                         Toast.makeText(getApplicationContext(), "Error fetching data", Toast.LENGTH_SHORT).show();

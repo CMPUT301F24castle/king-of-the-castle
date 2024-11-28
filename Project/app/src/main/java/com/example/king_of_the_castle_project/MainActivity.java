@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                if (recognize) {
+                if (!recognize) {
                     Intent intent = new Intent(MainActivity.this, ChooseRoleActivity.class);
                     startActivity(intent);
                     //finish();

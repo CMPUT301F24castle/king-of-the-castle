@@ -189,6 +189,7 @@ public class CreateEventActivity extends AppCompatActivity {
                 newEvent.setQrCodeData(stringConversion);
                 newEvent.setHashIdentifier(eventIdentifier);
                 newEvent.setFacility(facilityInfo);
+                newEvent.setQrCodeValid(Boolean.TRUE);
                 // Sending to firebase
                 sendToFirebase(newEvent, androidId, stringConversion);
                 // Passing data back
@@ -314,6 +315,7 @@ public class CreateEventActivity extends AppCompatActivity {
         eventData.put("geolocation", this.geolocation_check);
         eventData.put("hashIdentifier", document_name);
         eventData.put("facility", event.getFacility());
+        eventData.put("qrCodeValid", event.getQrCodeValid());
         // Add to collection of events
         db.collection("events")
                 .document(document_name)

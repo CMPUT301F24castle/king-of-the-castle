@@ -146,4 +146,7 @@ dependencies {
     implementation("com.squareup.picasso:picasso:2.8")
     implementation("com.github.alvinhkh:TextDrawable:c1c2b5b")
 
+    // Uploading image
+    implementation("com.google.firebase:firebase-storage:19.1.0")
+
 }

@@ -194,21 +194,6 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
 
 
 
-                // ANGELA TEST NOTIFICATIONS HERE
-                testwaitlist = new ArrayList<String>();
-                // Create some entrants
-                Entrant entrant1 = new Entrant("Alice", "alice@example.com", "555-1234", "id1");
-                Entrant entrant2 = new Entrant("Bob", "bob@example.com", "555-5678", "id2");
-                Entrant entrant3 = new Entrant("carl", "carl@example.com", "555-5788", "id3");
-
-                // Add entrants to the waitlist
-                testwaitlist.add(entrant1.getId());
-                testwaitlist.add(entrant2.getId());
-                testwaitlist.add(entrant3.getId());
-                testevent = new Event("Castle Tour", "2024-11-15", "10:00 AM", "Castle Grounds",
-                        "A guided tour of the castle", 2, testwaitlist, true,"id");
-                testlottery = new Lottery();
-                testlottery.selectRandomEntrants(testevent);
 
 
                 okButton.setOnClickListener(new View.OnClickListener() {
@@ -219,9 +204,6 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                         // type of entrant to notify in string (Waitlist Entrants, Cancelled Entrants, Invited Entrants, Enrolled Entrants)
                         String selectedRole = roleSpinner.getSelectedItem().toString();
 
-                        //ANGELA TEST//
-                        Notif2_5_1 notifier = new Notif2_5_1(v.getContext());
-                        notifier.sendLotteryNotification(testlottery);
                         dialog.dismiss();
                     }
                 });

@@ -79,8 +79,8 @@ public class ManageFacilityActivity extends AppCompatActivity {
         // Create a new object that can be stored for event that does not use waitlist because it will bug :)
         String name = facility.getName();
         // Create new document or add to collection
-        db.collection(androidId)
-                .document(name)
+        db.collection("facilities")
+                .document(androidId)
                 .set(facility)
                 .addOnSuccessListener(documentReference -> {
                     Log.d("Firestore", "Successful send to firebase");

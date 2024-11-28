@@ -42,6 +42,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Activity that allows an entrant to edit their profile information (photo, name, email, phone number)
+ */
 public class EditProfileActivity extends AppCompatActivity {
     private EditText nameET;
     private EditText emailET;
@@ -62,11 +65,19 @@ public class EditProfileActivity extends AppCompatActivity {
     private final int PICK_IMAGE_REQUEST = 22;
     ActivityResultLauncher<Intent> activityResultLauncher;
 
+    /**
+     * Default method that performs basic application startup logic
+     * @param savedInstanceState
+     *          If there was an Instance saved, saved instances restores it
+     *
+     * @see ProfileActivity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
+        // get views
         nameET = findViewById(R.id.entrant_name_edit_text_EP);
         emailET = findViewById(R.id.entrant_email_edit_text_EP);
         phoneET = findViewById(R.id.entrant_phone_edit_text_EP);
@@ -77,6 +88,7 @@ public class EditProfileActivity extends AppCompatActivity {
         deletePhotoBtn = findViewById(R.id.delete_photo_button_EP);
         returnBut = findViewById(R.id.return_button_EP_screen);
 
+        // get database reference and the current user's android id
         db = FirebaseFirestore.getInstance();
         androidID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
@@ -99,7 +111,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
 
-        // set all edit texts to current values
+        // set all edit texts to current profile values
         setCurrentValues();
         showProfileImg();
 
@@ -111,6 +123,7 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
+        // confirm any values changed in the EditTexts
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -127,13 +140,18 @@ public class EditProfileActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Adds the current values of the user's profile to the EditText views
+     */
     private void setCurrentValues() {
+        // get user from database
         db.collection("entrants")
                 .whereEqualTo("id", androidID)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
+                            // set edit text values
                             nameET.setText(document.getString("name"));
                             emailET.setText(document.getString("email"));
                             String phone = document.getString("phone");
@@ -147,7 +165,14 @@ public class EditProfileActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Adds the current values in the EditText Views to the current user's collection in firebase
+     *
+     * @see Entrant
+     * @see ProfileActivity
+     */
     private void editFirebaseValues() {
+        // get current values
         String name = nameET.getText().toString().trim();
         String email = emailET.getText().toString().trim();
         String phone = phoneET.getText().toString().trim();
@@ -169,14 +194,17 @@ public class EditProfileActivity extends AppCompatActivity {
             return;
         }
 
+        // create a new entrant with these values
         Entrant entrant = new Entrant(name, email, phone.isEmpty() ? null : phone, androidID);
 
+        // create a hashmap for the entrant
         Map<String, Object> entrantData = new HashMap<>();
         entrantData.put("name", entrant.getName());
         entrantData.put("email", entrant.getEmail());
         entrantData.put("phone", entrant.getPhoneNumber());
         entrantData.put("id", entrant.getId());
 
+        // add entrant's data to the database
         db.collection("entrants").document(androidID)
                 .set(entrantData)
                 .addOnSuccessListener(aVoid -> {
@@ -185,6 +213,8 @@ public class EditProfileActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> {
                     Toast.makeText(this, "Failed to save data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
+
+        // go back to Profile Activity
         startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
     }
 

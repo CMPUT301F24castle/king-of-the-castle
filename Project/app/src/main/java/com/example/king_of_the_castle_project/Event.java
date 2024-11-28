@@ -1,9 +1,13 @@
 package com.example.king_of_the_castle_project;
 
+import com.google.protobuf.Any;
+
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Dictionary;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Event class holding metadata for any events created or accessed by users
@@ -22,6 +26,8 @@ public class Event {
     private Boolean geolocation;
     private String qrCodeData;
     private String organizerID;
+    private String hashIdentifier;
+    private Map<String, String> facility;
 
     /**
      * Empty event constructor necessary for passing data to firebase
@@ -132,7 +138,36 @@ public class Event {
         this.organizerID = organizerID;
     }
 
-    public Event(String name, String date, String time, String location, String eventDetails, int maxParticipants, ArrayList<String> waitList, ArrayList<String> acceptedList, ArrayList<String> declinedList, ArrayList<String> registeredList, Boolean geolocation, String qrCodeData, String organizerID) {
+    /**
+     * Constructor for when a waitlist is being retrieved from firebase
+     * @param name
+     *  The name of the event
+     * @param date
+     *  The date that the event is going to occur
+     * @param time
+     *  The time for which the event will happen
+     * @param location
+     *  Where the event is taking place
+     * @param eventDetails
+     *  Any extra notes from the organizer
+     * @param maxParticipants
+     *  Optional capacity limit on number of people who can participate in the event
+     * @param waitList
+     *  A list of entrants who want to enter the event
+     * @param acceptedList
+     *  List of entrant ids accepted to the event
+     * @param declinedList
+     *  List of entrant ids declined from the event
+     * @param registeredList
+     *  List of entrant ids registered for the event
+     * @param geolocation
+     *  Boolean to determine if the organizer would like to check entrant location for attending event
+     * @param qrCodeData
+     *  A string used to represent the qr code
+     * @param organizerID
+     *  A string used to hold the android ID of the organizer
+     */
+    public Event(String name, String date, String time, String location, String eventDetails, int maxParticipants, ArrayList<String> waitList, ArrayList<String> acceptedList, ArrayList<String> declinedList, ArrayList<String> registeredList, Boolean geolocation, String qrCodeData, String organizerID, String hashIdentifier) {
         this.name = name;
         this.date = date;
         this.time = time;
@@ -146,6 +181,7 @@ public class Event {
         this.geolocation = geolocation;
         this.organizerID = organizerID;
         this.qrCodeData = qrCodeData;
+        this.hashIdentifier = hashIdentifier;
     }
 
     /**
@@ -380,5 +416,31 @@ public class Event {
      */
     public void setRegisteredList(ArrayList<String> registeredList) {
         this.registeredList = registeredList;
+    }
+
+    /**
+     * Returns the identifier for the event
+     * @return
+     *      Hashed identifier for the event
+     */
+    public String getHashIdentifier() {
+        return hashIdentifier;
+    }
+
+    /**
+     * Sets the unique hash identifier of the current event
+     * @param hashIdentifier
+     *      An identifier created by a hash function
+     */
+    public void setHashIdentifier(String hashIdentifier) {
+        this.hashIdentifier = hashIdentifier;
+    }
+
+    public Map<String, String> getFacility() {
+        return facility;
+    }
+
+    public void setFacility(Map<String, String> facility) {
+        this.facility = facility;
     }
 }

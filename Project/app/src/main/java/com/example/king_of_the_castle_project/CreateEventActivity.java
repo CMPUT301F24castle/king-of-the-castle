@@ -22,7 +22,9 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
@@ -58,6 +60,10 @@ public class CreateEventActivity extends AppCompatActivity {
     private String androidId;
     private Bitmap qrCodeBitmap;
 
+    // Facility info holder
+    private Map<String, String> facilityInfo;
+    private String location;
+
     /**
      * Default method for basic startup logic
      * @param savedInstanceState
@@ -67,10 +73,14 @@ public class CreateEventActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_create_screen);
+        // Initialize firebase
+        db = FirebaseFirestore.getInstance();
+        // Get android ID
+        androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         // Get all event details
         EditText eventName = findViewById(R.id.event_name_edit_text);
         EditText eventDate = findViewById(R.id.event_date_edit_text);
-        EditText eventLocation = findViewById(R.id.event_location_edit_text);
+        EditText eventTime = findViewById(R.id.event_time_edit_text);
         EditText eventDetails = findViewById(R.id.event_details_edit_text);
         EditText eventMaxParticipants = findViewById(R.id.event_max_participants_edit_text);
         // however to check photos
@@ -81,6 +91,26 @@ public class CreateEventActivity extends AppCompatActivity {
 
         // "Create Event" button
         Button eventCreation = findViewById(R.id.create_event_button);
+        // Initialize the facility info holder
+        facilityInfo = new HashMap<>();
+
+        // Get facility information for location
+        db.collection("facilities")
+                .document(androidId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot snapshot = task.getResult();
+                        if (snapshot == null || !snapshot.exists()) {
+                            displayToastNotification("Organizers must create a facility before creating an event");
+                            finish();
+                        } else {
+                            facilityInfo.put("name", snapshot.getString("name"));         // Facility name
+                            facilityInfo.put("location", snapshot.getString("location"));   // Facility location
+                            facilityInfo.put("contact", snapshot.getString("contact"));   // Facility phone Num
+                        }
+                    }
+                });
 
         // update geolocation bool whenever applicable
         eventGeolocation.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -110,14 +140,11 @@ public class CreateEventActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // fetch info
                 String name = eventName.getText().toString();
-                String location = eventLocation.getText().toString();
                 String details = eventDetails.getText().toString();
                 String maxParticipants = eventMaxParticipants.getText().toString();
                 String date = eventDate.getText().toString();
-                String time = "12:00";
+                String time = eventTime.getText().toString();
                 int number = 50000; // Max participants for now
-                // Fetch firebase first
-                db = FirebaseFirestore.getInstance();
                 // Verify date input
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()); // date formatter
                 sdf.setLenient(false);
@@ -153,15 +180,15 @@ public class CreateEventActivity extends AppCompatActivity {
                 qrCodeBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
                 byte[] byteArray = byteArrayOutputStream.toByteArray();
                 String stringConversion = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                // Get android ID
-                androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
                 // Create empty waitlist
                 ArrayList<String> waitlist = new ArrayList<String>();
                 // Create event then send to firebase
+                location = facilityInfo.get("location");
                 Event newEvent = new Event(name, date, time, location, details, number, waitlist, geolocation_check, androidId);
                 // Putting QR stuff into event class
                 newEvent.setQrCodeData(stringConversion);
                 newEvent.setHashIdentifier(eventIdentifier);
+                newEvent.setFacility(facilityInfo);
                 // Sending to firebase
                 sendToFirebase(newEvent, androidId, stringConversion);
                 // Passing data back
@@ -286,20 +313,17 @@ public class CreateEventActivity extends AppCompatActivity {
         eventData.put("organizerID", androidId);
         eventData.put("geolocation", this.geolocation_check);
         eventData.put("hashIdentifier", document_name);
-        // Create new document or add to collection
-        db.collection(androidId)
+        eventData.put("facility", event.getFacility());
+        // Add to collection of events
+        db.collection("events")
                 .document(document_name)
                 .set(eventData)
                 .addOnSuccessListener(documentReference -> {
                     Log.d("Firestore", "Successful send to firebase");
-                })
+        })
                 .addOnFailureListener(e -> {
                     Log.w("Firestore: ", "Failed to add event to firebase", e);
                     // displayToastNotification("Failed to add event" + e.getMessage());
                 });
-        // Add to collection of events
-        db.collection("events")
-                .document(document_name)
-                .set(eventData);
     }
 }

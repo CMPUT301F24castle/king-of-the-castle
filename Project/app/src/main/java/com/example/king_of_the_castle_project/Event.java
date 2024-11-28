@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Dictionary;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Event class holding metadata for any events created or accessed by users
@@ -26,6 +27,7 @@ public class Event {
     private String qrCodeData;
     private String organizerID;
     private String hashIdentifier;
+    private Map<String, String> facility;
 
     /**
      * Empty event constructor necessary for passing data to firebase
@@ -432,5 +434,13 @@ public class Event {
      */
     public void setHashIdentifier(String hashIdentifier) {
         this.hashIdentifier = hashIdentifier;
+    }
+
+    public Map<String, String> getFacility() {
+        return facility;
+    }
+
+    public void setFacility(Map<String, String> facility) {
+        this.facility = facility;
     }
 }

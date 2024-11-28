@@ -95,8 +95,7 @@ public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
                             .delete();
                     ((Activity) context).finish();
                 } catch (Exception e) {
-                    Log.d("This is fucking stupid", "Fuck:" + event.getHashIdentifier());
-                    Log.d("Does the other one work", "Shit:" + event.getOrganizerID());
+                    Log.d("Error: ", "Problem: " + e);
                     ((Activity) context).finish();
                 }
             });

@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
@@ -64,6 +65,7 @@ public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
             // Get views
             TextView name = convertView.findViewById(R.id.organizer_event_name);
             Button removeEventButton = convertView.findViewById(R.id.remove_event_button);
+            Button removeQrDataButton = convertView.findViewById(R.id.remove_qr_button);
 
             // Get QR Code
             if (event.getQrCodeData() != null) {
@@ -78,12 +80,22 @@ public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
                 // For now just name, add others later
                 name.setText(event.getName());
             }
+            // Disable a QR code
+            removeQrDataButton.setOnClickListener(v -> {
+                String eventIdentifier = event.getHashIdentifier();
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+                db.collection("events")
+                        .document(eventIdentifier)
+                        .update("qrCodeValid", false);
+                Toast.makeText(this.context, "QR Code disabled", Toast.LENGTH_LONG);
+                ((Activity) context).finish();
+            });
+
+            // Remove an event
             removeEventButton.setOnClickListener(v -> {
                 String organizerID = event.getOrganizerID();
                 String eventToRemove = event.getHashIdentifier();
-
-                Log.d("RemoveEvent", "Hash Identifier: " + eventToRemove);
 
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
 

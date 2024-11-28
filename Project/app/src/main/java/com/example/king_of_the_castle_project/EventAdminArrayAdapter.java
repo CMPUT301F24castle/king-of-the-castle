@@ -1,10 +1,12 @@
 package com.example.king_of_the_castle_project;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +14,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
@@ -22,7 +28,7 @@ import java.util.List;
  * ArrayAdapter to show list of events in the administrator browse
  */
 public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
-
+    private final Context context;
     /**
      * Array adapter constructor
      * @param context
@@ -32,6 +38,7 @@ public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
      */
     public EventAdminArrayAdapter(@NonNull Context context, List<Event> events) {
             super(context, 0, events);
+            this.context = context;
         }
 
         /**
@@ -58,6 +65,7 @@ public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
             // Get views
             TextView name = convertView.findViewById(R.id.organizer_event_name);
             Button removeEventButton = convertView.findViewById(R.id.remove_event_button);
+            Button removeQrDataButton = convertView.findViewById(R.id.remove_qr_button);
 
             // Get QR Code
             if (event.getQrCodeData() != null) {
@@ -72,9 +80,36 @@ public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
                 // For now just name, add others later
                 name.setText(event.getName());
             }
+            // Disable a QR code
+            removeQrDataButton.setOnClickListener(v -> {
+                String eventIdentifier = event.getHashIdentifier();
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+                db.collection("events")
+                        .document(eventIdentifier)
+                        .update("qrCodeValid", false);
+                Toast.makeText(this.context, "QR Code disabled", Toast.LENGTH_LONG);
+                ((Activity) context).finish();
+            });
+
+            // Remove an event
             removeEventButton.setOnClickListener(v -> {
-                // make it go to entrants screen
+                String organizerID = event.getOrganizerID();
+                String eventToRemove = event.getHashIdentifier();
+
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                // delete from database
+                try {
+                    db.collection("events").document(eventToRemove)
+                            .delete();
+                    db.collection(organizerID).document(eventToRemove)
+                            .delete();
+                    ((Activity) context).finish();
+                } catch (Exception e) {
+                    Log.d("Error: ", "Problem: " + e);
+                    ((Activity) context).finish();
+                }
             });
 
             return convertView;

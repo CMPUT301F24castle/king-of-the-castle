@@ -29,6 +29,8 @@ import java.util.List;
  */
 public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
     private final Context context;
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     /**
      * Array adapter constructor
      * @param context
@@ -62,6 +64,7 @@ public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
             }
             // Image view for QR Code
             ImageView qrCodeImage = convertView.findViewById(R.id.organizer_event_qr_code);
+            ImageView eventPosterImage = convertView.findViewById(R.id.organizer_event_poster);
             // Get views
             TextView name = convertView.findViewById(R.id.organizer_event_name);
             Button removeEventButton = convertView.findViewById(R.id.remove_event_button);
@@ -76,6 +79,24 @@ public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
                 Log.d("Failed to show QR code", "failure: " + event.getQrCodeData());
             }
 
+            // Set the image view
+            String imageID = event.getHashIdentifier();
+            if (imageID != null) {
+                db.collection("images")
+                        .document(imageID)
+                        .get()
+                        .addOnSuccessListener(documentSnapshot -> {
+                            if (documentSnapshot.exists()) {
+                                String conversion = documentSnapshot.getString("imageData");
+                                if (conversion != null) {
+                                    byte[] decodedImage = Base64.decode(conversion, Base64.DEFAULT);
+                                    Bitmap imageBitmap = BitmapFactory.decodeByteArray(decodedImage, 0, decodedImage.length);
+                                    eventPosterImage.setImageBitmap(imageBitmap);
+                                }
+                            }
+                        });
+            }
+
             if (event != null) {
                 // For now just name, add others later
                 name.setText(event.getName());
@@ -83,7 +104,7 @@ public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
             // Disable a QR code
             removeQrDataButton.setOnClickListener(v -> {
                 String eventIdentifier = event.getHashIdentifier();
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                // FirebaseFirestore db = FirebaseFirestore.getInstance();
 
                 db.collection("events")
                         .document(eventIdentifier)
@@ -94,7 +115,6 @@ public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
 
             // Remove an event
             removeEventButton.setOnClickListener(v -> {
-                String organizerID = event.getOrganizerID();
                 String eventToRemove = event.getHashIdentifier();
 
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -102,8 +122,6 @@ public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
                 // delete from database
                 try {
                     db.collection("events").document(eventToRemove)
-                            .delete();
-                    db.collection(organizerID).document(eventToRemove)
                             .delete();
                     ((Activity) context).finish();
                 } catch (Exception e) {

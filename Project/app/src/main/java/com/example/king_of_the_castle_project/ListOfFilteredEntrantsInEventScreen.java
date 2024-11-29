@@ -146,7 +146,7 @@ public class ListOfFilteredEntrantsInEventScreen extends AppCompatActivity{
             filteredList.addAll(entrant_list);
         } else {
             for (Entrant entrant: entrant_list) {
-                String name = entrant.getName();
+                String name = entrant.getName().toLowerCase();
                 if (name.contains(query.toLowerCase())) {
                     filteredList.add(entrant);
                 }

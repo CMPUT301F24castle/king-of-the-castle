@@ -64,6 +64,7 @@ public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
             // Get views
             TextView name = convertView.findViewById(R.id.organizer_event_name);
             Button removeEventButton = convertView.findViewById(R.id.remove_event_button);
+            Button removeFacilityButton = convertView.findViewById(R.id.remove_facility_button);
 
             // Get QR Code
             if (event.getQrCodeData() != null) {
@@ -79,7 +80,23 @@ public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
                 name.setText(event.getName());
             }
 
+
+
+
+            removeFacilityButton.setOnClickListener(v -> {
+                CharSequence text = "Facility removed due to violations of app policy!";
+                int duration = Toast.LENGTH_LONG;
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+
+
+
+
+            });
+
             removeEventButton.setOnClickListener(v -> {
+
+
                 String organizerID = event.getOrganizerID();
                 String eventToRemove = event.getHashIdentifier();
 

@@ -69,6 +69,7 @@ public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
             TextView name = convertView.findViewById(R.id.organizer_event_name);
             Button removeEventButton = convertView.findViewById(R.id.remove_event_button);
             Button removeQrDataButton = convertView.findViewById(R.id.remove_qr_button);
+            Button removeFacilityButton = convertView.findViewById(R.id.remove_facility_button);
 
             // Get QR Code
             if (event.getQrCodeData() != null) {
@@ -128,6 +129,35 @@ public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
                     Log.d("Error: ", "Problem: " + e);
                     ((Activity) context).finish();
                 }
+            });
+
+            removeFacilityButton.setOnClickListener(v -> {
+                String organizerID = event.getOrganizerID();
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                try {
+                    db.collection("facilities").document(organizerID)
+                            .delete();
+                } catch (Exception e) {
+                    Log.d("Error: ", "Problem: " + e);
+                }
+
+                try {
+                    db.collection("events")
+                            .whereEqualTo("organizerID", organizerID)
+                            .get()
+                            .addOnCompleteListener(task -> {
+                                for (DocumentSnapshot document : task.getResult()) {
+                                    db.collection("events")
+                                            .document(document.getId())
+                                            .delete();
+                                }
+                            });
+                    ((Activity) context).finish();
+                } catch (Exception e) {
+                    Log.d("Error: ", "Problem: " + e);
+                }
+
             });
 
             return convertView;

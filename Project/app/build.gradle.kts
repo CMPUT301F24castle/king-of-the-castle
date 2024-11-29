@@ -58,9 +58,6 @@ dependencies {
     testImplementation(libs.androidx.core)
     implementation(libs.ext.junit)
     // Espresso and Testing Dependencies
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-intents:3.4.0")
     androidTestImplementation("androidx.test.espresso:espresso-idling-resource:3.4.0")
 
     //FOR NOTIF TESTING PURPOSES
@@ -81,7 +78,7 @@ dependencies {
 
     // Firebase dependencies
     implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
-    androidTestImplementation("com.google.firebase:firebase-firestore:24.4.0")
+    implementation("com.google.firebase:firebase-firestore:24.9.1")
     implementation(libs.google.firebase.firestore)
 
     // Google Play Services dependencies
@@ -109,8 +106,6 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     testImplementation ("junit:junit:4.13.2")
     testImplementation (libs.mockito.core)
-    androidTestImplementation ("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation ("androidx.test:core:1.4.0")
 
     // Mockito dependencies for unit testing
     testImplementation("org.mockito:mockito-core:5.5.0")

@@ -89,22 +89,40 @@ public class MyWaitlistsActivity extends AppCompatActivity {
                         this.lotteryPendingEvents.clear();
 
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            // get waitlist
-                            ArrayList<String> entrantIds = new ArrayList<>();
-                            ArrayList<Map<String, Object>> waitlist = (ArrayList<Map<String, Object>>) document.get("waitList");
-                            if (waitlist != null) {
-                                for (Map<String, Object> entry : waitlist) {
-                                    // Extract the "entrantID" field
-                                    if (entry.containsKey("entrantID")) {
-                                        entrantIds.add((String) entry.get("entrantID"));
+                            // Parse the document
+                            if (document.getBoolean("geolocation")) {
+                                // get waitlist
+                                ArrayList<String> entrantIds = new ArrayList<>();
+                                ArrayList<Map<String, Object>> waitlist = (ArrayList<Map<String, Object>>) document.get("waitList");
+                                if (!waitlist.isEmpty()) {
+                                    for (Map<String, Object> entry : waitlist) {
+                                        // Extract the "entrantID" field
+                                        if (entry.containsKey("entrantID")) {
+                                            entrantIds.add((String) entry.get("entrantID"));
+                                        }
                                     }
                                 }
+                                // add waitlist and other fields to Event object
+                                Event event = new Event(document.getString("name"), document.getString("date"), document.getString("time"), document.getString("location"),
+                                        document.getString("details"), document.getLong("maxParticipants").intValue(), entrantIds, (ArrayList<String>) document.get("acceptedList"),
+                                        (ArrayList<String>) document.get("declinedList"), (ArrayList<String>) document.get("registeredList"), document.getBoolean("geolocation"),
+                                        document.getString("qrCodeData"), document.getString("organizerID"), document.getString("hashIdentifier"));
+
+                                // Add the event to the events list
+                                this.lotteryPendingEvents.add(event);
                             }
 
-                            // add waitlist and other fields to Event object
-                            Event event = new Event(document.getString("name"), document.getString("date"), document.getString("time"), document.getString("location"), document.getString("eventDetails"), document.getLong("maxParticipants").intValue(), entrantIds, (ArrayList<String>) document.get("acceptedList"), (ArrayList<String>) document.get("declinedList"), (ArrayList<String>) document.get("registeredList"), document.getBoolean("geolocation"), document.getString("qrCodeData"), document.getString("organizerID"));
+                            else {
+                                Event event = new Event(document.getString("name"), document.getString("date"), document.getString("time"), document.getString("location"),
+                                        document.getString("details"), document.getLong("maxParticipants").intValue(), (ArrayList<String>) document.get("waitList"),
+                                        (ArrayList<String>) document.get("acceptedList"), (ArrayList<String>) document.get("declinedList"), (ArrayList<String>) document.get("registeredList"),
+                                        document.getBoolean("geolocation"), document.getString("qrCodeData"), document.getString("organizerID"),
+                                        document.getString("hashIdentifier"));
 
-                            this.lotteryPendingEvents.add(event);
+                                // Add the event to the events list
+                                this.lotteryPendingEvents.add(event);
+                            }
+
                             this.pendingAdapter.notifyDataSetChanged();
 
                             // Logic to classify the event could be added here

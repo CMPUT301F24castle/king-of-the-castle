@@ -1,5 +1,6 @@
 package com.example.king_of_the_castle_project;
 
+
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -9,19 +10,16 @@ import androidx.core.app.NotificationCompat;
 
 import java.util.List;
 
-
-
 /**
- * This will send a notification to all chosen entrants (from lottery class) asking if they would like to accept or decline their invitation
- * 2.5.1: As an organiser I want to send a notification to chosen entrants to sign up for events
+ * This will send a notification to all entrants on the waiting list, whether they have been chosen or not
+ * 2.7.1: As an organiser I want to send notifications to all entrants on the waiting list
  */
-//2.5.1: As an organiser I want to send a notification to chosen entrants to sign up for events
-public class Notif2_5_1 {
+//2.7.1: As an organiser I want to send notifications to all entrants on the waiting list
+public class notifyWaitingListEntrants {
     private Context context;
-    private static final String CHANEL_ID = "sendLotteryNotification";
+    private static final String CHANEL_ID = "notifyWaitingListEntrants";
 
-    public Notif2_5_1(Context context) {
-
+    public notifyWaitingListEntrants(Context context) {
         this.context = context;
         createNotificationChannel();
     }
@@ -30,8 +28,8 @@ public class Notif2_5_1 {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is not in the Support Library.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "sendLotteryNotification";
-            String description = "Notifications for lottery selection status";
+            CharSequence name = "notifyWaitingListEntrants";
+            String description = "Notifications for all entrants on waiting list";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(CHANEL_ID, name, importance);
             channel.setDescription(description);
@@ -40,20 +38,19 @@ public class Notif2_5_1 {
         }
     }
 
+    public void notifyWaitingListEntrants(Event event) {
 
-    public void sendLotteryNotification(Lottery lottery) {
-        List<String> selectedAttendees = lottery.getSelectedAttendees();
-
+        List<String> waitingList = event.getWaitList();
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        for (String userID : selectedAttendees) {
-            String message = "Congratulations. You have been chosen through the lottery! Would you like to accept or decline?";
-            //(ADD) buttons for accept and decline
+        for (String userID : waitingList) {
+            //(ADD) the message will be a text that the organizer will input
+            String message = "notification description";
 
             //builds the notification
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANEL_ID)
-                    .setContentTitle("Lottery Status")
+                    .setContentTitle("notification title")
                     .setContentText(message)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setAutoCancel(true); //dismiss notification when clicked
@@ -62,12 +59,6 @@ public class Notif2_5_1 {
             notificationManager.notify(userID.hashCode(), builder.build());
         }
     }
-
-
-
-
-
-
 
 
 

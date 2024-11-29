@@ -11,16 +11,15 @@ import androidx.core.app.NotificationCompat;
 import java.util.List;
 
 /**
- * This will send a notification to selected entrants (by lottery system) if they would like to accept or decline their invitation (we are still waiting on their response)
- * 2.7.2: As an organiser I want to send notifications to all selected entrants
+ * This sends a notification to all cancelled entrants
+ * 2.7.3: As an organiser I want to send a notification to all cancelled entrants
  */
-//2.7.2: As an organiser I want to send a notification to chosen entrants to sign up for events
-public class Notif2_7_2 {
-
+//2.7.3: As an organiser I want to send a notification to all cancelled entrants
+public class notifyCancelledEntrants {
     private Context context;
-    private static final String CHANEL_ID = "sendLotteryNotificationForResponse";
+    private static final String CHANEL_ID = "notifyCancelledEntrants";
 
-    public Notif2_7_2(Context context) {
+    public notifyCancelledEntrants(Context context) {
         this.context = context;
         createNotificationChannel();
     }
@@ -29,8 +28,8 @@ public class Notif2_7_2 {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is not in the Support Library.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "sendLotteryNotificationForResponse";
-            String description = "Notifications for chosen entrants to accept or decline their invitation";
+            CharSequence name = "notifyCancelledEntrants";
+            String description = "Notifications for all enntrants who cancelled their invitation";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(CHANEL_ID, name, importance);
             channel.setDescription(description);
@@ -39,18 +38,20 @@ public class Notif2_7_2 {
         }
     }
 
-    public void sendLotteryNotificationForResponse(Lottery lottery) {
-        List<String> selectedAttendees = lottery.getSelectedAttendees();
+    public void notifyCancelledEntrants(Event event) {
+
+        List<String> cancelledList = event.getDeclinedList();
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        for (String userID : selectedAttendees) {
-            String message = "Congratulations. You have been chosen through the lottery! Would you like to accept or decline? (Please note we are still waiting for your response)";
-            //(ADD) buttons for accept and decline
+        for (String userID : cancelledList) {
+            String message = "notification description";
+            //(ADD) the message will be a text that the organizer inputs
+
 
             //builds the notification
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANEL_ID)
-                    .setContentTitle("Lottery Status")
+                    .setContentTitle("notification title")
                     .setContentText(message)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setAutoCancel(true); //dismiss notification when clicked
@@ -59,6 +60,8 @@ public class Notif2_7_2 {
             notificationManager.notify(userID.hashCode(), builder.build());
         }
     }
+
+
 
 
 }

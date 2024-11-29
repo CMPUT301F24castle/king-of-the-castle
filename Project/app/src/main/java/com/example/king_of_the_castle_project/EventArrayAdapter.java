@@ -31,22 +31,25 @@ import java.util.List;
 import android.app.AlertDialog;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 
 /*
  * ArrayAdapter used to format the eventlist in ManageEventsActivity
  */
 public class EventArrayAdapter extends ArrayAdapter<Event>  {
+    private FirebaseFirestore db;
+    private Lottery lottery;
+
     public EventArrayAdapter(@NonNull Context context, List<Event> events) {
         super(context, 0, events);
 
     }
 
-    //ANGELA TESTING VARIABLES//
-    private ArrayList<String> testwaitlist;
-    private Lottery testlottery;
-    private Event testevent;
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
 
     // Used for image selection
     private ActivityResultLauncher<Intent> imageSelectorLauncher;
@@ -66,6 +69,11 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         // Get event
         Event event = getItem(position);
+        lottery = new Lottery();
+
+
+        //get firebase
+        db = FirebaseFirestore.getInstance();
         // Inflate the view if not reused
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.organizer_event_list_content, parent, false);
@@ -193,7 +201,55 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
 
         sampleEntrantsButton.setOnClickListener(new View.OnClickListener() {
             @Override
+
             public void onClick(View v) {
+                // inflate dialog layout
+                AlertDialog.Builder builder = new AlertDialog.Builder(parent.getContext());
+                View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.sample_entrants_dialogue_style, null);
+                builder.setView(dialogView);
+
+                //get views inside dialog
+                EditText messageEditText = dialogView.findViewById(R.id.sample_entrants_edittext);
+                Button okButton = dialogView.findViewById(R.id.sample_entrants_dialogue_button);
+
+                //allow edit text to be editable
+                messageEditText.setFocusableInTouchMode(true);
+
+                // create and show dialog
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+                okButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // message to send/notify with
+                        String message = messageEditText.getText().toString();
+                        int number = Integer.parseInt(message);
+
+                        //lottery = new Lottery();
+
+                        lottery.selectRandomEntrants(event, number);
+                        List selectedAttendees = lottery.getSelectedAttendees();
+
+
+                        DocumentReference ref = db.collection("events").document(event.getHashIdentifier());
+                        for (int i = 0; i < selectedAttendees.size(); i++) {
+                            ref.update("acceptedList", FieldValue.arrayUnion(selectedAttendees.get(i)));
+                        }
+                        //Log.d("Test", "Error" + FieldValue.arrayUnion(selectedAttendees));
+                        //ref.update("acceptedList", FieldValue.arrayUnion(selectedAttendees));
+
+
+                       // event.getHashIdentifier();
+
+
+                        dialog.dismiss();
+                    }
+                });
+
+
+
+
 
             }
         });
@@ -229,6 +285,9 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
 
 
 
+
+
+
                 okButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -236,6 +295,26 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                         String message = messageEditText.getText().toString();
                         // type of entrant to notify in string (Waitlist Entrants, Cancelled Entrants, Invited Entrants, Enrolled Entrants)
                         String selectedRole = roleSpinner.getSelectedItem().toString();
+
+                        //notification functionality
+                        // Firebase reference to the event's document
+                       // DocumentReference eventRef = db.collection("events").document(event.getHashIdentifier());
+
+
+                        //ORIGINAL IMPLEMENTATION
+                        //if lottery is null
+                        if (lottery == null) {
+                            Toast.makeText(v.getContext(), "No attendees were selected.", Toast.LENGTH_LONG).show();
+                        }
+
+                        else {
+                            notifyLottery notificationSender = new notifyLottery(lottery);
+                            notificationSender.onClick(v);
+
+
+                            Toast.makeText(v.getContext(), "Notifications sent successfully!", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        }
 
                         dialog.dismiss();
                     }

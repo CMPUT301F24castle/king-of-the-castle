@@ -26,6 +26,8 @@ import java.util.List;
 import android.app.AlertDialog;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 /*
  * ArrayAdapter used to format the eventlist in ManageEventsActivity
  */
@@ -39,6 +41,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
     private ArrayList<String> testwaitlist;
     private Lottery testlottery;
     private Event testevent;
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     /**
      * Sets the view for an item in the list
@@ -61,6 +64,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
         }
         // Image view for QR Code
         ImageView qrCodeImage = convertView.findViewById(R.id.organizer_event_qr_code);
+        ImageView eventPosterImage = convertView.findViewById(R.id.organizer_event_poster);
         // Get views
         TextView name = convertView.findViewById(R.id.organizer_event_name);
         Button viewEntrantsButton = convertView.findViewById(R.id.view_entrants_button);
@@ -74,6 +78,23 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
             qrCodeImage.setImageBitmap(qrCodeBitmap);
         } else {
             Log.d("Failed to show QR code", "failure: " + event.getQrCodeData());
+        }
+        // Set the image view
+        String imageID = event.getHashIdentifier();
+        if (imageID != null) {
+            db.collection("images")
+                    .document(imageID)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            String conversion = documentSnapshot.getString("imageData");
+                            if (conversion != null) {
+                                byte[] decodedImage = Base64.decode(conversion, Base64.DEFAULT);
+                                Bitmap imageBitmap = BitmapFactory.decodeByteArray(decodedImage, 0, decodedImage.length);
+                                eventPosterImage.setImageBitmap(imageBitmap);
+                            }
+                        }
+                    });
         }
 
         if (event != null) {

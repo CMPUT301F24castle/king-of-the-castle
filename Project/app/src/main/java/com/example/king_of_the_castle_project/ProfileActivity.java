@@ -32,7 +32,8 @@ public class ProfileActivity extends AppCompatActivity {
     private ImageView entrantPhotoIV;
     private AppCompatButton editProfileButton;
 
-    private FirebaseFirestore db;
+    private static FirebaseFirestore firestore = FirebaseFirestore.getInstance(); // Made static for testing
+    private static String injectedAndroidID; // For testing
     private String androidID;
 
     /**
@@ -59,9 +60,9 @@ public class ProfileActivity extends AppCompatActivity {
         entrantPhotoIV = findViewById(R.id.profile_photo_IV);
         editProfileButton = findViewById(R.id.edit_profile_button);
 
-        // get database reference and the current user's android id
-        db = FirebaseFirestore.getInstance();
-        androidID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        // Use injected Android ID for testing, otherwise get the real ID
+        androidID = injectedAndroidID != null ? injectedAndroidID :
+                Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
         // set up bottom navigation between home, profile and settings
         bottomNavView.setOnItemSelectedListener(item -> {
@@ -95,25 +96,46 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     /**
+     * Allows injection of a mock Firestore instance for testing purposes.
+     * @param mockFirestore The mocked Firestore instance to use.
+     */
+    public static void setFirestoreInstance(FirebaseFirestore mockFirestore) {
+        firestore = mockFirestore;
+    }
+
+    /**
+     * Allows injection of a mock Android ID for testing purposes.
+     * @param mockAndroidID The mocked Android ID to use.
+     */
+    public static void setAndroidID(String mockAndroidID) {
+        injectedAndroidID = mockAndroidID;
+    }
+
+    /**
      * Shows the user's current profile data on the screen
      */
     private void showProfile() {
         // get user from firebase
-        db.collection("entrants")
+        firestore.collection("entrants")
                 .whereEqualTo("id", androidID)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
+                        QuerySnapshot querySnapshot = task.getResult();
 
-                            // set textviews
-                            entrantNameTV.append(document.getString("name"));
-                            entrantEmailTV.append(document.getString("email"));
-                            String phone = document.getString("phone");
-                            if (phone != null && !phone.isEmpty()) {
-                                entrantPhoneTV.append(phone);
-                            } else {
-                                entrantPhoneTV.append("No phone number provided");
+                        // Ensure task result is not null and getDocuments() is not null
+                        if (querySnapshot != null && querySnapshot.getDocuments() != null) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                // set textviews
+                                entrantNameTV.append(document.getString("name"));
+                                entrantEmailTV.append(document.getString("email"));
+                                String phone = document.getString("phone");
+                                if (phone != null && !phone.isEmpty()) {
+                                    entrantPhoneTV.append(phone);
+                                } else {
+                                    entrantPhoneTV.append("No phone number provided");
+                                }
                             }
                         }
                     } else {

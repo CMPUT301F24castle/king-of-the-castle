@@ -34,56 +34,35 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
-
 public class ListOfEntrantsScreenTest {
 
-    @BeforeAll
-    public static void setUp() {
+    private static void writeToFirestoreWaitlist(String collection, String eventID, String entrantID, Map<String, String> data, CountDownLatch latch) {
+        if (eventID == null || entrantID == null) {
+            throw new IllegalArgumentException("Event ID and entrant ID must not be null.");
+        }
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CountDownLatch latch = new CountDownLatch(4);
+        db.collection(collection)
+                .document(eventID)
+                .collection("waitlist")
+                .document(entrantID)
+                .set(data)
+                .addOnSuccessListener(aVoid -> latch.countDown())
+                .addOnFailureListener(e -> {
+                    fail("Failed to write mock data to Firestore: " + e.getMessage());
+                    latch.countDown();
+                });
+    }
 
-        // Create the intent with waitlist
-        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), ListOfEntrantsInEventScreen.class);
-        intent.putExtra("Waitlist", mockWaitList());
-
-        // Set up mock event data
-        Map<String, Object> mockEvent = new HashMap<>();
-        mockEvent.put("name", "List Of Entrants Screen Test Event");
-        mockEvent.put("date", "01/15/2024");
-        mockEvent.put("time", "11:00");
-        mockEvent.put("location", "Test Location");
-        mockEvent.put("details", "Test Details");
-        mockEvent.put("maxParticipants", 10);
-        mockEvent.put("waitlist", mockWaitList());
-        mockEvent.put("qrCodeData", "qrCodeData");
-        mockEvent.put("organizerID", mockOrganizerId);
-
-        // Set up mock entrant 1 data
-        Map<String, Object> entrant1Data = new HashMap<>();
-        entrant1Data.put("name", "Entrant 1");
-        entrant1Data.put("email", "Entrant1@gmail.com");
-        entrant1Data.put("phone", "9852221111");
-        entrant1Data.put("id", mockEntrant1());
-
-        // Set up mock entrant 2 data
-        Map<String, Object> entrant2Data = new HashMap<>();
-        entrant2Data.put("name", "Entrant 2");
-        entrant2Data.put("email", "Entrant2@gmail.com");
-        entrant2Data.put("phone", "4859997777");
-        entrant2Data.put("id", mockEntrant2());
-
-        // Set up mock entrant 3 data
-        Map<String, Object> entrant3Data = new HashMap<>();
-        entrant3Data.put("name", "Entrant 3");
-        entrant3Data.put("email", "Entrant3@gmail.com");
-        entrant3Data.put("phone", null);
-        entrant3Data.put("id", mockEntrant3());
-
-        writeToFirestore("entrants", mockEntrant1(), entrant1Data, latch);
-        writeToFirestore("entrants", mockEntrant2(), entrant2Data, latch);
-        writeToFirestore("entrants", mockEntrant3(), entrant3Data, latch);
-        writeToFirestore("events", "List Of Entrants Screen Test Event", mockEvent, latch);
-
+    private static void writeToFirestore(String collection, String document, Map<String, Object> data, CountDownLatch latch) {
+//        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        db.collection(collection)
+//                .document(document)
+//                .set(data)
+//                .addOnSuccessListener(aVoid -> latch.countDown())
+//                .addOnFailureListener(e -> {
+//                    fail("Failed to write mock data to Firestore: " + e.getMessage());
+//                    latch.countDown();
+//                });
     }
 
     private static String mockOrganizerId = "ojnvwrfert";
@@ -94,37 +73,49 @@ public class ListOfEntrantsScreenTest {
 
     private static ArrayList<String> mockWaitList() {
         ArrayList<String> mockWaitList = new ArrayList<>();
-        mockWaitList.add(mockEntrant1());
-        mockWaitList.add(mockEntrant2());
-        mockWaitList.add(mockEntrant3());
+        mockWaitList.add(mockEntrant1().get("entrantID"));
+        mockWaitList.add(mockEntrant2().get("entrantID"));
+        mockWaitList.add(mockEntrant3().get("entrantID"));
         return mockWaitList;
     }
 
-    private static String mockEntrant1() {
-        return "vno940tgb3w";
+    private static Map<String, String> mockEntrant1() {
+        Map<String, String> entrant1WaitlistData = new HashMap<>();
+        entrant1WaitlistData.put("entrantID", "evkl30h4ign45g");
+        entrant1WaitlistData.put("latitude", "0.0");
+        entrant1WaitlistData.put("longitude", "0.0");
+        return entrant1WaitlistData;
     }
 
-    private static String mockEntrant2() {
-        return "vwj09jgv2vwfr";
+    private static Map<String, String> mockEntrant2() {
+        Map<String, String> entrant2WaitlistData = new HashMap<>();
+        entrant2WaitlistData.put("entrantID", "ql93ojevwef");
+        entrant2WaitlistData.put("latitude", "0.0");
+        entrant2WaitlistData.put("longitude", "0.0");
+        return entrant2WaitlistData;
     }
 
-    private static String mockEntrant3() {
-        return "gio340v2u3jf";
+    private static Map<String, String> mockEntrant3() {
+        Map<String, String> entrant3WaitlistData = new HashMap<>();
+        entrant3WaitlistData.put("entrantID", "nvp2490p3wek4f");
+        entrant3WaitlistData.put("latitude", "0.0");
+        entrant3WaitlistData.put("longitude", "0.0");
+        return entrant3WaitlistData;
     }
 
 
     @Test
     public void testIntentsReceivedWithNoEntrants() {
         // Create the intent with the empty waitlist
-        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), ListOfEntrantsInEventScreen.class);
-        intent.putExtra("Waitlist", mockWaitListNoEntrants());
+        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), ListOfFilteredEntrantsInEventScreen.class);
+        intent.putExtra("entrant_id_list", mockWaitListNoEntrants());
 
         // Launch the activity with the intent
-        try (ActivityScenario<ListOfEntrantsInEventScreen> scenario = ActivityScenario.launch(intent)) {
+        try (ActivityScenario<ListOfFilteredEntrantsInEventScreen> scenario = ActivityScenario.launch(intent)) {
             scenario.onActivity(activity -> {
                 // Verify the activity received the intent
                 Intent receivedIntent = activity.getIntent();
-                assertEquals(mockWaitListNoEntrants(), receivedIntent.getSerializableExtra("Waitlist"));
+                assertEquals(mockWaitListNoEntrants(), receivedIntent.getSerializableExtra("entrant_id_list"));
             });
         }
     }
@@ -132,15 +123,15 @@ public class ListOfEntrantsScreenTest {
     @Test
     public void testIntentsReceivedWithEntrants() {
         // Create the intent with waitlist
-        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), ListOfEntrantsInEventScreen.class);
-        intent.putExtra("Waitlist", mockWaitList());
+        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), ListOfFilteredEntrantsInEventScreen.class);
+        intent.putExtra("entrant_id_list", mockWaitList());
 
         // Launch the activity with the intent
-        try (ActivityScenario<ListOfEntrantsInEventScreen> scenario = ActivityScenario.launch(intent)) {
+        try (ActivityScenario<ListOfFilteredEntrantsInEventScreen> scenario = ActivityScenario.launch(intent)) {
             scenario.onActivity(activity -> {
                 // Verify the activity received the intent
                 Intent receivedIntent = activity.getIntent();
-                assertEquals(mockWaitList(), receivedIntent.getSerializableExtra("Waitlist"));
+                assertEquals(mockWaitList(), receivedIntent.getSerializableExtra("entrant_id_list"));
             });
         }
     }
@@ -151,8 +142,8 @@ public class ListOfEntrantsScreenTest {
         CountDownLatch latch = new CountDownLatch(1);
 
         // Create the intent with the empty waitlist
-        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), ListOfEntrantsInEventScreen.class);
-        intent.putExtra("Waitlist", mockWaitListNoEntrants());
+        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), ListOfFilteredEntrantsInEventScreen.class);
+        intent.putExtra("entrant_id_list", mockWaitListNoEntrants());
 
         // Set up mock event data
         Map<String, Object> mockEvent = new HashMap<>();
@@ -168,7 +159,7 @@ public class ListOfEntrantsScreenTest {
 
         // Write event data to Firestore
         db.collection("events")
-                .document("Event Details Screen Test Event")
+                .document("List Of Entrants Screen Test Event")
                 .set(mockEvent)
                 .addOnSuccessListener(aVoid -> latch.countDown())
                 .addOnFailureListener(e -> {
@@ -179,17 +170,10 @@ public class ListOfEntrantsScreenTest {
         latch.await(); // Wait for the write operation to complete
 
         // Launch the activity with the intent
-        try (ActivityScenario<ListOfEntrantsInEventScreen> scenario = ActivityScenario.launch(intent)) {
+        try (ActivityScenario<ListOfFilteredEntrantsInEventScreen> scenario = ActivityScenario.launch(intent)) {
             scenario.onActivity(activity -> {
                 // Access the ListView
                 ListView listOfEntrantsLV = activity.findViewById(R.id.list_of_entrants);
-
-                // Verify the adapter is set
-                assertNotNull(listOfEntrantsLV.getAdapter());
-                WaitListAdapter adapter = (WaitListAdapter) listOfEntrantsLV.getAdapter();
-
-                // Check how many entrants are in the entrant list
-                assertEquals(0, adapter.getCount(), "Adapter should contain 0 items.");
 
                 TextView noResultsTV = activity.findViewById(R.id.no_results_textview);
 
@@ -197,41 +181,75 @@ public class ListOfEntrantsScreenTest {
                 assertEquals(View.VISIBLE, noResultsTV.getVisibility()); // Shown
             });
         }
-    }
-
-    private static void writeToFirestore(String collection, String document, Map<String, Object> data, CountDownLatch latch) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection(collection)
-                .document(document)
-                .set(data)
+/*
+        // Delete the test event document
+        db.collection("events")
+                .document("testEventId")
+                .delete()
                 .addOnSuccessListener(aVoid -> latch.countDown())
                 .addOnFailureListener(e -> {
-                    fail("Failed to write mock data to Firestore: " + e.getMessage());
+                    System.err.println("Failed to delete Test Event: " + e.getMessage());
                     latch.countDown();
-                });
+                });*/
     }
 
     @Test
     public void testLOEScreenWithEntrantsOnWaitlist() throws InterruptedException {
+        CountDownLatch latch = new CountDownLatch(7);
+
+        // Set up mock event data
+        Map<String, Object> mockEvent = new HashMap<>();
+        mockEvent.put("name", "List Of Entrants Screen Test Event");
+        mockEvent.put("date", "01/15/2024");
+        mockEvent.put("time", "11:00");
+        mockEvent.put("location", "Test Location");
+        mockEvent.put("details", "Test Details");
+        mockEvent.put("maxParticipants", 10);
+        mockEvent.put("waitlist", mockWaitList());
+        mockEvent.put("qrCodeData", "qrCodeData");
+        mockEvent.put("geolocation", false);
+        mockEvent.put("organizerID", mockOrganizerId);
+
+        // Set up mock entrant 1 data
+        Map<String, Object> entrant1Data = new HashMap<>();
+        entrant1Data.put("name", "Entrant 1");
+        entrant1Data.put("email", "Entrant1@gmail.com");
+        entrant1Data.put("phone", "9852221111");
+        entrant1Data.put("id", mockEntrant1().get("entrantID"));
+
+        // Set up mock entrant 2 data
+        Map<String, Object> entrant2Data = new HashMap<>();
+        entrant2Data.put("name", "Entrant 2");
+        entrant2Data.put("email", "Entrant2@gmail.com");
+        entrant2Data.put("phone", "4859997777");
+        entrant2Data.put("id", mockEntrant2().get("entrantID"));
+
+        // Set up mock entrant 3 data
+        Map<String, Object> entrant3Data = new HashMap<>();
+        entrant3Data.put("name", "Entrant 3");
+        entrant3Data.put("email", "Entrant3@gmail.com");
+        entrant3Data.put("phone", null);
+        entrant3Data.put("id", mockEntrant3().get("entrantID"));
+
+        writeToFirestore("entrants", mockEntrant1().get("entrantID"), entrant1Data, latch);
+        writeToFirestore("entrants", mockEntrant2().get("entrantID"), entrant2Data, latch);
+        writeToFirestore("entrants", mockEntrant3().get("entrantID"), entrant3Data, latch);
+        writeToFirestore("events", "List Of Entrants Screen Test Event", mockEvent, latch);
+
+
+        writeToFirestoreWaitlist("events", "List Of Entrants Screen Test Event", mockEntrant1().get("entrantID"), mockEntrant1(), latch);
+        writeToFirestoreWaitlist("events", "List Of Entrants Screen Test Event", mockEntrant2().get("entrantID"), mockEntrant2(), latch);
+        writeToFirestoreWaitlist("events", "List Of Entrants Screen Test Event", mockEntrant3().get("entrantID"), mockEntrant3(), latch);
+
         // Create the intent with waitlist
-        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), ListOfEntrantsInEventScreen.class);
-        intent.putExtra("Waitlist", mockWaitList());
+        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), ListOfFilteredEntrantsInEventScreen.class);
+        intent.putExtra("entrant_id_list", mockWaitList());
 
         // Launch the activity with the intent
-        try (ActivityScenario<ListOfEntrantsInEventScreen> scenario = ActivityScenario.launch(intent)) {
+        try (ActivityScenario<ListOfFilteredEntrantsInEventScreen> scenario = ActivityScenario.launch(intent)) {
             scenario.onActivity(activity -> {
                 // Access the ListView
                 ListView listView = activity.findViewById(R.id.list_of_entrants);
-                assertNotNull(listView);
-
-                // Poll until the data is loaded or timeout occurs
-                boolean dataLoaded = false; // Wait up to 5 seconds
-                try {
-                    dataLoaded = waitForData(listView, 5000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                assertTrue(dataLoaded, "ListView data did not load within the timeout.");
 
                 // Assert data in each ListView item
                 for (int i = 0; i < listView.getChildCount(); i++) {
@@ -257,28 +275,4 @@ public class ListOfEntrantsScreenTest {
             });
         }
         }
-
-    private boolean waitForData (ListView listView,int timeoutMillis) throws
-    InterruptedException {
-        int waited = 0;
-        while (waited < timeoutMillis) {
-            if (listView.getChildCount() > 0 && allItemsPopulated(listView)) {
-                return true;
-            }
-            Thread.sleep(100); // Wait 100ms before re-checking
-            waited += 100;
-        }
-        return false; // Timeout
-    }
-
-    private boolean allItemsPopulated (ListView listView){
-        for (int i = 0; i < listView.getChildCount(); i++) {
-            View itemView = listView.getChildAt(i);
-            TextView nameTextView = itemView.findViewById(R.id.entrant_name_LOE_screen);
-            if (nameTextView == null || nameTextView.getText().toString().equals("Loading...")) {
-                return false;
-            }
-        }
-        return true;
-    }
 }

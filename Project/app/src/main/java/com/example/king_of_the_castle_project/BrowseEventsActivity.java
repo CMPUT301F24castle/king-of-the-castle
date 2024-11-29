@@ -88,29 +88,7 @@ public class BrowseEventsActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });*/
-
     }
-    /*
-    @Override
-    protected void onResume() {
-        super.onResume();
 
-    }*/
-    protected void displayToastNotification(String message) {
-        LayoutInflater inflater = getLayoutInflater();
-        View layout = inflater.inflate(R.layout.toast_notification_layout, findViewById(R.id.custom_toast_container));
-        TextView text = layout.findViewById(R.id.toast_text);
-        text.setText(message);
-        Toast toast = new Toast(getApplicationContext());
-        toast.setDuration(Toast.LENGTH_SHORT);
-        toast.setView(layout);
-        toast.setGravity(Gravity.BOTTOM, 0, 100);
-        toast.show();
-    }
+
 }

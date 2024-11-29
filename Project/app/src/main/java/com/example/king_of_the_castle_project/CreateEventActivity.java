@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
@@ -62,7 +63,12 @@ public class CreateEventActivity extends AppCompatActivity {
 
     // Facility info holder
     private Map<String, String> facilityInfo;
+    // Location pulled from facility
     private String location;
+    // Image information for passing into firebase
+    private Uri imageUri;
+    private Bitmap imageBitmap;
+    private String eventIdentifier;
 
     /**
      * Default method for basic startup logic
@@ -122,7 +128,7 @@ public class CreateEventActivity extends AppCompatActivity {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                        Uri imageUri = result.getData().getData();
+                        imageUri = result.getData().getData();
                     }
                 }
         );
@@ -144,7 +150,7 @@ public class CreateEventActivity extends AppCompatActivity {
                 String maxParticipants = eventMaxParticipants.getText().toString();
                 String date = eventDate.getText().toString();
                 String time = eventTime.getText().toString();
-                int number = 50000; // Max participants for now
+                int number = 500000000; // Max participants for now
                 // Verify date input
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()); // date formatter
                 sdf.setLenient(false);
@@ -165,7 +171,7 @@ public class CreateEventActivity extends AppCompatActivity {
                 // Create the base to be hashed
                 String base = name + details + date + time;
                 // Create QR code
-                String eventIdentifier = hashFunction(base);
+                eventIdentifier = hashFunction(base);
 
                 // Create the QR Code
                 try {
@@ -178,8 +184,31 @@ public class CreateEventActivity extends AppCompatActivity {
                 // base64 string conversion so it can be stored in firebase
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 qrCodeBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                byte[] byteArray = byteArrayOutputStream.toByteArray();
-                String stringConversion = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                byte[] byteArrayBitmap = byteArrayOutputStream.toByteArray();
+                String stringConversion = Base64.encodeToString(byteArrayBitmap, Base64.DEFAULT);
+                // image stuff
+                if (imageUri != null) {
+                    try {
+                        imageBitmap = UriToBitmap(imageUri);
+                        // Again but for images this time
+                        ByteArrayOutputStream byteArrayOutputStreamImage = new ByteArrayOutputStream();
+                        imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStreamImage);
+                        byte[] byteArrayImage = byteArrayOutputStreamImage.toByteArray();
+
+                        String imageBase64String = Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
+                        Map<String, String> imageStuff = new HashMap<>();
+                        imageStuff.put("imageData", imageBase64String);
+                        // Add to collection of images
+                        db.collection("images")
+                                .document(eventIdentifier)
+                                .set(imageStuff);
+                    } catch (IOException e) {
+                        Log.d("Image Error", "Error: " + imageUri);
+                        displayToastNotification("Couldn't get image bitmap");
+                    }
+                } else {
+                    Log.d("No imageURI", "Big sad");
+                }
                 // Create empty waitlist
                 ArrayList<String> waitlist = new ArrayList<String>();
                 // Create event then send to firebase
@@ -189,6 +218,7 @@ public class CreateEventActivity extends AppCompatActivity {
                 newEvent.setQrCodeData(stringConversion);
                 newEvent.setHashIdentifier(eventIdentifier);
                 newEvent.setFacility(facilityInfo);
+                newEvent.setQrCodeValid(Boolean.TRUE);
                 // Sending to firebase
                 sendToFirebase(newEvent, androidId, stringConversion);
                 // Passing data back
@@ -259,6 +289,20 @@ public class CreateEventActivity extends AppCompatActivity {
     }
 
     /**
+     * Converts a URI to a bitmap
+     * @param uri
+     *      The URI to be converted
+     * @return
+     *      the bitmap of the image
+     * @throws IOException
+     *      Handle exception
+     */
+    private Bitmap UriToBitmap(Uri uri) throws IOException {
+        // Open the input stream from the URI and decode it into a Bitmap
+        return MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+    }
+
+    /**
      * Method that creates and returns the QRcode data, generates QR code.
      * @param qrCodeText
      *      Takes in data for what the QR code should display
@@ -314,6 +358,7 @@ public class CreateEventActivity extends AppCompatActivity {
         eventData.put("geolocation", this.geolocation_check);
         eventData.put("hashIdentifier", document_name);
         eventData.put("facility", event.getFacility());
+        eventData.put("qrCodeValid", event.getQrCodeValid());
         // Add to collection of events
         db.collection("events")
                 .document(document_name)
@@ -326,4 +371,6 @@ public class CreateEventActivity extends AppCompatActivity {
                     // displayToastNotification("Failed to add event" + e.getMessage());
                 });
     }
+
+
 }

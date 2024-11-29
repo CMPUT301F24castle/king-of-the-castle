@@ -2,6 +2,7 @@ package com.example.king_of_the_castle_project;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,7 @@ public class WaitingListAdapter extends RecyclerView.Adapter<WaitingListAdapter.
     @NonNull
     @Override
     public WaitlistViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Log.d("AdapterDebug", "onCreateViewHolder called.");
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.entrant_event_waitlist_lot_pending_content, parent, false);
         return new WaitlistViewHolder(view);
     }
@@ -60,6 +62,7 @@ public class WaitingListAdapter extends RecyclerView.Adapter<WaitingListAdapter.
     @Override
     public void onBindViewHolder(@NonNull WaitlistViewHolder holder, int position) {
         Event event = events.get(position);
+        Log.d("AdapterDebug", "Binding view for event: " + event.getName());
         holder.eventTitle.setText(event.getName());
 
         // Set up View Details button (functionality not yet implemented)
@@ -85,6 +88,7 @@ public class WaitingListAdapter extends RecyclerView.Adapter<WaitingListAdapter.
      */
     @Override
     public int getItemCount() {
+        Log.d("AdapterDebug", "Item count: " + events.size());
         return events.size();
     }
 
@@ -97,7 +101,7 @@ public class WaitingListAdapter extends RecyclerView.Adapter<WaitingListAdapter.
      */
     private void leaveEvent(String eventName, int position, Context context) {
         db.collection("events").document(eventName)
-                .update("waitingList", FieldValue.arrayRemove(entrantID))
+                .update("waitList", FieldValue.arrayRemove(entrantID))
                 .addOnSuccessListener(aVoid -> {
                     events.remove(position);
                     notifyItemRemoved(position);

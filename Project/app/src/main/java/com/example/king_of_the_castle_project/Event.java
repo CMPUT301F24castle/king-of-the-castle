@@ -28,6 +28,7 @@ public class Event {
     private String organizerID;
     private String hashIdentifier;
     private Map<String, String> facility;
+    private Boolean qrCodeValid;
 
     /**
      * Empty event constructor necessary for passing data to firebase
@@ -442,5 +443,13 @@ public class Event {
 
     public void setFacility(Map<String, String> facility) {
         this.facility = facility;
+    }
+
+    public Boolean getQrCodeValid() {
+        return qrCodeValid;
+    }
+
+    public void setQrCodeValid(Boolean qrCodeValid) {
+        this.qrCodeValid = qrCodeValid;
     }
 }

@@ -76,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 Intent intent = new Intent(MainActivity.this, ChooseRoleActivity.class);
                                 startActivity(intent);
-                                recognize = Boolean.TRUE;
                     }
                             else {
                                 Intent intent = new Intent(MainActivity.this, LoginScreenActivity.class);
@@ -84,17 +83,6 @@ public class MainActivity extends AppCompatActivity {
                             }
                 });
 
-                /*
-                if (recognize) {
-                    Intent intent = new Intent(MainActivity.this, ChooseRoleActivity.class);
-                    startActivity(intent);
-                    //finish();
-                } else {
-                    Intent intent = new Intent(MainActivity.this, LoginScreenActivity.class);
-                    startActivity(intent);
-                }
-
-                 */
             }
         });
 

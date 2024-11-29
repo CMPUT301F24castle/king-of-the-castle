@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
@@ -28,6 +29,8 @@ import java.util.List;
  */
 public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
     private final Context context;
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     /**
      * Array adapter constructor
      * @param context
@@ -61,9 +64,12 @@ public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
             }
             // Image view for QR Code
             ImageView qrCodeImage = convertView.findViewById(R.id.organizer_event_qr_code);
+            ImageView eventPosterImage = convertView.findViewById(R.id.organizer_event_poster);
             // Get views
             TextView name = convertView.findViewById(R.id.organizer_event_name);
             Button removeEventButton = convertView.findViewById(R.id.remove_event_button);
+            Button removeQrDataButton = convertView.findViewById(R.id.remove_qr_button);
+            Button removeFacilityButton = convertView.findViewById(R.id.remove_facility_button);
 
             // Get QR Code
             if (event.getQrCodeData() != null) {
@@ -74,16 +80,43 @@ public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
                 Log.d("Failed to show QR code", "failure: " + event.getQrCodeData());
             }
 
+            // Set the image view
+            String imageID = event.getHashIdentifier();
+            if (imageID != null) {
+                db.collection("images")
+                        .document(imageID)
+                        .get()
+                        .addOnSuccessListener(documentSnapshot -> {
+                            if (documentSnapshot.exists()) {
+                                String conversion = documentSnapshot.getString("imageData");
+                                if (conversion != null) {
+                                    byte[] decodedImage = Base64.decode(conversion, Base64.DEFAULT);
+                                    Bitmap imageBitmap = BitmapFactory.decodeByteArray(decodedImage, 0, decodedImage.length);
+                                    eventPosterImage.setImageBitmap(imageBitmap);
+                                }
+                            }
+                        });
+            }
+
             if (event != null) {
                 // For now just name, add others later
                 name.setText(event.getName());
             }
+            // Disable a QR code
+            removeQrDataButton.setOnClickListener(v -> {
+                String eventIdentifier = event.getHashIdentifier();
+                // FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+                db.collection("events")
+                        .document(eventIdentifier)
+                        .update("qrCodeValid", false);
+                Toast.makeText(this.context, "QR Code disabled", Toast.LENGTH_LONG);
+                ((Activity) context).finish();
+            });
+
+            // Remove an event
             removeEventButton.setOnClickListener(v -> {
-                String organizerID = event.getOrganizerID();
                 String eventToRemove = event.getHashIdentifier();
-
-                Log.d("RemoveEvent", "Hash Identifier: " + eventToRemove);
 
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -91,13 +124,40 @@ public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
                 try {
                     db.collection("events").document(eventToRemove)
                             .delete();
-                    db.collection(organizerID).document(eventToRemove)
-                            .delete();
                     ((Activity) context).finish();
                 } catch (Exception e) {
                     Log.d("Error: ", "Problem: " + e);
                     ((Activity) context).finish();
                 }
+            });
+
+            removeFacilityButton.setOnClickListener(v -> {
+                String organizerID = event.getOrganizerID();
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                try {
+                    db.collection("facilities").document(organizerID)
+                            .delete();
+                } catch (Exception e) {
+                    Log.d("Error: ", "Problem: " + e);
+                }
+
+                try {
+                    db.collection("events")
+                            .whereEqualTo("organizerID", organizerID)
+                            .get()
+                            .addOnCompleteListener(task -> {
+                                for (DocumentSnapshot document : task.getResult()) {
+                                    db.collection("events")
+                                            .document(document.getId())
+                                            .delete();
+                                }
+                            });
+                    ((Activity) context).finish();
+                } catch (Exception e) {
+                    Log.d("Error: ", "Problem: " + e);
+                }
+
             });
 
             return convertView;

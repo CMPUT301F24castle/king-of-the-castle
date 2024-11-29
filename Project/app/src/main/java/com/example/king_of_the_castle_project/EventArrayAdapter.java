@@ -1,5 +1,8 @@
 package com.example.king_of_the_castle_project;
 
+import static android.app.Activity.RESULT_OK;
+import static androidx.activity.result.ActivityResultCallerKt.registerForActivityResult;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
@@ -25,6 +30,8 @@ import java.util.Arrays;
 import java.util.List;
 import android.app.AlertDialog;
 import android.widget.Toast;
+
+import com.google.firebase.firestore.FirebaseFirestore;
 
 /*
  * ArrayAdapter used to format the eventlist in ManageEventsActivity
@@ -39,6 +46,10 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
     private ArrayList<String> testwaitlist;
     private Lottery testlottery;
     private Event testevent;
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    // Used for image selection
+    private ActivityResultLauncher<Intent> imageSelectorLauncher;
 
     /**
      * Sets the view for an item in the list
@@ -61,11 +72,13 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
         }
         // Image view for QR Code
         ImageView qrCodeImage = convertView.findViewById(R.id.organizer_event_qr_code);
+        ImageView eventPosterImage = convertView.findViewById(R.id.organizer_event_poster);
         // Get views
         TextView name = convertView.findViewById(R.id.organizer_event_name);
         Button viewEntrantsButton = convertView.findViewById(R.id.view_entrants_button);
         Button sampleEntrantsButton = convertView.findViewById(R.id.sample_entrants_button);
         Button sendNotificationsButton = convertView.findViewById(R.id.send_notifications_button);
+        Button editEvent = convertView.findViewById(R.id.edit_event_button);
 
         // Get QR Code
         if (event.getQrCodeData() != null) {
@@ -75,11 +88,34 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
         } else {
             Log.d("Failed to show QR code", "failure: " + event.getQrCodeData());
         }
+        // Set the image view
+        String imageID = event.getHashIdentifier();
+        if (imageID != null) {
+            db.collection("images")
+                    .document(imageID)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            String conversion = documentSnapshot.getString("imageData");
+                            if (conversion != null) {
+                                byte[] decodedImage = Base64.decode(conversion, Base64.DEFAULT);
+                                Bitmap imageBitmap = BitmapFactory.decodeByteArray(decodedImage, 0, decodedImage.length);
+                                eventPosterImage.setImageBitmap(imageBitmap);
+                            }
+                        }
+                    });
+        }
 
         if (event != null) {
             // For now just name, add others later
             name.setText(event.getName());
         }
+
+        // Image information retriever
+
+        editEvent.setOnClickListener(v -> {
+            imageSelector();
+        });
 
         viewEntrantsButton.setOnClickListener(v -> {
             // get context
@@ -193,9 +229,6 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
 
 
 
-
-
-
                 okButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -211,5 +244,15 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
         });
 
         return convertView;
+    }
+
+    /**
+     * Method to transition into the image selection screen as well as to return it
+     */
+    private void imageSelector() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        imageSelectorLauncher.launch(Intent.createChooser(intent, "Select Picture"));
     }
 }

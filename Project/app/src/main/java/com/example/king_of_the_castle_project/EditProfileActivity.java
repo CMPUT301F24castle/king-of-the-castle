@@ -1,5 +1,7 @@
 package com.example.king_of_the_castle_project;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -9,6 +11,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,6 +34,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -37,7 +42,9 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -64,6 +71,7 @@ public class EditProfileActivity extends AppCompatActivity {
     FirebaseStorage storage;
     private final int PICK_IMAGE_REQUEST = 22;
     ActivityResultLauncher<Intent> activityResultLauncher;
+    private Bitmap profileImg;
 
     /**
      * Default method that performs basic application startup logic
@@ -197,12 +205,19 @@ public class EditProfileActivity extends AppCompatActivity {
         // create a new entrant with these values
         Entrant entrant = new Entrant(name, email, phone.isEmpty() ? null : phone, androidID);
 
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        profileImg.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        String stringConversion = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
         // create a hashmap for the entrant
         Map<String, Object> entrantData = new HashMap<>();
         entrantData.put("name", entrant.getName());
         entrantData.put("email", entrant.getEmail());
         entrantData.put("phone", entrant.getPhoneNumber());
         entrantData.put("id", entrant.getId());
+        entrantData.put("profileImg", stringConversion);
+
 
         // add entrant's data to the database
         db.collection("entrants").document(androidID)
@@ -272,6 +287,7 @@ public class EditProfileActivity extends AppCompatActivity {
                                 getContentResolver(),
                                 filePath);
                 profilePhotoIV.setImageBitmap(bitmap);
+                profileImg = MediaStore.Images.Media.getBitmap(this.getContentResolver(), filePath);
             }
 
             catch (IOException e) {
@@ -348,6 +364,33 @@ public class EditProfileActivity extends AppCompatActivity {
                                             / taskSnapshot.getTotalByteCount());
                                 }
                             });
+            //ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            //profileImg.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+            //byte[] byteArray = byteArrayOutputStream.toByteArray();
+            //String stringConversion = Base64.encodeToString(byteArray, Base64.DEFAULT);
+            // Send to firebase
+            //db.collection("entrants").document(androidID);
+            //Map<String, Object> imgData = new HashMap<>();
+            //db.collection("entrants").document(androidID).update("profileImg", stringConversion);
+            //imgData.put("profileImg", stringConversion);
+            /*
+            db.collection("entrants").document(androidID)
+                    .set(imgData)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(TAG, "DocumentSnapshot successfully written!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Error writing document", e);
+                        }
+                    });
+
+             */
+
         }
     }
 

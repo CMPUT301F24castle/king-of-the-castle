@@ -74,11 +74,18 @@ public class MainActivity extends AppCompatActivity {
                         .get()
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
+                                Intent intent = new Intent(MainActivity.this, ChooseRoleActivity.class);
+                                startActivity(intent);
                                 recognize = Boolean.TRUE;
                     }
+                            else {
+                                Intent intent = new Intent(MainActivity.this, LoginScreenActivity.class);
+                                startActivity(intent);
+                            }
                 });
 
-                if (!recognize) {
+                /*
+                if (recognize) {
                     Intent intent = new Intent(MainActivity.this, ChooseRoleActivity.class);
                     startActivity(intent);
                     //finish();
@@ -86,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, LoginScreenActivity.class);
                     startActivity(intent);
                 }
+
+                 */
             }
         });
 

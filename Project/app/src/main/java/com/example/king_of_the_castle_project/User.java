@@ -14,6 +14,7 @@ public abstract class User implements Serializable {
     private String email;
     private String phoneNumber;
     private String id;
+    private String profileImg;
 
     /**
      * Empty constructor necessary to pass information to firebase
@@ -110,5 +111,13 @@ public abstract class User implements Serializable {
      */
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getProfileImg() {
+        return profileImg;
+    }
+
+    public void setProfileImg(String profileImg) {
+        this.profileImg = profileImg;
     }
 }

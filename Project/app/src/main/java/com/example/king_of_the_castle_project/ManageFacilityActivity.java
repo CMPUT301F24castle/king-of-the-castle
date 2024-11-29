@@ -75,6 +75,13 @@ public class ManageFacilityActivity extends AppCompatActivity {
         });*/
     }
 
+    /**
+     * Sends a facility to firebase
+     * @param facility
+     *      A facility object, containing the information
+     * @param androidId
+     *      The ID of the organizer, to be used as a document name (1 to 1)
+     */
     private void sendToFirebase(Facility facility, String androidId) {
         // Create a new object that can be stored for event that does not use waitlist because it will bug :)
         String name = facility.getName();

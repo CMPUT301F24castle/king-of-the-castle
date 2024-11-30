@@ -150,7 +150,7 @@ public class CreateEventActivity extends AppCompatActivity {
                 String maxParticipants = eventMaxParticipants.getText().toString();
                 String date = eventDate.getText().toString();
                 String time = eventTime.getText().toString();
-                int number = 500000000; // Max participants for now
+                int number = 50; // Max participants for now
                 // Verify date input
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()); // date formatter
                 sdf.setLenient(false);

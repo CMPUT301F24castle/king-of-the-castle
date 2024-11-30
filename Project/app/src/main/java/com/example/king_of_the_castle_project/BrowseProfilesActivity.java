@@ -1,6 +1,7 @@
 package com.example.king_of_the_castle_project;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;

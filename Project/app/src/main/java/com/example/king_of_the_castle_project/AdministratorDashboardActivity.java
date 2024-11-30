@@ -46,5 +46,12 @@ public class AdministratorDashboardActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        browseImagesButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(AdministratorDashboardActivity.this, BrowseImages.class);
+                startActivity(intent);
+            }
+        });
     }
 }

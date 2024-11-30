@@ -40,10 +40,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_NOTIFICATION_PERMISSION = 1;
     private FirebaseFirestore db;
     private String userID;
-    private Boolean recognize = Boolean.FALSE;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,47 +47,21 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-
-
-
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
         db = FirebaseFirestore.getInstance();
         userID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
-
-        Button startButton = findViewById(R.id.start_button);
-
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                db.collection("entrants").document(userID)
-                        .get()
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                Intent intent = new Intent(MainActivity.this, ChooseRoleActivity.class);
-                                startActivity(intent);
+        db.collection("entrants").document(userID)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && task.getResult().exists()) {
+                        Intent intent = new Intent(MainActivity.this, ChooseRoleActivity.class);
+                        startActivity(intent);
                     }
-                            else {
-                                Intent intent = new Intent(MainActivity.this, LoginScreenActivity.class);
-                                startActivity(intent);
-                            }
+                    else {
+                        Intent intent = new Intent(MainActivity.this, LoginScreenActivity.class);
+                        startActivity(intent);
+                    }
                 });
-
-            }
-        });
-
-
-
-
-
-
-
 
         //notification permissions
       /*  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

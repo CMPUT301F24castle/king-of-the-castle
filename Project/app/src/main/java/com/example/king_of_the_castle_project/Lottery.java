@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.core.app.NotificationCompat;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -25,14 +26,14 @@ public class Lottery { ;
      * @param eventDetails
      * this is the event object to use
      */
-    public void selectRandomEntrants(Event eventDetails) {
-        int x = eventDetails.getMaxParticipants();
+    public void selectRandomEntrants(Event eventDetails, int numberOfEntrants) {
+        //int x = eventDetails.getMaxParticipants();
         ArrayList<String> waitingList = eventDetails.getWaitList();  // Direct access to the private field
 
         Random random = new Random();
         //ArrayList<Entrant> tempWaitingList = new ArrayList<Entrant>();
 
-        while (selectedAttendees.size() < x && waitingList.size() > 0) {
+        while (selectedAttendees.size() < numberOfEntrants && waitingList.size() > 0) {
             int index = random.nextInt(waitingList.size());
             String selectedEntrant = waitingList.remove(index);
             selectedAttendees.add(selectedEntrant);

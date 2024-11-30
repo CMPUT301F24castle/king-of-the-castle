@@ -116,7 +116,10 @@ public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
 
             // Remove an event
             removeEventButton.setOnClickListener(v -> {
+                String organizerID = event.getOrganizerID();
                 String eventToRemove = event.getHashIdentifier();
+
+                Log.d("RemoveEvent", "Hash Identifier: " + eventToRemove);
 
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
 

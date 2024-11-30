@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.view.View;
 
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
@@ -13,22 +14,31 @@ import java.util.List;
 
 
 
+
 /**
  * This will send a notification to all chosen entrants (from lottery class) asking if they would like to accept or decline their invitation
  * 2.5.1: As an organiser I want to send a notification to chosen entrants to sign up for events
  */
 //2.5.1: As an organiser I want to send a notification to chosen entrants to sign up for events
-public class notifyLottery {
-    private Context context;
+public class notifyLottery implements View.OnClickListener {
+    //private Context context;
     private static final String CHANEL_ID = "sendLotteryNotification";
+    private Lottery lottery;
+    public notifyLottery(Lottery lottery) {
+        this.lottery = lottery;
 
-    public notifyLottery(Context context) {
+        //this.context = context;
+       // createNotificationChannel();
+    }
+    @Override
+    public void onClick(View view) {
+        Context context = view.getContext();
+        createNotificationChannel(context);
 
-        this.context = context;
-        createNotificationChannel();
+        sendLotteryNotification(context, lottery);
     }
 
-    private void createNotificationChannel() {
+    private void createNotificationChannel(Context context) {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is not in the Support Library.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -43,7 +53,7 @@ public class notifyLottery {
     }
 
 
-    public void sendLotteryNotification(Lottery lottery) {
+    public void sendLotteryNotification(Context context, Lottery lottery) {
         List<String> selectedAttendees = lottery.getSelectedAttendees();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         boolean isNotificationsEnabled = sharedPreferences.getBoolean("notifications_enabled", true);

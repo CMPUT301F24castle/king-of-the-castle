@@ -15,6 +15,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+/**
+ * Activity that shows the admin a list of all entrants and allows the admin to remove the entrant of their profile
+ */
 public class BrowseProfilesActivity extends AppCompatActivity {
     private ListView list_of_entrants;
     private TextView noResultsTextView;
@@ -22,7 +25,11 @@ public class BrowseProfilesActivity extends AppCompatActivity {
     private ArrayList<Entrant> entrant_list;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-
+    /**
+     * Default method that performs basic application startup logic
+     * @param savedInstanceState
+     *          If there was an Instance saved, saved instances restores it
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +57,8 @@ public class BrowseProfilesActivity extends AppCompatActivity {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Entrant entrant = document.toObject(Entrant.class);
                             entrant_list.add(entrant);
+                            String pfpData = document.getString("profileImg");
+                            entrant.setPfpData(pfpData);
                             arrayAdapter.notifyDataSetChanged();
                         }
                     }

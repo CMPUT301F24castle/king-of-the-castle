@@ -17,11 +17,17 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-/*
+/**
 Screen to change between being an entrant/admin/organizer
  */
 public class ChooseRoleActivity extends AppCompatActivity {
     private FirebaseFirestore db;
+
+    /**
+     * Default method that performs basic application startup logic
+     * @param savedInstanceState
+     *          If there was an Instance saved, saved instances restores it
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

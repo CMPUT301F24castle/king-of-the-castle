@@ -37,8 +37,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
-/*
- * ArrayAdapter used to format the eventlist in ManageEventsActivity
+/**
+ * ArrayAdapter used to format the event list in ManageEventsActivity.
+ * Includes functionality for interacting with Firebase and displaying events.
  */
 public class EventArrayAdapter extends ArrayAdapter<Event>  {
     private FirebaseFirestore db;
@@ -153,6 +154,9 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                 // change screen
                 Intent i = new Intent(context, ListOfFilteredEntrantsInEventScreen.class);
                 i.putExtra("entrant_id_list", event.getWaitList());
+                i.putExtra("event_id", event.getHashIdentifier());
+                i.putExtra("event_geolocation_toggle", event.getGeolocation());
+                i.putExtra("entrant_list_type", "waitList");
                 context.startActivity(i);
             });
 
@@ -163,8 +167,9 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                 // change screen
                 Intent i = new Intent(context, ListOfFilteredEntrantsInEventScreen.class);
                 i.putExtra("entrant_id_list", event.getAcceptedList());
-                //ArrayList<String> acceptedList = new ArrayList<>(Arrays.asList("21cd01a5f09d6e83"));
-                //i.putExtra("entrant_id_list",acceptedList);
+                i.putExtra("event_id", event.getHashIdentifier());
+                i.putExtra("event_geolocation_toggle", event.getGeolocation());
+                i.putExtra("entrant_list_type", "acceptedList");
                 context.startActivity(i);
             });
 
@@ -174,9 +179,10 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                 dialog.dismiss();
                 // change screen
                 Intent i = new Intent(context, ListOfFilteredEntrantsInEventScreen.class);
-//                i.putExtra("entrant_id_list", event.getDeclinedList());
-                ArrayList<String> declinedList = new ArrayList<>(Arrays.asList("80f328806d47ddbb"));
-                i.putExtra("entrant_id_list",declinedList);
+                i.putExtra("entrant_id_list", event.getDeclinedList());
+                i.putExtra("event_id", event.getHashIdentifier());
+                i.putExtra("event_geolocation_toggle", event.getGeolocation());
+                i.putExtra("entrant_list_type", "declinedList");
                 context.startActivity(i);
             });
 
@@ -186,9 +192,10 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                 dialog.dismiss();
                 // change screen
                 Intent i = new Intent(context, ListOfFilteredEntrantsInEventScreen.class);
-//                i.putExtra("entrant_id_list", event.getRegisteredList());
-                ArrayList<String> registeredList = new ArrayList<>(Arrays.asList("2b075d2817445df8", "cc10cc7754d9fe8a"));
-                i.putExtra("entrant_id_list",registeredList);
+                i.putExtra("entrant_id_list", event.getRegisteredList());
+                i.putExtra("event_id", event.getHashIdentifier());
+                i.putExtra("event_geolocation_toggle", event.getGeolocation());
+                i.putExtra("entrant_list_type", "registeredList");
                 context.startActivity(i);
             });
 

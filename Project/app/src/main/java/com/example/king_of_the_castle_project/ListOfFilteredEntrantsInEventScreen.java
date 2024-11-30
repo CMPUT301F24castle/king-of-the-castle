@@ -36,6 +36,7 @@ public class ListOfFilteredEntrantsInEventScreen extends AppCompatActivity{
     private ArrayList<Entrant> filteredList;
     private ArrayList<Entrant> entrant_list;
     private ArrayList<Map<String, Object>> entrant_location_list;
+    private ArrayList<Map<String, Object>> filteredLocationList;
     private Boolean geolocation_toggle;
     private String list_type;
     private String event_id;
@@ -137,7 +138,8 @@ public class ListOfFilteredEntrantsInEventScreen extends AppCompatActivity{
                                 entrant_list.add(entrant);
                             }
                             Log.d("marko", "testing");
-                            entrantListAdapter = new EntrantListArrayAdapter(this, entrant_list);
+                            filteredList = new ArrayList<>(entrant_list);
+                            entrantListAdapter = new EntrantListArrayAdapter(this, filteredList);
                             listOfEntrants.setAdapter(entrantListAdapter);
                         }
                     } else {
@@ -155,29 +157,49 @@ public class ListOfFilteredEntrantsInEventScreen extends AppCompatActivity{
      * @see Entrant
      */
     private void filterEntrants(String query) {
-        filteredList.clear();
+        if (geolocation_toggle && list_type.equals("waitList")) {
+            filteredLocationList.clear();
 
-        // get the list of entrants that should be shown based on the query
-        if (query.isEmpty()) {
-            filteredList.addAll(entrant_list);
-        } else {
-            for (Entrant entrant: entrant_list) {
-                String name = entrant.getName();
-                if (name.contains(query.toLowerCase())) {
-                    filteredList.add(entrant);
+            // get the list of entrants that should be shown based on the query
+            if (query.isEmpty()) {
+                filteredLocationList.addAll(entrant_location_list);
+            } else {
+                for (Map<String, Object> entrant: entrant_location_list) {
+                    String name = (String) entrant.get("entrant");
+                    if (name != null && name.toLowerCase().contains(query.toLowerCase())) {
+                        filteredLocationList.add(entrant);
+                    }
                 }
             }
+
+            // update what is shown on the screen
+            entrantListAdapter.notifyDataSetChanged();
+
+            if (filteredLocationList.isEmpty()){
+                noResults.setVisibility(View.VISIBLE);
+                listOfEntrants.setVisibility(View.GONE);
+            } else {
+                noResults.setVisibility(View.GONE);
+                listOfEntrants.setVisibility(View.VISIBLE);
+            }
         }
+        else {
+            filteredList.clear();
 
-        // update what is shown on the screen
-        entrantListAdapter.notifyDataSetChanged();
+            // get the list of entrants that should be shown based on the query
+            if (query.isEmpty()) {
+                filteredList.addAll(entrant_list);
+            } else {
+                for (Entrant entrant: entrant_list) {
+                    String name = entrant.getName();
+                    if (name.toLowerCase().contains(query.toLowerCase())) {
+                        filteredList.add(entrant);
+                    }
+                }
+            }
 
-        if (filteredList.isEmpty()){
-            noResults.setVisibility(View.VISIBLE);
-            listOfEntrants.setVisibility(View.GONE);
-        } else {
-            noResults.setVisibility(View.GONE);
-            listOfEntrants.setVisibility(View.VISIBLE);
+            // update what is shown on the screen
+            entrantListAdapter.notifyDataSetChanged();
         }
     }
 
@@ -246,7 +268,8 @@ public class ListOfFilteredEntrantsInEventScreen extends AppCompatActivity{
                                             // once the loop ends and the list is populated, set the adapter
                                             if (entrant_location_list.size() > 0) {
                                                 // create the adapter with the list and set it to the ListView
-                                                EntrantListArrayAdapterWithLocation adapter = new EntrantListArrayAdapterWithLocation(ListOfFilteredEntrantsInEventScreen.this, entrant_location_list);
+                                                filteredLocationList = new ArrayList<>(entrant_location_list);
+                                                EntrantListArrayAdapterWithLocation adapter = new EntrantListArrayAdapterWithLocation(ListOfFilteredEntrantsInEventScreen.this, filteredLocationList);
                                                 listOfEntrants.setAdapter(adapter);
                                             }
                                         });

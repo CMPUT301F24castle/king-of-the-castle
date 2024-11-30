@@ -14,7 +14,8 @@
         android:textSize="36sp"
         android:fontFamily="@font/inter_semibold"
         android:padding="15dp"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="5sp"/>
 
     <ListView
         android:id="@+id/list_of_entrants"

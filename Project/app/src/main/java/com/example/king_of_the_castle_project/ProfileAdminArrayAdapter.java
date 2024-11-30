@@ -6,6 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+import android.util.Log;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
@@ -17,7 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
-/*
+/**
  * ArrayAdapter used to format the entrant list in BrowseProfilesActivity
  */
 public class ProfileAdminArrayAdapter extends ArrayAdapter<Entrant> {
@@ -51,9 +55,15 @@ public class ProfileAdminArrayAdapter extends ArrayAdapter<Entrant> {
             String tempString = entrant.getName() + "\n" + "Email: " + entrant.getEmail() + "\n" + "Phone number: " + entrant.getPhoneNumber() + "\n" + "Device ID: " + entrant.getId();
             userInfo.setText(tempString);
 
-            // placeholder for setting pfp
-            // userPfp.setImageBitmap(entrant.getProfilePicture());
-            // uncomment later
+            // decode and set the user's profile picture
+            String base64PFP = entrant.getPfpData();
+            Bitmap pfpBitmap = getPFP(base64PFP);
+            if (pfpBitmap != null) {
+                userPfp.setImageBitmap(pfpBitmap);
+            } else {
+                // set deterministic pfp
+                userPfp.setImageResource(R.drawable.baseline_person_24_black);
+            }
         }
 
         // set onclicks for buttons
@@ -84,5 +94,23 @@ public class ProfileAdminArrayAdapter extends ArrayAdapter<Entrant> {
         });
 
         return convertView;
+    }
+
+    /**
+     * Decodes a Base64-encoded string representing a profile picture (PFP) and returns it as a Bitmap.
+     * If the provided Base64 string is null, the method logs a failure message and returns null.
+     *
+     * @param base64PFP A Base64-encoded string representing the user's profile picture.
+     *                  This string should be a valid encoded image format.
+     * @return A Bitmap object representing the decoded profile picture, or null if the Base64 string is null.
+     */
+    public Bitmap getPFP(String base64PFP) {
+        if (base64PFP != null) {
+            byte[] decodedBytes = Base64.decode(base64PFP, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+        } else {
+            Log.d("Failed to show PFP", "failure: " + base64PFP);
+            return null;
+        }
     }
 }

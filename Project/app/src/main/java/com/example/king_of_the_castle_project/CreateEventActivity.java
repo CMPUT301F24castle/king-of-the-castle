@@ -51,7 +51,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.security.MessageDigest;
 
-/*
+/**
  * Class that handles the event screen for creating events, QR Code and sending to firebase
  */
 public class CreateEventActivity extends AppCompatActivity {

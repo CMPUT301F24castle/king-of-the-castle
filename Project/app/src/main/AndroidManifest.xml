@@ -20,6 +20,9 @@
         android:theme="@style/Theme.Kingofthecastleproject"
         tools:targetApi="31">
         <activity
+            android:name=".BrowseImages"
+            android:exported="false" />
+        <activity
             android:name=".EditProfileActivity"
             android:exported="false" />
         <activity

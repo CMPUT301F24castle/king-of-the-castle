@@ -64,6 +64,8 @@ public class WaitingListAdapter extends RecyclerView.Adapter<WaitingListAdapter.
         Event event = events.get(position);
         Log.d("AdapterDebug", "Binding view for event: " + event.getName());
         holder.eventTitle.setText(event.getName());
+        holder.eventStart.setText(event.getTime());
+        holder.eventDate.setText(event.getDate());
 
         // Set up View Details button (functionality not yet implemented)
         holder.viewDetailsButton.setOnClickListener(v -> {
@@ -133,7 +135,8 @@ public class WaitingListAdapter extends RecyclerView.Adapter<WaitingListAdapter.
      * Provides access to UI elements such as the event title and buttons for viewing details or leaving the event.
      */
     static class WaitlistViewHolder extends RecyclerView.ViewHolder {
-        TextView eventTitle;
+        TextView eventTitle, eventDate, eventStart;
+
         Button viewDetailsButton, leaveEventButton;
 
         /**
@@ -144,6 +147,8 @@ public class WaitingListAdapter extends RecyclerView.Adapter<WaitingListAdapter.
         WaitlistViewHolder(View itemView) {
             super(itemView);
             eventTitle = itemView.findViewById(R.id.entrant_event_list_item_name);
+            eventDate = itemView.findViewById(R.id.entrant_event_list_item_date);
+            eventStart = itemView.findViewById(R.id.entrant_event_list_item_start);
             viewDetailsButton = itemView.findViewById(R.id.entrant_event_list_details_button);
             leaveEventButton = itemView.findViewById(R.id.entrant_event_list_leave_wait_button);
         }

@@ -306,12 +306,22 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                         }
 
                         else {
-                            notifyLottery notificationSender = new notifyLottery(lottery);
-                            notificationSender.onClick(v);
+                            if (selectedRole.equals("Waitlist Entrants")){
+                                Toast.makeText(v.getContext(), "implement this notif", Toast.LENGTH_SHORT).show();
+                            }
+                            else if (selectedRole.equals("Cancelled Entrants")){
+                                Toast.makeText(v.getContext(), "implement this notif", Toast.LENGTH_SHORT).show();
 
+                            }
+                            else if (selectedRole.equals("Selected Entrants")) {
 
-                            Toast.makeText(v.getContext(), "Notifications sent successfully!", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
+                                String eventId = event.getHashIdentifier();
+                                notifyLottery notifyLottery = new notifyLottery(eventId);
+                                notifyLottery.onClick(v);
+
+                                Toast.makeText(v.getContext(), "Notifications sent successfully!", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                            }
                         }
 
                         dialog.dismiss();

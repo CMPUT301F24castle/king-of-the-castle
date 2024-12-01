@@ -48,6 +48,7 @@ android {
 
 dependencies {
     implementation(libs.androidx.preference)
+    implementation(libs.firebase.messaging)
     testImplementation(libs.espresso.intents)
     testImplementation(libs.ext.junit)
     testImplementation(libs.test.core)

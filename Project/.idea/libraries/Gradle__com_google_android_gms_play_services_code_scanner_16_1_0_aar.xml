@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.google.android.gms:play-services-code-scanner:16.1.0@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-4/33ddd3e207f66279ad6ea2346fb355cd/transformed/play-services-code-scanner-16.1.0/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-4/33ddd3e207f66279ad6ea2346fb355cd/transformed/play-services-code-scanner-16.1.0/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-4/947cad590859aee655179879dbf661fc/transformed/play-services-code-scanner-16.1.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-4/947cad590859aee655179879dbf661fc/transformed/play-services-code-scanner-16.1.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-code-scanner/16.1.0/9d27d54a4aca3eee45eef98d53ec5b6a55776a4d/play-services-code-scanner-16.1.0-javadoc.jar!/" />

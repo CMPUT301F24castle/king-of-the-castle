@@ -166,6 +166,7 @@ public class LoginScreenActivity extends AppCompatActivity {
         entrantData.put("email", entrant.getEmail());
         entrantData.put("phone", entrant.getPhoneNumber());
         entrantData.put("id", entrant.getId());
+        entrantData.put("profileImg", null);
 
         db.collection("entrants").document(androidId)
                 .set(entrantData)

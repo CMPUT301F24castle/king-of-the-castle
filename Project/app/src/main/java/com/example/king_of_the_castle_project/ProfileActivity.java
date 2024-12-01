@@ -1,9 +1,15 @@
 package com.example.king_of_the_castle_project;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -11,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.graphics.Insets;
@@ -18,7 +25,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -86,6 +97,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         // get user profile from database and sett textviews
+        getProfilePhoto();
         showProfile();
         /*
         String letter = entrantNameTV.toString().substring(0, 1).toUpperCase();
@@ -109,6 +121,69 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
+    void getProfilePhoto() {
+        DocumentReference docRef = db.collection("entrants").document(androidID);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+        db.collection("entrants")
+                .whereEqualTo("id", androidID)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String photoString = document.getString("profileImg");
+                            if (photoString != null && !photoString.isEmpty()) {
+                                try {
+                                    byte[] decodedBytes = Base64.decode(photoString, Base64.DEFAULT);
+                                    Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                                    entrantPhotoIV.setImageBitmap(bitmap);
+                                } catch (IllegalArgumentException e) {
+                                    Toast.makeText(this, "Invalid Image", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                showProfileImg(); // Show a placeholder if QR code is missing
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void showProfileImg() {
+        db.collection("entrants")
+                .whereEqualTo("id", androidID)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String letter = document.getString("name").substring(0, 1);
+                            TextDrawable drawable = new TextDrawable.Builder()
+                                    .setColor(Color.parseColor("#C7C2EE"))
+                                    .setShape(TextDrawable.SHAPE_ROUND_RECT)
+                                    .setRadius(10)
+                                    .setText(letter)
+                                    .setTextColor(Color.BLACK)
+                                    .build();
+                            entrantPhotoIV.setImageDrawable(drawable);
+                        }
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Error fetching data", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
     /**
      * Shows the user's current profile data on the screen
      */
@@ -130,15 +205,6 @@ public class ProfileActivity extends AppCompatActivity {
                             } else {
                                 entrantPhoneTV.append("No phone number provided");
                             }
-                            String letter = document.getString("name").substring(0, 1);
-                            TextDrawable drawable = new TextDrawable.Builder()
-                                    .setColor(Color.parseColor("#C7C2EE"))
-                                    .setShape(TextDrawable.SHAPE_ROUND_RECT)
-                                    .setRadius(10)
-                                    .setText(letter)
-                                    .setTextColor(Color.BLACK)
-                                    .build();
-                            entrantPhotoIV.setImageDrawable(drawable);
                         }
                     } else {
                         Toast.makeText(getApplicationContext(), "Error fetching data", Toast.LENGTH_SHORT).show();

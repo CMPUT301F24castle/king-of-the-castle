@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -121,13 +123,21 @@ public class EditProfileActivity extends AppCompatActivity {
 
         // set all edit texts to current profile values
         setCurrentValues();
-        showProfileImg();
+        getProfilePhoto();
+        //showProfileImg();
 
         updatePhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectImage();
                 uploadImage();
+            }
+        });
+
+        deletePhotoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeImage();
             }
         });
 
@@ -205,10 +215,13 @@ public class EditProfileActivity extends AppCompatActivity {
         // create a new entrant with these values
         Entrant entrant = new Entrant(name, email, phone.isEmpty() ? null : phone, androidID);
 
+        /*
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         profileImg.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream.toByteArray();
         String stringConversion = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+         */
 
         // create a hashmap for the entrant
         Map<String, Object> entrantData = new HashMap<>();
@@ -216,12 +229,12 @@ public class EditProfileActivity extends AppCompatActivity {
         entrantData.put("email", entrant.getEmail());
         entrantData.put("phone", entrant.getPhoneNumber());
         entrantData.put("id", entrant.getId());
-        entrantData.put("profileImg", stringConversion);
+        //entrantData.put("profileImg", stringConversion);
 
 
         // add entrant's data to the database
         db.collection("entrants").document(androidID)
-                .set(entrantData)
+                .set(entrantData, SetOptions.merge())
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "Data saved successfully", Toast.LENGTH_SHORT).show();
                 })
@@ -252,6 +265,30 @@ public class EditProfileActivity extends AppCompatActivity {
                         }
                     } else {
                         Toast.makeText(getApplicationContext(), "Error fetching data", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    void getProfilePhoto() {
+        db.collection("entrants")
+                .whereEqualTo("id", androidID)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String photoString = document.getString("profileImg");
+                            if (photoString != null && !photoString.isEmpty()) {
+                                try {
+                                    byte[] decodedBytes = Base64.decode(photoString, Base64.DEFAULT);
+                                    profileImg = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                                    profilePhotoIV.setImageBitmap(profileImg);
+                                } catch (IllegalArgumentException e) {
+                                    Toast.makeText(this, "Invalid QR Code Image", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                showProfileImg(); // Show a placeholder if QR code is missing
+                            }
+                        }
                     }
                 });
     }
@@ -288,6 +325,30 @@ public class EditProfileActivity extends AppCompatActivity {
                                 filePath);
                 profilePhotoIV.setImageBitmap(bitmap);
                 profileImg = MediaStore.Images.Media.getBitmap(this.getContentResolver(), filePath);
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                profileImg.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                byte[] byteArray = byteArrayOutputStream.toByteArray();
+                String stringConversion = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                // Send to firebase
+                //db.collection("entrants").document(androidID);
+                Map<String, Object> imgData = new HashMap<>();
+                //db.collection("entrants").document(androidID); //.update("profileImg", stringConversion);
+                imgData.put("profileImg", stringConversion);
+
+                db.collection("entrants").document(androidID)
+                        .set(imgData, SetOptions.merge())
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "DocumentSnapshot successfully written!");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error writing document", e);
+                            }
+                        });
             }
 
             catch (IOException e) {
@@ -364,34 +425,19 @@ public class EditProfileActivity extends AppCompatActivity {
                                             / taskSnapshot.getTotalByteCount());
                                 }
                             });
-            //ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            //profileImg.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-            //byte[] byteArray = byteArrayOutputStream.toByteArray();
-            //String stringConversion = Base64.encodeToString(byteArray, Base64.DEFAULT);
-            // Send to firebase
-            //db.collection("entrants").document(androidID);
-            //Map<String, Object> imgData = new HashMap<>();
-            //db.collection("entrants").document(androidID).update("profileImg", stringConversion);
-            //imgData.put("profileImg", stringConversion);
-            /*
-            db.collection("entrants").document(androidID)
-                    .set(imgData)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Log.d(TAG, "DocumentSnapshot successfully written!");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w(TAG, "Error writing document", e);
-                        }
-                    });
 
-             */
+
 
         }
+    }
+
+    private void removeImage() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("profileImg", null);
+
+        db.collection("entrants").document(androidID)
+                .set(data, SetOptions.merge());
+        getProfilePhoto();
     }
 
 }

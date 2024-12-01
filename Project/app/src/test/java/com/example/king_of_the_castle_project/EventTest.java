@@ -34,7 +34,7 @@ public class EventTest {
         ArrayList<String> waitList = new ArrayList<>();
         waitList.add("user1");
 
-        Event fullEvent = new Event("Event 1", "2024-12-01", "10:00 AM", "Location A", "Event details", 100, waitList, true);
+        Event fullEvent = new Event("Event 1", "2024-12-01", "10:00 AM", "Location A", "Event details", 100, false, "something");
 
         assertEquals("Event 1", fullEvent.getName());
         assertEquals("2024-12-01", fullEvent.getDate());

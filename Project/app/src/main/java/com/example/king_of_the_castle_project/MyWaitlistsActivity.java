@@ -74,45 +74,58 @@ public class MyWaitlistsActivity extends AppCompatActivity {
 
     /**
      * Loads the entrant's waiting list data from Firestore and classifies events into categories.
-     * Currently, adds all events containing the entrant's ID in the "waitList" array to the pending events list.
-     * Future logic could be added to classify events into different categories.
+     * <p>
+     * Currently, all events containing the entrant's ID in the "waitList" array are added to the pending events list.
+     * Future logic could classify events into different categories such as lottery results or accepted events.
      */
     private void loadEntrantWaitingLists() {
         db.collection("events")
-                .whereArrayContains("waitList", entrantID)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Log.d("MyWaitlistsActivity", "Loaded waitlists for entrant ID: " + entrantID);
 
                         // Clear pending events to refresh data
                         this.lotteryPendingEvents.clear();
 
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            // get waitlist
-                            ArrayList<String> entrantIds = new ArrayList<>();
+                            // Get the waitList array
                             ArrayList<Map<String, Object>> waitlist = (ArrayList<Map<String, Object>>) document.get("waitList");
+
                             if (waitlist != null) {
                                 for (Map<String, Object> entry : waitlist) {
-                                    // Extract the "entrantID" field
-                                    if (entry.containsKey("entrantID")) {
-                                        entrantIds.add((String) entry.get("entrantID"));
+                                    // Ensure entry is a map and contains the entrantID
+                                    Object entrantObj = entry.get("entrantID");
+                                    if (entrantObj != null && entrantObj.equals(entrantID)) {
+                                        // Entrant ID matches, create the Event object
+                                        Event event = new Event(
+                                                document.getString("name"),
+                                                document.getString("date"),
+                                                document.getString("time"),
+                                                document.getString("location"),
+                                                document.getString("eventDetails"),
+                                                document.getLong("maxParticipants").intValue(),
+                                                null, // Pass null for entrantIds here if it's not needed
+                                                (ArrayList<String>) document.get("acceptedList"),
+                                                (ArrayList<String>) document.get("declinedList"),
+                                                (ArrayList<String>) document.get("registeredList"),
+                                                document.getBoolean("geolocation"),
+                                                document.getString("qrCodeData"),
+                                                document.getString("organizerID"),
+                                                document.getString("hashIdentifier")
+                                        );
+
+                                        this.lotteryPendingEvents.add(event);
+                                        break; // Exit the loop once a match is found
                                     }
                                 }
                             }
-
-                            // add waitlist and other fields to Event object
-                            Event event = new Event(document.getString("name"), document.getString("date"), document.getString("time"), document.getString("location"), document.getString("eventDetails"), document.getLong("maxParticipants").intValue(), entrantIds, (ArrayList<String>) document.get("acceptedList"), (ArrayList<String>) document.get("declinedList"), (ArrayList<String>) document.get("registeredList"), document.getBoolean("geolocation"), document.getString("qrCodeData"), document.getString("organizerID")
-                                    , document.getString("hashIdentifier"));
-
-                            this.lotteryPendingEvents.add(event);
-                            this.pendingAdapter.notifyDataSetChanged();
-
-                            // Logic to classify the event could be added here
                         }
 
+                        // Notify the adapter to refresh the RecyclerView
+                        this.pendingAdapter.notifyDataSetChanged();
+
                     } else {
-                        // Handle any errors encountered during Firestore query
+                        Log.e("MyWaitlistsActivity", "Error fetching events", task.getException());
                     }
                 });
     }

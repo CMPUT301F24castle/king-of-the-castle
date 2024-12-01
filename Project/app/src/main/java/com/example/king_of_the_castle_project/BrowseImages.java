@@ -1,29 +1,24 @@
 package com.example.king_of_the_castle_project;
 
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
- * Activity that shows the admin a list of all images and allows the admin to remove the images.
+ * Activity for administrators to browse and manage images.
+ * Displays a list of images stored in Firestore and allows the admin to view or manage them.
+ * Provides a return button to navigate back to the previous screen.
  */
 public class BrowseImages extends AppCompatActivity {
 
@@ -32,50 +27,56 @@ public class BrowseImages extends AppCompatActivity {
     private AppCompatButton returnButton;
     private ArrayList<String> image_list;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    /**
+     * Called when the activity is first created.
+     * Initializes the UI components, fetches the image list from Firestore, and displays it.
+     *
+     * @param savedInstanceState Contains the data it most recently supplied if the activity is being re-initialized.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_images);
 
-        // get views
+        // Initialize views
         list_of_images = findViewById(R.id.list_of_images);
         noResultsTextView = findViewById(R.id.no_results_textview);
         returnButton = findViewById(R.id.return_button);
 
-        // init empty entrant list
+        // Initialize an empty image list
         image_list = new ArrayList<>();
 
-        // create adapter
+        // Create and set an adapter for displaying the image list
         AdminImageArrayAdapter ImageArrayAdapter = new AdminImageArrayAdapter(this, image_list);
-
-        // set view to adapter
         list_of_images.setAdapter(ImageArrayAdapter);
 
+        // Fetch image data from Firestore
         db.collection("images")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
+                        // Populate the image list with data from Firestore
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             String imageData = document.getString("imageData");
                             if (imageData != null) {
                                 image_list.add(imageData);
                             }
                         }
+                        // Notify the adapter to refresh the ListView
                         ImageArrayAdapter.notifyDataSetChanged();
 
+                        // Show "no results" message if the list is empty
                         if (image_list.isEmpty()) {
                             noResultsTextView.setVisibility(View.VISIBLE);
                         }
-                    }
-                    else {
-                        // handle failure
+                    } else {
+                        // Handle errors while fetching images
                         Toast.makeText(getApplicationContext(), "Failed to fetch images", Toast.LENGTH_SHORT).show();
                     }
                 });
 
-
+        // Set up the return button to close the activity
         returnButton.setOnClickListener(v -> finish());
-
     }
-
 }

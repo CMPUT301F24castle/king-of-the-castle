@@ -74,15 +74,15 @@ public class MyWaitlistsActivity extends AppCompatActivity {
 
     /**
      * Loads the entrant's waiting list data from Firestore and classifies events into categories.
-     * Currently, adds all events containing the entrant's ID in the "waitList" array to the pending events list.
-     * Future logic could be added to classify events into different categories.
+     * <p>
+     * Currently, all events containing the entrant's ID in the "waitList" array are added to the pending events list.
+     * Future logic could classify events into different categories such as lottery results or accepted events.
      */
     private void loadEntrantWaitingLists() {
         db.collection("events")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Log.d("MyWaitlistsActivity", "Loaded events for entrant ID filtering: " + entrantID);
 
                         // Clear pending events to refresh data
                         this.lotteryPendingEvents.clear();
@@ -115,7 +115,6 @@ public class MyWaitlistsActivity extends AppCompatActivity {
                                         );
 
                                         this.lotteryPendingEvents.add(event);
-                                        Log.d("MyWaitlistsActivity", "Added event to pending: " + event.getName());
                                         break; // Exit the loop once a match is found
                                     }
                                 }
@@ -130,5 +129,4 @@ public class MyWaitlistsActivity extends AppCompatActivity {
                     }
                 });
     }
-
 }

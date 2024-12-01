@@ -88,6 +88,9 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
         Button sendNotificationsButton = convertView.findViewById(R.id.send_notifications_button);
         Button editEvent = convertView.findViewById(R.id.edit_event_button);
 
+        // reset image view
+        eventPosterImage.setImageBitmap(null);
+
         // Get QR Code
         if (event.getQrCodeData() != null) {
             byte[] decodedBytes = Base64.decode(event.getQrCodeData(), Base64.DEFAULT);
@@ -98,18 +101,23 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
         }
         // Set the image view
         String imageID = event.getHashIdentifier();
+        eventPosterImage.setTag(imageID);
         if (imageID != null) {
             db.collection("images")
                     .document(imageID)
                     .get()
                     .addOnSuccessListener(documentSnapshot -> {
                         if (documentSnapshot.exists()) {
-                            String conversion = documentSnapshot.getString("imageData");
-                            if (conversion != null) {
-                                byte[] decodedImage = Base64.decode(conversion, Base64.DEFAULT);
-                                Bitmap imageBitmap = BitmapFactory.decodeByteArray(decodedImage, 0, decodedImage.length);
-                                eventPosterImage.setImageBitmap(imageBitmap);
+                            if (imageID.equals(eventPosterImage.getTag())) {
+                                String conversion = documentSnapshot.getString("imageData");
+                                if (conversion != null) {
+                                    byte[] decodedImage = Base64.decode(conversion, Base64.DEFAULT);
+                                    Bitmap imageBitmap = BitmapFactory.decodeByteArray(decodedImage, 0, decodedImage.length);
+                                    eventPosterImage.setImageBitmap(imageBitmap);
+                                }
                             }
+                        } else {
+                            eventPosterImage.setImageResource(R.drawable.baseline_person_24_black);
                         }
                     });
         }

@@ -146,6 +146,9 @@ public class ManageEventsActivity extends AppCompatActivity implements EventArra
                                         })
                                         .addOnCompleteListener(task -> {
                                             eventHashHolder = null; // Clear after operation
+                                        })
+                                        .addOnFailureListener(task -> {
+                                            eventHashHolder = null; // Clear after operation
                                         });
                                 Toast.makeText(this, "Image Successfully Edited", Toast.LENGTH_LONG).show();
                                 finish();
@@ -193,7 +196,6 @@ public class ManageEventsActivity extends AppCompatActivity implements EventArra
         // Launch the image selection intent
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
-        intent.putExtra("eventHash", eventHashIdentifier);
         imageSelectorLauncher.launch(intent); // Launch the image picker
     }
 }

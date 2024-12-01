@@ -106,13 +106,13 @@
             android:id="@+id/edit_event_button"
             android:layout_width="140dp"
             android:layout_height="22dp"
-            android:padding="1dp"
-            android:backgroundTintMode="src_in"
-            android:backgroundTint="@null"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/rounded_light_green_button"
-            android:text="Edit Event"
-            android:textSize="13dp"
-            android:layout_marginBottom="8dp"/>
+            android:backgroundTint="@null"
+            android:backgroundTintMode="src_in"
+            android:padding="1dp"
+            android:text="Edit Event Image"
+            android:textSize="13dp" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/cancel_undecided_button"

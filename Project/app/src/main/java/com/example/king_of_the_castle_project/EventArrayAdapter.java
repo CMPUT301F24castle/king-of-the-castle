@@ -3,6 +3,7 @@ package com.example.king_of_the_castle_project;
 import static android.app.Activity.RESULT_OK;
 import static androidx.activity.result.ActivityResultCallerKt.registerForActivityResult;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -37,9 +38,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
  * ArrayAdapter used to format the eventlist in ManageEventsActivity
  */
 public class EventArrayAdapter extends ArrayAdapter<Event>  {
-    public EventArrayAdapter(@NonNull Context context, List<Event> events) {
-        super(context, 0, events);
 
+    private ImageSelection listener;
+
+    // Image selection interface for parent activity
+    public interface ImageSelection {
+        void onImageSelectionRequested(String eventHashIdentifier);
+    }
+
+    public EventArrayAdapter(@NonNull Context context, List<Event> events, ImageSelection listener) {
+        super(context, 0, events);
+        this.listener = listener;
     }
 
     //ANGELA TESTING VARIABLES//
@@ -47,9 +56,6 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
     private Lottery testlottery;
     private Event testevent;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-    // Used for image selection
-    private ActivityResultLauncher<Intent> imageSelectorLauncher;
 
     /**
      * Sets the view for an item in the list
@@ -60,6 +66,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
      * @param parent
      *      Parent view that the view will be attached to
      * @return
+     *      The layout for which the array item will be displayed
      */
     @NonNull
     @Override
@@ -70,6 +77,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.organizer_event_list_content, parent, false);
         }
+
         // Image view for QR Code
         ImageView qrCodeImage = convertView.findViewById(R.id.organizer_event_qr_code);
         ImageView eventPosterImage = convertView.findViewById(R.id.organizer_event_poster);
@@ -109,13 +117,8 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
         if (event != null) {
             // For now just name, add others later
             name.setText(event.getName());
+            editEvent.setTag(event.getHashIdentifier());
         }
-
-        // Image information retriever
-
-        editEvent.setOnClickListener(v -> {
-            imageSelector();
-        });
 
         viewEntrantsButton.setOnClickListener(v -> {
             // get context
@@ -243,16 +246,11 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
             }
         });
 
-        return convertView;
-    }
+        editEvent.setOnClickListener(v -> {
+            String eventHashIdentifier = (String) v.getTag();
+            listener.onImageSelectionRequested(eventHashIdentifier);
+        });
 
-    /**
-     * Method to transition into the image selection screen as well as to return it
-     */
-    private void imageSelector() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        imageSelectorLauncher.launch(Intent.createChooser(intent, "Select Picture"));
+        return convertView;
     }
 }

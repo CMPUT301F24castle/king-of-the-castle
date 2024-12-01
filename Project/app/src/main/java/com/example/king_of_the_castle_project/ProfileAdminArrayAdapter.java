@@ -1,6 +1,7 @@
 package com.example.king_of_the_castle_project;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import androidx.annotation.Nullable;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ import java.util.ArrayList;
 public class ProfileAdminArrayAdapter extends ArrayAdapter<Entrant> {
     private Context context;
     private ArrayList<Entrant> entrants;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public ProfileAdminArrayAdapter(@NonNull Context context, ArrayList<Entrant> entrants) {
         super(context, R.layout.admin_profile_browsing_screen_list_content, entrants);
@@ -67,9 +70,34 @@ public class ProfileAdminArrayAdapter extends ArrayAdapter<Entrant> {
         }
 
         // set onclicks for buttons
-        // remove entarnts pfp from db
+        // remove entrants pfp from db
         removeImageButton.setOnClickListener(v -> {
-            // implement when pfps are ready
+            // check if pfp is there, if it is remove, if it isn't toast
+            if (entrant.getPfpData() == null){
+                // inflate layout
+                LayoutInflater inflater = LayoutInflater.from(context);
+                View layout = inflater.inflate(R.layout.toast_notification_layout, null);
+
+                // set msg
+                TextView text = layout.findViewById(R.id.toast_text);
+                text.setText("No image data to remove.");
+
+                // show toast
+                Toast toast = new Toast(context);
+                toast.setDuration(Toast.LENGTH_SHORT);
+                toast.setView(layout);
+                toast.setGravity(Gravity.BOTTOM, 0, 100);
+                toast.show();
+            } else {
+                db.collection("entrants").document(entrant.getId())
+                        .update("profileImg", null)
+                        .addOnSuccessListener(aVoid -> {
+                            // remove from entrant
+                            entrant.setPfpData(null);
+                            // set deterministic pfp
+                            userPfp.setImageResource(R.drawable.baseline_person_24_black);
+                        });
+            }
         });
 
         // remove entrant from db
@@ -77,9 +105,6 @@ public class ProfileAdminArrayAdapter extends ArrayAdapter<Entrant> {
             if (entrant != null) {
                 // get entrant id
                 String entrantId = entrant.getId();
-
-                // get db
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
 
                 // query and remove entrant based on id
                 db.collection("entrants").document(entrantId)

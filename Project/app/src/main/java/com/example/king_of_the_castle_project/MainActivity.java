@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -30,7 +31,9 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 /**
@@ -56,6 +59,18 @@ public class MainActivity extends AppCompatActivity {
                     if (task.isSuccessful() && task.getResult() != null && task.getResult().exists()) {
                         Intent intent = new Intent(MainActivity.this, ChooseRoleActivity.class);
                         startActivity(intent);
+
+        Button startButton = findViewById(R.id.start_button);
+
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                db.collection("entrants").document(userID)
+                        .get()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Intent intent = new Intent(MainActivity.this, ChooseRoleActivity.class);
+                                startActivity(intent);
                     }
                     else {
                         Intent intent = new Intent(MainActivity.this, LoginScreenActivity.class);
@@ -63,38 +78,41 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        //notification permissions
-      /*  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            String notificationPermission = "android.permission.POST_NOTIFICATIONS";
-            if (ContextCompat.checkSelfPermission(this, notificationPermission)
-                    != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{notificationPermission},
-                        REQUEST_NOTIFICATION_PERMISSION);
-            } else {
-                sendLotteryNotifications();
             }
-        } else {
-            sendLotteryNotifications();
-        }*/
+        });
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w("FCM", "Fetching FCM token failed", task.getException());
+                        return;
+                    }
+
+                    // Get the FCM token
+                    String fcmToken = task.getResult();
+                    Log.d("FCM", "Generated Token: " + fcmToken);
+                    db.collection("entrants").document(userID)
+                         //   .set(new HashMap<String, Object>() {
+
+                            .update("fcmToken", fcmToken);
+                                  //  put("entrantId", userID);
+
+                         //   .addOnSuccessListener(aVoid -> Log.d("FCM", "Token saved successfully"))
+                        //    .addOnFailureListener(e -> Log.w("FCM", "Error saving token", e));
+
+
+
+
+                    // Send the token to your backend or store it in Firestore
+                });
+
+
+
+
+
 
 
     }
-
-
-  /*  @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_NOTIFICATION_PERMISSION && grantResults.length > 0
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            sendLotteryNotification();
-        }
-    } */
-
-
-
-
-
-
-
-
+})
+    ;}
 }

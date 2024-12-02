@@ -3,6 +3,9 @@ package com.example.king_of_the_castle_project;
 import static android.app.Activity.RESULT_OK;
 import static androidx.activity.result.ActivityResultCallerKt.registerForActivityResult;
 
+import static android.app.Activity.RESULT_OK;
+import static androidx.activity.result.ActivityResultCallerKt.registerForActivityResult;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -61,6 +64,9 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
 
 
 
+    // Used for image selection
+    private ActivityResultLauncher<Intent> imageSelectorLauncher;
+
     /**
      * Sets the view for an item in the list
      * @param position
@@ -86,7 +92,6 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.organizer_event_list_content, parent, false);
         }
-
         // Image view for QR Code
         ImageView qrCodeImage = convertView.findViewById(R.id.organizer_event_qr_code);
         ImageView eventPosterImage = convertView.findViewById(R.id.organizer_event_poster);
@@ -99,6 +104,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
 
         // reset image view
         eventPosterImage.setImageBitmap(null);
+        Button editEvent = convertView.findViewById(R.id.edit_event_button);
 
         // Get QR Code
         if (event.getQrCodeData() != null) {
@@ -130,12 +136,35 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                         }
                     });
         }
+        // Set the image view
+        String imageID = event.getHashIdentifier();
+        if (imageID != null) {
+            db.collection("images")
+                    .document(imageID)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            String conversion = documentSnapshot.getString("imageData");
+                            if (conversion != null) {
+                                byte[] decodedImage = Base64.decode(conversion, Base64.DEFAULT);
+                                Bitmap imageBitmap = BitmapFactory.decodeByteArray(decodedImage, 0, decodedImage.length);
+                                eventPosterImage.setImageBitmap(imageBitmap);
+                            }
+                        }
+                    });
+        }
 
         if (event != null) {
             // For now just name, add others later
             name.setText(event.getName());
             editEvent.setTag(event.getHashIdentifier());
         }
+
+        // Image information retriever
+
+        editEvent.setOnClickListener(v -> {
+            imageSelector();
+        });
 
         viewEntrantsButton.setOnClickListener(v -> {
             // get context
@@ -302,10 +331,6 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                 roleSpinner.setAdapter(adapter);
 
 
-
-
-
-
                 okButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -324,13 +349,32 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                             Toast.makeText(v.getContext(), "No attendees were selected.", Toast.LENGTH_LONG).show();
                         }
 
+
                         else {
-                            notifyLottery notificationSender = new notifyLottery(lottery);
-                            notificationSender.onClick(v);
+                            if (selectedRole.equals("Waitlist Entrants")){
+                                String eventID = event.getHashIdentifier();
+                                notifyWaitingListEntrants notifyWaitEntrants = new notifyWaitingListEntrants(eventID);
+                                notifyWaitEntrants.onClick(v);
+                                Toast.makeText(v.getContext(), "Notifications sent successfully!", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                            }
+                            else if (selectedRole.equals("Cancelled Entrants")){
+                                String eventID = event.getHashIdentifier();
+                                notifyCancelledEntrants notifyEntrants = new notifyCancelledEntrants(eventID);
+                                notifyEntrants.onClick(v);
+                                Toast.makeText(v.getContext(), "Notifications sent successfully!", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
 
+                            }
+                            else if (selectedRole.equals("Selected Entrants")) {
 
-                            Toast.makeText(v.getContext(), "Notifications sent successfully!", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
+                                String eventId = event.getHashIdentifier();
+                                notifyLottery notifyLottery = new notifyLottery(eventId);
+                                notifyLottery.onClick(v);
+
+                                Toast.makeText(v.getContext(), "Notifications sent successfully!", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                            }
                         }
 
                         dialog.dismiss();
@@ -345,5 +389,15 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
         });
 
         return convertView;
+    }
+
+    /**
+     * Method to transition into the image selection screen as well as to return it
+     */
+    private void imageSelector() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        imageSelectorLauncher.launch(Intent.createChooser(intent, "Select Picture"));
     }
 }

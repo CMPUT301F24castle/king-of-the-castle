@@ -17,6 +17,7 @@ monitor = "1.7.1"
 espressoCoreVersion = "3.4.0"
 core = "1.6.1"
 preference = "1.2.1"
+firebaseMessaging = "24.1.0"
 
 [libraries]
 core = { module = "com.google.zxing:core", version.ref = "core" }
@@ -38,6 +39,7 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 androidx-core = { group = "androidx.test", name = "core", version.ref = "core" }
 espresso-intents = { group = "androidx.test.espresso", name = "espresso-intents", version.ref = "espressoIntents" }
 androidx-preference = { group = "androidx.preference", name = "preference", version.ref = "preference" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

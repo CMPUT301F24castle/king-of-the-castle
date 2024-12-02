@@ -73,6 +73,17 @@
         <activity android:name=".ListOfFilteredEntrantsInEventScreen" />
         <activity android:name=".ViewEntrantLocationScreen" />
         <activity android:name=".BrowseProfilesActivity" />
+
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+
     </application>
+    <uses-permission android:name=".android.permission.INTERNET" />
 
 </manifest>

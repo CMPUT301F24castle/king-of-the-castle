@@ -6,9 +6,15 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.util.Log;
+import android.view.View;
 
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
+
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.List;
 
@@ -17,16 +23,31 @@ import java.util.List;
  * 2.7.1: As an organiser I want to send notifications to all entrants on the waiting list
  */
 //2.7.1: As an organiser I want to send notifications to all entrants on the waiting list
-public class notifyWaitingListEntrants {
-    private Context context;
-    private static final String CHANEL_ID = "notifyWaitingListEntrants";
+public class notifyWaitingListEntrants implements View.OnClickListener {
 
-    public notifyWaitingListEntrants(Context context) {
-        this.context = context;
-        createNotificationChannel();
+    private static final String CHANEL_ID = "notifyWaitingListEntrants";
+    private final String eventId;
+    private final FirebaseFirestore db;
+
+    public notifyWaitingListEntrants(String eventId) {
+        this.eventId = eventId;
+        this.db = FirebaseFirestore.getInstance();;
     }
 
-    private void createNotificationChannel() {
+    @Override
+    public void onClick(View view) {
+        Context context = view.getContext();
+        createNotificationChannel(context);
+
+        //sendLotteryNotification(context, lottery);
+        fetchWaitingListAndSendNotifications(context);
+    }
+
+
+
+
+
+    private void createNotificationChannel(Context context) {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is not in the Support Library.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -40,33 +61,67 @@ public class notifyWaitingListEntrants {
         }
     }
 
-    public void notifyWaitingListEntrants(Event event) {
+    private void fetchWaitingListAndSendNotifications(Context context) {
+        db.collection("events").document(eventId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        List<String> waitingList = (List<String>) documentSnapshot.get("waitingList");
+                        if (waitingList != null && !waitingList.isEmpty()) {
+                            Log.d("notif", waitingList.toString());
+                            sendNotificationsToWaitingList(context, waitingList);
+                        } else {
+                            Log.d("Notify waiting list", "No waiting list found for event: " + eventId);
+                        }
+                    } else {
+                        Log.d("notify waiting list", "waiting list not found: " + eventId);
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("notify waiting list", "Failed to fetch waiting list: ", e));
+    }
+
+
+    private void sendNotificationsToWaitingList(Context context, List<String> waitingList) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         boolean isNotificationsEnabled = sharedPreferences.getBoolean("notifications_enabled", true);
 
-        List<String> waitingList = event.getWaitList();
-
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-
         if (!isNotificationsEnabled) {
-            return; // Don't send the notification
+            return;
         }
-        for (String userID : waitingList) {
-            //(ADD) the message will be a text that the organizer will input
-            String message = "notification description";
 
-            //builds the notification
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANEL_ID)
-                    .setContentTitle("notification title")
-                    .setContentText(message)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setAutoCancel(true); //dismiss notification when clicked
-
-            // Send the notification with hashCode() as ID
-            notificationManager.notify(userID.hashCode(), builder.build());
+        for (String userId : waitingList) {
+            // Fetch the FCM token for the user
+            db.collection("entrants").document(userId).get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            String fcmToken = documentSnapshot.getString("fcmToken");
+                            if (fcmToken != null) {
+                                Log.d("FCM", "Sending notification to token: " + fcmToken);
+                                sendPushNotification(fcmToken, "You have been selected from the waiting list! Please confirm your participation.");
+                            } else {
+                                Log.d("FCM", "No FCM token found for user: " + userId);
+                            }
+                        } else {
+                            Log.d("FCM", "No entrant document found for user: " + userId);
+                        }
+                    })
+                    .addOnFailureListener(e -> Log.e("FCM", "Error fetching FCM token for user: " + userId, e));
         }
     }
+
+    private void sendPushNotification(String fcmToken, String message) {
+        FirebaseMessaging.getInstance().send(new RemoteMessage.Builder(fcmToken + "@fcm.googleapis.com")
+                .setMessageId(Integer.toString((int) System.currentTimeMillis()))
+                .addData("title", "Event Lottery")
+                .addData("message", message)
+                .build());
+
+        Log.d("FCM", "Push notification sent to token: " + fcmToken);
+    }
+
+
+
+
+
 
 
 

@@ -55,45 +55,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:gravity="start"
-                android:text="Enable Geo-locaition:"
-                android:textSize="18dp"
-                android:textStyle="bold"
-                android:textColor="@color/black"/>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center_horizontal">
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switch_geolocation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textOn="Enabled"
-                    android:textOff="Disabled"
-                    android:layout_gravity="center_horizontal"
-                    android:padding="2dp"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="Allow organizers to check your location when you sign up"
-                    android:textSize="15dp"
-                    android:textStyle="bold"
-                    android:padding="2dp"
-                    android:textColor="@color/black"/>
-
-            </LinearLayout>
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
                 android:layout_marginTop="30dp"
                 android:gravity="start"
                 android:text="Allow Admin Notifications:"

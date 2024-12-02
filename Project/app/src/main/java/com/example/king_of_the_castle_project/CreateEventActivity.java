@@ -198,6 +198,7 @@ public class CreateEventActivity extends AppCompatActivity {
                         String imageBase64String = Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
                         Map<String, String> imageStuff = new HashMap<>();
                         imageStuff.put("imageData", imageBase64String);
+                        imageStuff.put("eventIdentifier", eventIdentifier);
                         // Add to collection of images
                         db.collection("images")
                                 .document(eventIdentifier)

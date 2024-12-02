@@ -157,7 +157,10 @@ public class ManageEventsActivity extends AppCompatActivity implements EventArra
                                             } else {
                                                 db.collection("images")
                                                         .document(eventHashIdentifier)
-                                                        .set(Map.of("imageData", convertedImage));
+                                                        .set(Map.of(
+                                                                "imageData", convertedImage,
+                                                                "eventIdentifier", eventHashIdentifier
+                                                        ));
                                             }
                                         })
                                         .addOnCompleteListener(task -> {

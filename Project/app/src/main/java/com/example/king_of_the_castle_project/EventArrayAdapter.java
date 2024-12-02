@@ -126,7 +126,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                                 }
                             }
                         } else {
-                            eventPosterImage.setImageResource(R.drawable.baseline_person_24_black);
+                            eventPosterImage.setImageResource(R.drawable.missing_image_icon);
                         }
                     });
         }

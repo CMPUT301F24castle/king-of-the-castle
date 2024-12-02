@@ -51,6 +51,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("androidx.activity:activity:1.9.3")
     implementation("androidx.constraintlayout:constraintlayout:2.2.0")
+    implementation("androidx.annotation:annotation:1.6.0")
     testImplementation(libs.espresso.intents)
     testImplementation(libs.ext.junit)
     testImplementation(libs.test.core)
@@ -82,6 +83,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+
 
     // Firebase dependencies
     implementation(platform("com.google.firebase:firebase-bom:33.5.1"))

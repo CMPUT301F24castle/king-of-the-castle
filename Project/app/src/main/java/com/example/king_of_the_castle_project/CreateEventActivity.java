@@ -225,6 +225,10 @@ public class CreateEventActivity extends AppCompatActivity {
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("eventCreated", name);
                 setResult(RESULT_OK, resultIntent);
+                // Clear globals
+                imageUri = null;
+                imageBitmap = null;
+                Log.d("EventCreation", "Uploading image for event: " + eventIdentifier);
                 // return
                 finish();
             }

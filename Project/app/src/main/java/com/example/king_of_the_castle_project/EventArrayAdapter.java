@@ -3,6 +3,7 @@ package com.example.king_of_the_castle_project;
 import static android.app.Activity.RESULT_OK;
 import static androidx.activity.result.ActivityResultCallerKt.registerForActivityResult;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -42,18 +43,23 @@ import com.google.firebase.firestore.FirebaseFirestore;
  * Includes functionality for interacting with Firebase and displaying events.
  */
 public class EventArrayAdapter extends ArrayAdapter<Event>  {
+
     private FirebaseFirestore db;
     private Lottery lottery;
 
-    public EventArrayAdapter(@NonNull Context context, List<Event> events) {
-        super(context, 0, events);
+    private ImageSelection listener;
 
+    // Image selection interface for parent activity
+    public interface ImageSelection {
+        void onImageSelectionRequested(String eventHashIdentifier);
+    }
+
+    public EventArrayAdapter(@NonNull Context context, List<Event> events, ImageSelection listener) {
+        super(context, 0, events);
+        this.listener = listener;
     }
 
 
-
-    // Used for image selection
-    private ActivityResultLauncher<Intent> imageSelectorLauncher;
 
     /**
      * Sets the view for an item in the list
@@ -64,6 +70,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
      * @param parent
      *      Parent view that the view will be attached to
      * @return
+     *      The layout for which the array item will be displayed
      */
     @NonNull
     @Override
@@ -79,6 +86,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.organizer_event_list_content, parent, false);
         }
+
         // Image view for QR Code
         ImageView qrCodeImage = convertView.findViewById(R.id.organizer_event_qr_code);
         ImageView eventPosterImage = convertView.findViewById(R.id.organizer_event_poster);
@@ -88,6 +96,9 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
         Button sampleEntrantsButton = convertView.findViewById(R.id.sample_entrants_button);
         Button sendNotificationsButton = convertView.findViewById(R.id.send_notifications_button);
         Button editEvent = convertView.findViewById(R.id.edit_event_button);
+
+        // reset image view
+        eventPosterImage.setImageBitmap(null);
 
         // Get QR Code
         if (event.getQrCodeData() != null) {
@@ -99,18 +110,23 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
         }
         // Set the image view
         String imageID = event.getHashIdentifier();
+        eventPosterImage.setTag(imageID);
         if (imageID != null) {
             db.collection("images")
                     .document(imageID)
                     .get()
                     .addOnSuccessListener(documentSnapshot -> {
                         if (documentSnapshot.exists()) {
-                            String conversion = documentSnapshot.getString("imageData");
-                            if (conversion != null) {
-                                byte[] decodedImage = Base64.decode(conversion, Base64.DEFAULT);
-                                Bitmap imageBitmap = BitmapFactory.decodeByteArray(decodedImage, 0, decodedImage.length);
-                                eventPosterImage.setImageBitmap(imageBitmap);
+                            if (imageID.equals(eventPosterImage.getTag())) {
+                                String conversion = documentSnapshot.getString("imageData");
+                                if (conversion != null) {
+                                    byte[] decodedImage = Base64.decode(conversion, Base64.DEFAULT);
+                                    Bitmap imageBitmap = BitmapFactory.decodeByteArray(decodedImage, 0, decodedImage.length);
+                                    eventPosterImage.setImageBitmap(imageBitmap);
+                                }
                             }
+                        } else {
+                            eventPosterImage.setImageResource(R.drawable.baseline_person_24_black);
                         }
                     });
         }
@@ -118,13 +134,8 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
         if (event != null) {
             // For now just name, add others later
             name.setText(event.getName());
+            editEvent.setTag(event.getHashIdentifier());
         }
-
-        // Image information retriever
-
-        editEvent.setOnClickListener(v -> {
-            imageSelector();
-        });
 
         viewEntrantsButton.setOnClickListener(v -> {
             // get context
@@ -329,16 +340,11 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
             }
         });
 
-        return convertView;
-    }
+        editEvent.setOnClickListener(v -> {
+            String eventHashIdentifier = (String) v.getTag();
+            listener.onImageSelectionRequested(eventHashIdentifier);
+        });
 
-    /**
-     * Method to transition into the image selection screen as well as to return it
-     */
-    private void imageSelector() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        imageSelectorLauncher.launch(Intent.createChooser(intent, "Select Picture"));
+        return convertView;
     }
 }

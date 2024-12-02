@@ -48,7 +48,7 @@ public class LotteryTest {
 
         // Call the lottery selection method
         testevent = new Event("Castle Tour", "2024-11-15", "10:00 AM", "Castle Grounds",
-                "A guided tour of the castle", 2, testwaitlist, true);
+                "A guided tour of the castle", 2, true, "testID");
         testlottery.selectRandomEntrants(testevent);
 
         // Verify that the correct number of entrants were selected (2 in this case)

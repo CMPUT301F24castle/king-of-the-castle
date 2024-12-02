@@ -66,31 +66,7 @@ public class notifyLottery implements View.OnClickListener {
     }
 
 
-  /*  public void sendLotteryNotification(Context context, Lottery lottery) {
-        List<String> selectedAttendees = lottery.getSelectedAttendees();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        boolean isNotificationsEnabled = sharedPreferences.getBoolean("notifications_enabled", true);
 
-
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        if (!isNotificationsEnabled) {
-            return;
-        }
-        for (String userID : selectedAttendees) {
-            String message = "Congratulations. You have been chosen through the lottery! Would you like to accept or decline?";
-            //(ADD) buttons for accept and decline
-
-            //builds the notification
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANEL_ID)
-                    .setContentTitle("Lottery Status")
-                    .setSmallIcon(R.drawable.baseline_adb_24)
-                    .setContentText(message)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setAutoCancel(true); //dismiss notification when clicked
-
-            // Send the notification with hashCode() as ID
-            notificationManager.notify(userID.hashCode(), builder.build());
-        } */
 
     private void fetchAcceptedListAndSendNotifications(Context context) {
         db.collection("events").document(eventId).get()
@@ -110,38 +86,7 @@ public class notifyLottery implements View.OnClickListener {
                 .addOnFailureListener(e -> Log.e("NotifyLottery", "Failed to fetch accepted list: ", e));
     }
 
-   /* private void sendNotificationsToAcceptedList(Context context, List<String> acceptedList) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        boolean isNotificationsEnabled = sharedPreferences.getBoolean("notifications_enabled", true);
 
-        if (!isNotificationsEnabled) {
-            return;
-        }
-
-
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        for (Object item : acceptedList) {
-            String userId = null;
-            if (item instanceof String) {
-                userId = (String) item;
-                Log.d("user", "user id is " + userId);
-                String message = "You have been selected from the waiting list! Please confirm your participation.";
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                        .setContentTitle("Event Lottery")
-                        .setSmallIcon(R.drawable.baseline_adb_24) // Replace with your actual icon
-                        .setContentText(message)
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                        .setAutoCancel(true);
-
-                if (notificationManager != null) {
-                    notificationManager.notify(userId.hashCode(), builder.build());
-                }
-            } else {
-                Log.d("NotifyLottery", "No hashIdentifier found for item: " + item);
-            }
-        }
-    } */
 
 
     private void sendNotificationsToAcceptedList(Context context, List<String> acceptedList) {

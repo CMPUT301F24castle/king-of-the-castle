@@ -294,6 +294,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                         // type of entrant to notify in string (Waitlist Entrants, Cancelled Entrants, Invited Entrants, Enrolled Entrants)
                         String selectedRole = roleSpinner.getSelectedItem().toString();
 
+
                         //notification functionality
                         // Firebase reference to the event's document
                        // DocumentReference eventRef = db.collection("events").document(event.getHashIdentifier());
@@ -305,12 +306,21 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                             Toast.makeText(v.getContext(), "No attendees were selected.", Toast.LENGTH_LONG).show();
                         }
 
+
                         else {
                             if (selectedRole.equals("Waitlist Entrants")){
-                                Toast.makeText(v.getContext(), "implement this notif", Toast.LENGTH_SHORT).show();
+                                String eventID = event.getHashIdentifier();
+                                notifyWaitingListEntrants notifyWaitEntrants = new notifyWaitingListEntrants(eventID);
+                                notifyWaitEntrants.onClick(v);
+                                Toast.makeText(v.getContext(), "Notifications sent successfully!", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
                             }
                             else if (selectedRole.equals("Cancelled Entrants")){
-                                Toast.makeText(v.getContext(), "implement this notif", Toast.LENGTH_SHORT).show();
+                                String eventID = event.getHashIdentifier();
+                                notifyCancelledEntrants notifyEntrants = new notifyCancelledEntrants(eventID);
+                                notifyEntrants.onClick(v);
+                                Toast.makeText(v.getContext(), "Notifications sent successfully!", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
 
                             }
                             else if (selectedRole.equals("Selected Entrants")) {

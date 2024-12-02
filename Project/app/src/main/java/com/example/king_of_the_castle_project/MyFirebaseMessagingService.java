@@ -1,9 +1,14 @@
 package com.example.king_of_the_castle_project;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.util.Log;
+
+import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,9 +38,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
 
+    }
 
 
 
 
 
-}
+
+
+

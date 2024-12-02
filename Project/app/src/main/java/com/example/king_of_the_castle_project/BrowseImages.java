@@ -26,6 +26,7 @@ public class BrowseImages extends AppCompatActivity {
     private TextView noResultsTextView;
     private AppCompatButton returnButton;
     private ArrayList<String> image_list;
+    private ArrayList<String> documentIdList;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     /**
@@ -46,9 +47,10 @@ public class BrowseImages extends AppCompatActivity {
 
         // Initialize an empty image list
         image_list = new ArrayList<>();
+        documentIdList = new ArrayList<>();
 
         // Create and set an adapter for displaying the image list
-        AdminImageArrayAdapter ImageArrayAdapter = new AdminImageArrayAdapter(this, image_list);
+        AdminImageArrayAdapter ImageArrayAdapter = new AdminImageArrayAdapter(this, image_list, documentIdList);
         list_of_images.setAdapter(ImageArrayAdapter);
 
         // Fetch image data from Firestore
@@ -61,6 +63,7 @@ public class BrowseImages extends AppCompatActivity {
                             String imageData = document.getString("imageData");
                             if (imageData != null) {
                                 image_list.add(imageData);
+                                documentIdList.add(document.getId());
                             }
                         }
                         // Notify the adapter to refresh the ListView

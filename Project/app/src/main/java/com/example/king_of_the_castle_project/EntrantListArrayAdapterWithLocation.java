@@ -3,6 +3,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -81,7 +83,12 @@ public class EntrantListArrayAdapterWithLocation extends ArrayAdapter<Map<String
             entrantPFP.setImageBitmap(pfpBitmap);
         } else {
             // set deterministic pfp
-            entrantPFP.setImageResource(R.drawable.baseline_person_24_black);
+            if (entrant_name != null && !entrant_name.isEmpty()) {
+                Bitmap fallbackBitmap = createDeterministicPFP(entrant_name.charAt(0));
+                entrantPFP.setImageBitmap(fallbackBitmap);
+            } else {
+                entrantPFP.setImageResource(R.drawable.baseline_person_24_black);
+            }
         }
 
         // set on click listener for the location button
@@ -116,5 +123,40 @@ public class EntrantListArrayAdapterWithLocation extends ArrayAdapter<Map<String
             Log.d("Failed to show PFP", "failure: " + base64PFP);
             return null;
         }
+    }
+
+    /**
+     * Creates a deterministic profile picture bitmap with the first letter of the name.
+     *
+     * @param firstLetter The first letter of the entrant's name.
+     * @return A Bitmap representing the fallback profile picture.
+     */
+    private Bitmap createDeterministicPFP(char firstLetter) {
+        // set pfp size, color, bg color
+        int size = 100;
+        int textSize = 50;
+        int bgColor = 0xFFB5D1A2; // light green but in hex
+        int textColor = 0xFF000000; // black
+
+        // init blank bitmap
+        Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+
+        // init canvas to draw on bitmap
+        Canvas canvas = new Canvas(bitmap);
+        canvas.drawColor(bgColor);
+
+        // init paint
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setTextSize(textSize);
+        paint.setColor(textColor);
+        paint.setTextAlign(Paint.Align.CENTER);
+
+        // draw on canvas
+        float x = size / 2f;
+        float y = size / 2f - ((paint.descent() + paint.ascent()) / 2f);
+        canvas.drawText(String.valueOf(firstLetter).toUpperCase(), x, y, paint);
+
+        return bitmap;
     }
 }

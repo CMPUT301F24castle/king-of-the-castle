@@ -1,5 +1,7 @@
 package com.example.king_of_the_castle_project;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -50,6 +52,8 @@ import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Map;
 import java.security.MessageDigest;
+import java.util.Calendar;
+
 
 /**
  * Class that handles the event screen for creating events, QR Code and sending to firebase
@@ -85,8 +89,8 @@ public class CreateEventActivity extends AppCompatActivity {
         androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         // Get all event details
         EditText eventName = findViewById(R.id.event_name_edit_text);
-        EditText eventDate = findViewById(R.id.event_date_edit_text);
-        EditText eventTime = findViewById(R.id.event_time_edit_text);
+        TextView eventDate = findViewById(R.id.event_date_text_view);
+        TextView eventTime = findViewById(R.id.event_time_text_view);
         EditText eventDetails = findViewById(R.id.event_details_edit_text);
         EditText eventMaxParticipants = findViewById(R.id.event_max_participants_edit_text);
         // however to check photos
@@ -150,15 +154,11 @@ public class CreateEventActivity extends AppCompatActivity {
                 String maxParticipants = eventMaxParticipants.getText().toString();
                 String date = eventDate.getText().toString();
                 String time = eventTime.getText().toString();
-                int number = 50; // Max participants for now
+                int number = 999999999; // Max participants for now
                 // Verify date input
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()); // date formatter
-                sdf.setLenient(false);
-                try { // Convert date to correct format
-                    Date parsedDate = sdf.parse(date);
-                } catch (ParseException e) { // Invalid date
-                    displayToastNotification("Please enter a vaid date. Returning to organizer home screen.");
-                    finish();
+                if (date.equals("Select Date") || time.equals("Select Time")) {
+                    displayToastNotification("Please select both a date and time.");
+                    return;
                 }
 
                 // Conversion of maxparticipants to int
@@ -198,6 +198,7 @@ public class CreateEventActivity extends AppCompatActivity {
                         String imageBase64String = Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
                         Map<String, String> imageStuff = new HashMap<>();
                         imageStuff.put("imageData", imageBase64String);
+                        imageStuff.put("eventIdentifier", eventIdentifier);
                         // Add to collection of images
                         db.collection("images")
                                 .document(eventIdentifier)
@@ -225,9 +226,42 @@ public class CreateEventActivity extends AppCompatActivity {
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("eventCreated", name);
                 setResult(RESULT_OK, resultIntent);
+                // Clear globals
+                imageUri = null;
+                imageBitmap = null;
+                Log.d("EventCreation", "Uploading image for event: " + eventIdentifier);
                 // return
                 finish();
             }
+        });
+
+        // init select date
+        eventDate.setOnClickListener(v -> {
+            // Get current date as default
+            final Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+            new DatePickerDialog(this, (view, year1, month1, dayOfMonth) -> {
+                // Set selected date to TextView
+                String selectedDate = String.format(Locale.getDefault(), "%02d/%02d/%04d", dayOfMonth, month1 + 1, year1);
+                eventDate.setText(selectedDate);
+            }, year, month, day).show();
+        });
+
+        // init select time
+        eventTime.setOnClickListener(v -> {
+            // Get current time as default
+            final Calendar calendar = Calendar.getInstance();
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int minute = calendar.get(Calendar.MINUTE);
+
+            new TimePickerDialog(this, (view, hourOfDay, minute1) -> {
+                // Set selected time to TextView
+                String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute1);
+                eventTime.setText(selectedTime);
+            }, hour, minute, true).show(); // true for 24-hour format
         });
 
         returnButton.setOnClickListener(new View.OnClickListener() {

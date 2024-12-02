@@ -27,28 +27,23 @@ import java.util.ArrayList;
 public class AdminImageArrayAdapter extends ArrayAdapter<String> {
 
     private Context context;
-    private ArrayList<String> image_list;
+    private ArrayList<String> imageList;
+    private ArrayList<String> documentIds; // List of document IDs from Firestore
 
     /**
      * Constructor to initialize the adapter.
      *
-     * @param context The current context.
-     * @param images  A list of Base64-encoded image strings.
+     * @param context     The current context.
+     * @param images      A list of Base64-encoded image strings.
+     * @param documentIds A list of Firestore document IDs corresponding to the images.
      */
-    public AdminImageArrayAdapter(@NonNull Context context, ArrayList<String> images) {
+    public AdminImageArrayAdapter(@NonNull Context context, ArrayList<String> images, ArrayList<String> documentIds) {
         super(context, R.layout.admin_image_list_item, images);
         this.context = context;
-        this.image_list = images;
+        this.imageList = images;
+        this.documentIds = documentIds;
     }
 
-    /**
-     * Populates a ListView item with image data and a button for removing the image.
-     *
-     * @param position    The position of the item in the list.
-     * @param convertView The old view to reuse, if possible.
-     * @param parent      The parent view that this view will eventually be attached to.
-     * @return A View corresponding to the data at the specified position.
-     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -69,29 +64,19 @@ public class AdminImageArrayAdapter extends ArrayAdapter<String> {
             imageView.setImageBitmap(bitmap);
         }
 
-        // Set up the remove button to delete the image from Firestore and update the list
-        String finalBase64Image = base64Image;
+        // Set up the remove button to delete the Firestore document by its ID
         removeImageButton.setOnClickListener(v -> {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
+            String docId = documentIds.get(position); // Get the document ID for the selected item
 
-            Log.d("RemoveImage", "Base64 Length: " + finalBase64Image.length());
-            Log.d("RemoveImage", "Base64: " + finalBase64Image);
-            db.collection("images").whereEqualTo("imageData", finalBase64Image).get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                            // Get the document ID of the matching image
-                            String docId = task.getResult().getDocuments().get(0).getId();
-                            db.collection("images").document(docId).delete()
-                                    .addOnSuccessListener(aVoid -> {
-                                        Toast.makeText(context, "Image removed", Toast.LENGTH_SHORT).show();
-                                        image_list.remove(position); // Remove image from local list
-                                        notifyDataSetChanged(); // Refresh the adapter
-                                    })
-                                    .addOnFailureListener(e -> Toast.makeText(context, "Failed to remove image", Toast.LENGTH_SHORT).show());
-                        } else {
-                            Log.d("RemoveImage", "No matching image found.");
-                        }
-                    });
+            db.collection("images").document(docId).delete()
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(context, "Image removed", Toast.LENGTH_SHORT).show();
+                        imageList.remove(position); // Remove the image from the local list
+                        documentIds.remove(position); // Remove the corresponding document ID
+                        notifyDataSetChanged(); // Refresh the adapter
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(context, "Failed to remove image", Toast.LENGTH_SHORT).show());
         });
 
         return convertView;
@@ -105,13 +90,7 @@ public class AdminImageArrayAdapter extends ArrayAdapter<String> {
      */
     private Bitmap decodeBase64Image(String base64Image) {
         try {
-            // Trim unwanted whitespace or newlines before decoding
-            String base64ImageWithoutNewlines = base64Image.trim();
-
-            // Decode the Base64 string to a byte array
-            byte[] decodedBytes = Base64.decode(base64ImageWithoutNewlines, Base64.DEFAULT);
-
-            // Decode the byte array into a Bitmap
+            byte[] decodedBytes = Base64.decode(base64Image.trim(), Base64.DEFAULT);
             return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
         } catch (IllegalArgumentException e) {
             Log.e("Decode Image", "Invalid Base64 string", e);
@@ -119,3 +98,4 @@ public class AdminImageArrayAdapter extends ArrayAdapter<String> {
         }
     }
 }
+

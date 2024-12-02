@@ -24,7 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
-/*
+/**
  * ArrayAdapter to show list of events in the administrator browse
  */
 public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
@@ -70,6 +70,10 @@ public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
             Button removeEventButton = convertView.findViewById(R.id.remove_event_button);
             Button removeQrDataButton = convertView.findViewById(R.id.remove_qr_button);
             Button removeFacilityButton = convertView.findViewById(R.id.remove_facility_button);
+            Button viewEventButton = convertView.findViewById(R.id.view_details_button);
+
+            // reset image view
+            eventPosterImage.setImageBitmap(null);
 
             // Get QR Code
             if (event.getQrCodeData() != null) {
@@ -82,18 +86,23 @@ public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
 
             // Set the image view
             String imageID = event.getHashIdentifier();
+            eventPosterImage.setTag(imageID);
             if (imageID != null) {
                 db.collection("images")
                         .document(imageID)
                         .get()
                         .addOnSuccessListener(documentSnapshot -> {
                             if (documentSnapshot.exists()) {
-                                String conversion = documentSnapshot.getString("imageData");
-                                if (conversion != null) {
-                                    byte[] decodedImage = Base64.decode(conversion, Base64.DEFAULT);
-                                    Bitmap imageBitmap = BitmapFactory.decodeByteArray(decodedImage, 0, decodedImage.length);
-                                    eventPosterImage.setImageBitmap(imageBitmap);
+                                if (imageID.equals(eventPosterImage.getTag())) {
+                                    String conversion = documentSnapshot.getString("imageData");
+                                    if (conversion != null) {
+                                        byte[] decodedImage = Base64.decode(conversion, Base64.DEFAULT);
+                                        Bitmap imageBitmap = BitmapFactory.decodeByteArray(decodedImage, 0, decodedImage.length);
+                                        eventPosterImage.setImageBitmap(imageBitmap);
+                                    }
                                 }
+                            } else {
+                                eventPosterImage.setImageResource(R.drawable.missing_image_icon);
                             }
                         });
             }
@@ -114,9 +123,39 @@ public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
                 ((Activity) context).finish();
             });
 
+            viewEventButton.setOnClickListener(v -> {
+                // Create a Dialog
+                android.app.Dialog dialog = new android.app.Dialog(context);
+                dialog.setContentView(R.layout.event_details_dialogue);
+                dialog.setTitle("Event Details");
+
+                // Set dialog window properties
+                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                dialog.getWindow().setGravity(Gravity.CENTER);
+
+                // Put the event data into the layout
+                TextView nameTextView = dialog.findViewById(R.id.name_textview);
+                TextView dateTextView = dialog.findViewById(R.id.date_textview);
+                TextView timeTextView = dialog.findViewById(R.id.time_textview);
+                TextView venueTextView = dialog.findViewById(R.id.venue_textview);
+                TextView organizerNotesTextView = dialog.findViewById(R.id.organizer_notes_textview);
+                TextView maxParticipantsTextView = dialog.findViewById(R.id.max_participants_textview);
+
+                // Put info into the dialogue
+                nameTextView.setText(event.getName());
+                dateTextView.setText(event.getDate());
+                timeTextView.setText(event.getTime());
+                venueTextView.setText(event.getLocation());
+                organizerNotesTextView.setText(event.getEventDetails());
+                maxParticipantsTextView.setText(String.valueOf(event.getMaxParticipants()));
+
+                // Display the dialog
+                dialog.show();
+            });
+
+
             // Remove an event
             removeEventButton.setOnClickListener(v -> {
-                String organizerID = event.getOrganizerID();
                 String eventToRemove = event.getHashIdentifier();
 
                 Log.d("RemoveEvent", "Hash Identifier: " + eventToRemove);

@@ -53,8 +53,12 @@ public class CreateEventActivityTest {
 
             // Fill in the event details
             onView(withId(R.id.event_name_edit_text)).perform(typeText("Test Event"));
-            onView(withId(R.id.event_date_edit_text)).perform(typeText("01/12/2024"));
-            onView(withId(R.id.event_location_edit_text)).perform(typeText("Test Location"));
+            onView(withId(R.id.event_date_text_view)).perform(click());
+            Espresso.onView(ViewMatchers.withText("OK")).perform(click());
+
+            onView(withId(R.id.event_time_text_view)).perform(click());
+            Espresso.onView(ViewMatchers.withText("OK")).perform(click());
+
             onView(withId(R.id.event_details_edit_text)).perform(typeText("Test Details"));
             onView(withId(R.id.event_max_participants_edit_text)).perform(typeText("100"));
 
@@ -65,5 +69,4 @@ public class CreateEventActivityTest {
             onView(withId(R.id.create_event_button)).perform(click());
         }
     }
-
 }

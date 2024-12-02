@@ -69,19 +69,22 @@ public class ChooseRoleActivity extends AppCompatActivity {
                     startActivity(intent);
 
                 } else if (selectedRole.equals("Administrator")){
-                    // make sure they are an administrator - NOT IMPLEMENTED YET
-//                    String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-//                    Boolean adminFlag = false;
-//                    db.collection(androidId)
-//                                    .get()
-//                                    .addOnCompleteListener(task -> {
-//                                        if (task.isSuccessful()) {
-//
-//                                        }
-//                                    })
-                    Intent intent = new Intent(ChooseRoleActivity.this, AdministratorDashboardActivity.class);
-                    startActivity(intent);
-
+                    // firebase
+                    db = FirebaseFirestore.getInstance();
+                    // make sure they are an administrator
+                    String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+                    db.collection("administrators")
+                                    .document(androidId)
+                                    .get()
+                                    .addOnCompleteListener(task -> {
+                                        if (task.getResult().exists()) {
+                                            // If they are an administrator start the admin screen
+                                            Intent intent = new Intent(ChooseRoleActivity.this, AdministratorDashboardActivity.class);
+                                            startActivity(intent);
+                                        } else {
+                                            Toast.makeText(ChooseRoleActivity.this, "Not a registered administrator", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
                 } else {
                     LayoutInflater inflater = getLayoutInflater();
                     View layout = inflater.inflate(R.layout.toast_notification_layout, findViewById(R.id.custom_toast_container));

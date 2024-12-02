@@ -2,6 +2,10 @@ package com.example.king_of_the_castle_project;
 
 import java.util.ArrayList;
 
+
+/**
+ * Class that extends User
+ */
 public class Entrant extends User {
     private ArrayList<String> onWaitList;
     private ArrayList<String> onAcceptedList;

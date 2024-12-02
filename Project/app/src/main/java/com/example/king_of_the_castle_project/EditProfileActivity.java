@@ -35,6 +35,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private Button deletePhotoBtn;
 
     private FirebaseFirestore db;
+    private static String injectedAndroidID; // For testing
     private String androidID;
 
     /**
@@ -61,7 +62,10 @@ public class EditProfileActivity extends AppCompatActivity {
 
         // get database reference and the current user's android id
         db = FirebaseFirestore.getInstance();
-        androidID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
+        // Use injected Android ID for testing, otherwise get the real ID
+        androidID = injectedAndroidID != null ? injectedAndroidID :
+                Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
 
         // set all edit texts to current profile values
@@ -82,6 +86,14 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    /**
+     * Allows injection of a mock Android ID for testing purposes.
+     * @param mockAndroidID The mocked Android ID to use.
+     */
+    public static void setAndroidIDEPA(String mockAndroidID) {
+        injectedAndroidID = mockAndroidID;
     }
 
     /**

@@ -50,9 +50,6 @@ public class EntrantScreenActivity extends AppCompatActivity {
         changeActivity = value;
     }
 
-
-
-
     /**
      * Default method that performs basic application startup logic
      * @param savedInstanceState
@@ -102,11 +99,6 @@ public class EntrantScreenActivity extends AppCompatActivity {
         //The raw value is stored in scannnedCode
         installGoogleScanner();
         initVars();
-
-
-
-
-
 
         // button to open the qr code scanner
         qrCodeBut.setOnClickListener(v -> {
@@ -234,7 +226,7 @@ public class EntrantScreenActivity extends AppCompatActivity {
 
         // query the QR code
         db.collection("events")
-                .whereEqualTo("name", scannnedCode)
+                .whereEqualTo("hashIdentifier", scannnedCode)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
@@ -243,21 +235,29 @@ public class EntrantScreenActivity extends AppCompatActivity {
 
                         // Iterate through the results
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            Toast.makeText(getApplicationContext(), "Found event: " + scannnedCode, Toast.LENGTH_SHORT).show();
-                            setChangeActivity(true);
-                            eventFound = true;
-                            break; // Stop after finding the first match
+                            Boolean qrCodeValid = document.getBoolean("qrCodeValid");
+
+                            if (Boolean.TRUE.equals(qrCodeValid)) { // Check if qrCodeValid is true
+                                Toast.makeText(getApplicationContext(), "Found valid event: " + scannnedCode, Toast.LENGTH_SHORT).show();
+                                setChangeActivity(true);
+                                eventFound = true;
+
+                                // Move to the next activity
+                                Intent intent = new Intent(getApplicationContext(), EventDetailsScreen.class);
+                                intent.putExtra("qr result", scannnedCode);
+                                startActivity(intent);
+                            } else {
+                                Toast.makeText(getApplicationContext(), "QR code is not valid", Toast.LENGTH_SHORT).show();
+                            }
+                            break; // Stop after checking the first match
                         }
 
-                        if (eventFound) {
-                            // Move to the next activity if event is found
-                            Intent intent = new Intent(getApplicationContext(), EventDetailsScreen.class);
-                            intent.putExtra("qr result", scannnedCode);
-                            startActivity(intent);
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Event doesn't exist", Toast.LENGTH_SHORT).show();
+                        if (!eventFound) {
+                            Toast.makeText(getApplicationContext(), "Event doesn't exist or QR code is invalid", Toast.LENGTH_SHORT).show();
                         }
-                    } else {
+                    }
+
+                    else {
                         Toast.makeText(getApplicationContext(), "Error fetching data", Toast.LENGTH_SHORT).show();
                     }
                 });

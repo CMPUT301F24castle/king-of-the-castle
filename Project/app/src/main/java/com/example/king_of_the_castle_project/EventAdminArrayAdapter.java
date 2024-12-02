@@ -71,6 +71,9 @@ public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
             Button removeQrDataButton = convertView.findViewById(R.id.remove_qr_button);
             Button removeFacilityButton = convertView.findViewById(R.id.remove_facility_button);
 
+            // reset image view
+            eventPosterImage.setImageBitmap(null);
+
             // Get QR Code
             if (event.getQrCodeData() != null) {
                 byte[] decodedBytes = Base64.decode(event.getQrCodeData(), Base64.DEFAULT);
@@ -82,17 +85,20 @@ public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
 
             // Set the image view
             String imageID = event.getHashIdentifier();
+            eventPosterImage.setTag(imageID);
             if (imageID != null) {
                 db.collection("images")
                         .document(imageID)
                         .get()
                         .addOnSuccessListener(documentSnapshot -> {
                             if (documentSnapshot.exists()) {
-                                String conversion = documentSnapshot.getString("imageData");
-                                if (conversion != null) {
-                                    byte[] decodedImage = Base64.decode(conversion, Base64.DEFAULT);
-                                    Bitmap imageBitmap = BitmapFactory.decodeByteArray(decodedImage, 0, decodedImage.length);
-                                    eventPosterImage.setImageBitmap(imageBitmap);
+                                if (imageID.equals(eventPosterImage.getTag())) {
+                                    String conversion = documentSnapshot.getString("imageData");
+                                    if (conversion != null) {
+                                        byte[] decodedImage = Base64.decode(conversion, Base64.DEFAULT);
+                                        Bitmap imageBitmap = BitmapFactory.decodeByteArray(decodedImage, 0, decodedImage.length);
+                                        eventPosterImage.setImageBitmap(imageBitmap);
+                                    }
                                 }
                             }
                         });

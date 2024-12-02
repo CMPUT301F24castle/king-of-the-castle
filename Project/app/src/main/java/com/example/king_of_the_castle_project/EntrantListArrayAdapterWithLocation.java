@@ -1,6 +1,6 @@
 package com.example.king_of_the_castle_project;
-
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -13,67 +13,67 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
-
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
- * Custom ArrayAdapter for displaying a list of entrants in a ListView.
- * Each item in the list represents an entrant and includes information such as their name,
- * phone number, and a button to view their location (if geolocation is enabled).
- * This adapter is responsible for inflating the layout for each entrant and handling
- * interactions like showing a toast when attempting to view the location.
+ * Custom ArrayAdapter for displaying a list of entrants along with their geographic location data.
+ * Each item in the list contains entrant information (name, phone number) and their location
+ * (latitude and longitude). The adapter also includes a button that, when clicked, launches a
+ * map screen showing the entrant's location on a map.
  */
-public class EntrantListArrayAdapter extends ArrayAdapter<Entrant>{
-
+public class EntrantListArrayAdapterWithLocation extends ArrayAdapter<Map<String, Object>> {
     /**
-     * Constructs a new EntrantListArrayAdapter.
+     * Constructs a new EntrantListArrayAdapterWithLocation.
      *
      * @param context The context in which the adapter is used, typically the Activity or Fragment.
-     * @param entrants The list of entrants to be displayed in the adapter.
+     * @param entrantLocationGeoList The list of maps, each containing data about an entrant and their location (latitude and longitude).
      */
-    public EntrantListArrayAdapter(Context context, ArrayList<Entrant> entrants){
-        super(context, 0, entrants);
+    public EntrantListArrayAdapterWithLocation(Context context, ArrayList<Map<String, Object>> entrantLocationGeoList) {
+        super(context, 0, entrantLocationGeoList);
     }
 
     /**
-     * Returns a view for a given entrant item in the list. This method is used to populate the
-     * list item views (such as name, phone number, and location button) in the ListView.
+     * Returns a view for a given entrant item in the list, including their information and a button
+     * to view the entrant's location on a map. This method inflates the layout, binds the entrant's
+     * data (name, phone number, location), and sets the functionality for the location button.
      *
      * @param position The position of the item within the list data.
      * @param convertView A recycled view that can be reused, or null if no view is available.
      * @param parent The parent ViewGroup that the view will be attached to.
-     * @return The View representing the list item for the given position.
+     * @return The View representing the list item for the given position, including entrant info and a location button.
      */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        // get item
-        Entrant entrant = getItem(position);
-
-        // inflate view
+        // get the current map object
+        Map<String, Object> entrantData = getItem(position);
+        // inflate the view
         View view;
         if (convertView == null) {
             view = LayoutInflater.from(getContext()).inflate(R.layout.organizer_entrant_list_content, parent, false);
         } else {
             view = convertView;
         }
-
-        // get views
+        // get the views for displaying information
         ImageView entrantPFP = view.findViewById(R.id.entrant_pfp);
         TextView entrantInfo = view.findViewById(R.id.entrant_info);
         AppCompatButton viewEntrantLocationButton = view.findViewById(R.id.view_entrant_location_button);
+        // extract data from the map
+        Entrant entrant = (Entrant) entrantData.get("entrant");
+        double latitude = (double) entrantData.get("latitude");
+        double longitude = (double) entrantData.get("longitude");
 
-        // convert entrant object into usable data
+        // create a string to display entrant information
         String entrant_name = entrant.getName();
         String entrant_phoneNum = entrant.getPhoneNumber();
         String entrant_info_text = "Name: " + entrant_name + "\nPN: " + entrant_phoneNum;
 
-
-        // set views
+        // set the text view for entrant info
         entrantInfo.setText(entrant_info_text);
 
         // decode and set the user's profile picture
@@ -91,10 +91,19 @@ public class EntrantListArrayAdapter extends ArrayAdapter<Entrant>{
             }
         }
 
-        // hide button, cause it shouldn't need to show location for other lists (any list but waitlist) or when geolocation is turned off
-        viewEntrantLocationButton.setVisibility(View.INVISIBLE);
-
-        // return
+        // set on click listener for the location button
+        viewEntrantLocationButton.setOnClickListener(v -> {
+            // get context
+            Context context = v.getContext();
+            // get map screen
+            Intent i = new Intent(context, ViewEntrantLocationScreen.class);
+            // send latitude and longitude
+            i.putExtra("latitude", latitude);
+            i.putExtra("longitude", longitude);
+            // start map screen
+            context.startActivity(i);
+        });
+        // return the view to be displayed
         return view;
     }
 
@@ -150,5 +159,4 @@ public class EntrantListArrayAdapter extends ArrayAdapter<Entrant>{
 
         return bitmap;
     }
-
 }

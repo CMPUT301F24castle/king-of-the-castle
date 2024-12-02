@@ -94,7 +94,7 @@ public class ViewEntrantLocationScreen extends AppCompatActivity {
 
         // adjust the pin position to center it at (x, y)
         float pinX = x - (pin.getWidth() / 2); // center horizontally
-        float pinY = y - (pin.getHeight()); // bottom of pin points to location
+        float pinY = y - (pin.getHeight()) + 22; // bottom of pin points to location
 
         scroll_x_units = pinX;
 

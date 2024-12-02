@@ -25,6 +25,7 @@ import androidx.core.app.ActivityCompat;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.Priority;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -33,6 +34,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import android.Manifest;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -129,8 +131,6 @@ public class EventDetailsScreen extends AppCompatActivity {
                     }
                 }
                 else {
-                    latitude = null;
-                    longitude = null;
                     joinWaitlist();
                 }
             }
@@ -159,35 +159,95 @@ public class EventDetailsScreen extends AppCompatActivity {
      * Adds the entrant to the event waitlist in Firebase Firestore
      */
     private void joinWaitlist() {
-        // create entry hashmap
-        Map<String, Object> waitlistEntry = new HashMap<>();
-        waitlistEntry.put("entrantID", entrantID);
-        waitlistEntry.put("latitude", latitude);
-        waitlistEntry.put("longitude", longitude);
+        // if the event uses geolocation
+        if (hasGeolocation) {
+            // create entry hashmap
+            Map<String, Object> waitlistEntry = new HashMap<>();
+            waitlistEntry.put("entrantID", entrantID);
+            waitlistEntry.put("latitude", latitude);
+            waitlistEntry.put("longitude", longitude);
 
-        db.collection("events")
-                .whereEqualTo("name", scannedResult)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    if (!queryDocumentSnapshots.isEmpty()) {
-                        String documentId = queryDocumentSnapshots.getDocuments().get(0).getId();
+            db.collection("events")
+                    .whereEqualTo("hashIdentifier", scannedResult)
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            String documentId = queryDocumentSnapshots.getDocuments().get(0).getId();
 
-                        db.collection("events").document(documentId)
-                                .update("waitList", FieldValue.arrayUnion(waitlistEntry))
-                                .addOnSuccessListener(aVoid ->
-                                        Toast.makeText(this, "You have joined the waitlist!", Toast.LENGTH_SHORT).show())
+                            db.collection("events").document(documentId).get()
+                                    .addOnSuccessListener(documentSnapshot -> {
+                                        if (documentSnapshot.exists()) {
+                                            ArrayList<Map<String, Object>> waitList =
+                                                    (ArrayList<Map<String, Object>>) documentSnapshot.get("waitList");
 
-                                .addOnFailureListener(e ->
-                                        Toast.makeText(this, "Failed to join waitlist: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-                    }
-                    else {
-                        Toast.makeText(this, "Event not found for the scanned QR code", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(e ->
-                        Toast.makeText(this, "Failed to retrieve event: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-        Intent intent = new Intent(getApplicationContext(), EntrantScreenActivity.class);
-        startActivity(intent);
+                                            boolean alreadyOnWaitlist = waitList != null && waitList.stream()
+                                                    .anyMatch(entry -> entrantID.equals(entry.get("entrantID")));
+
+                                            if (alreadyOnWaitlist) {
+                                                Toast.makeText(this, "You are already on the waitlist!", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                db.collection("events").document(documentId)
+                                                        .update("waitList", FieldValue.arrayUnion(waitlistEntry))
+                                                        .addOnSuccessListener(aVoid ->
+                                                                Toast.makeText(this, "You have joined the waitlist!", Toast.LENGTH_SHORT).show())
+                                                        .addOnFailureListener(e ->
+                                                                Toast.makeText(this, "Failed to join waitlist: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                                            }
+                                        }
+                                    })
+                                    .addOnFailureListener(e ->
+                                            Toast.makeText(this, "Error fetching event details: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                        } else {
+                            Toast.makeText(this, "Event not found for the scanned QR code", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(e ->
+                            Toast.makeText(this, "Failed to retrieve event: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+
+            Intent intent = new Intent(getApplicationContext(), EntrantScreenActivity.class);
+            startActivity(intent);
+
+        }
+
+        // if the event doesn't use geolocation
+        else {
+            db.collection("events")
+                    .whereEqualTo("hashIdentifier", scannedResult)
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            String documentId = queryDocumentSnapshots.getDocuments().get(0).getId();
+
+                            db.collection("events").document(documentId).get()
+                                    .addOnSuccessListener(documentSnapshot -> {
+                                        if (documentSnapshot.exists()) {
+                                            ArrayList<String> waitList = (ArrayList<String>) documentSnapshot.get("waitList");
+
+                                            if (waitList != null && waitList.contains(entrantID)) {
+                                                Toast.makeText(this, "You are already on the waitlist!", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                db.collection("events").document(documentId)
+                                                        .update("waitList", FieldValue.arrayUnion(entrantID))
+                                                        .addOnSuccessListener(aVoid ->
+                                                                Toast.makeText(this, "You have joined the waitlist!", Toast.LENGTH_SHORT).show())
+                                                        .addOnFailureListener(e ->
+                                                                Toast.makeText(this, "Failed to join waitlist: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                                            }
+                                        }
+                                    })
+                                    .addOnFailureListener(e ->
+                                            Toast.makeText(this, "Error fetching event details: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                        } else {
+                            Toast.makeText(this, "Event not found for the scanned QR code", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(e ->
+                            Toast.makeText(this, "Failed to retrieve event: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+
+            Intent intent = new Intent(getApplicationContext(), EntrantScreenActivity.class);
+            startActivity(intent);
+
+        }
     }
 
     /**
@@ -200,7 +260,7 @@ public class EventDetailsScreen extends AppCompatActivity {
 
         // query the QR code
         db.collection("events")
-                .whereEqualTo("name", scannedResult)
+                .whereEqualTo("hashIdentifier", scannedResult)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
@@ -251,6 +311,8 @@ public class EventDetailsScreen extends AppCompatActivity {
                     }
                     else {
                         Toast.makeText(getApplicationContext(), "Error fetching data", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), EntrantScreenActivity.class);
+                        startActivity(intent);
                     }
                 });
     }
@@ -274,7 +336,7 @@ public class EventDetailsScreen extends AppCompatActivity {
     }
 
     private void getLatAndLong() {
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         // Check permissions again
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -283,8 +345,13 @@ public class EventDetailsScreen extends AppCompatActivity {
 
         Log.d("Debug", "Requesting location updates...");
 
-        // Request current location
-        fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, null)
+        // Create a LocationRequest with the updated API
+        LocationRequest locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000)
+                .setMaxUpdates(1) // Request location once
+                .build();
+
+        // Get the current location
+        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
                 .addOnSuccessListener(this, location -> {
                     if (location != null) {
                         latitude = location.getLatitude();
@@ -303,4 +370,5 @@ public class EventDetailsScreen extends AppCompatActivity {
                     Log.e("Debug", "Error getting location", e);
                 });
     }
+
 }

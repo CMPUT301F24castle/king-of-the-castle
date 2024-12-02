@@ -3,6 +3,10 @@ package com.example.king_of_the_castle_project;
 import static android.app.Activity.RESULT_OK;
 import static androidx.activity.result.ActivityResultCallerKt.registerForActivityResult;
 
+import static android.app.Activity.RESULT_OK;
+import static androidx.activity.result.ActivityResultCallerKt.registerForActivityResult;
+
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -35,16 +39,27 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-/*
- * ArrayAdapter used to format the eventlist in ManageEventsActivity
+import com.google.firebase.firestore.FirebaseFirestore;
+
+/**
+ * ArrayAdapter used to format the event list in ManageEventsActivity.
+ * Includes functionality for interacting with Firebase and displaying events.
  */
 public class EventArrayAdapter extends ArrayAdapter<Event>  {
+
     private FirebaseFirestore db;
     private Lottery lottery;
 
-    public EventArrayAdapter(@NonNull Context context, List<Event> events) {
-        super(context, 0, events);
+    private ImageSelection listener;
 
+    // Image selection interface for parent activity
+    public interface ImageSelection {
+        void onImageSelectionRequested(String eventHashIdentifier);
+    }
+
+    public EventArrayAdapter(@NonNull Context context, List<Event> events, ImageSelection listener) {
+        super(context, 0, events);
+        this.listener = listener;
     }
 
 
@@ -61,6 +76,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
      * @param parent
      *      Parent view that the view will be attached to
      * @return
+     *      The layout for which the array item will be displayed
      */
     @NonNull
     @Override
@@ -86,6 +102,10 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
         Button sendNotificationsButton = convertView.findViewById(R.id.send_notifications_button);
         Button editEvent = convertView.findViewById(R.id.edit_event_button);
 
+        // reset image view
+        eventPosterImage.setImageBitmap(null);
+        Button editEvent = convertView.findViewById(R.id.edit_event_button);
+
         // Get QR Code
         if (event.getQrCodeData() != null) {
             byte[] decodedBytes = Base64.decode(event.getQrCodeData(), Base64.DEFAULT);
@@ -93,6 +113,28 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
             qrCodeImage.setImageBitmap(qrCodeBitmap);
         } else {
             Log.d("Failed to show QR code", "failure: " + event.getQrCodeData());
+        }
+        // Set the image view
+        String imageID = event.getHashIdentifier();
+        eventPosterImage.setTag(imageID);
+        if (imageID != null) {
+            db.collection("images")
+                    .document(imageID)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            if (imageID.equals(eventPosterImage.getTag())) {
+                                String conversion = documentSnapshot.getString("imageData");
+                                if (conversion != null) {
+                                    byte[] decodedImage = Base64.decode(conversion, Base64.DEFAULT);
+                                    Bitmap imageBitmap = BitmapFactory.decodeByteArray(decodedImage, 0, decodedImage.length);
+                                    eventPosterImage.setImageBitmap(imageBitmap);
+                                }
+                            }
+                        } else {
+                            eventPosterImage.setImageResource(R.drawable.baseline_person_24_black);
+                        }
+                    });
         }
         // Set the image view
         String imageID = event.getHashIdentifier();
@@ -115,6 +157,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
         if (event != null) {
             // For now just name, add others later
             name.setText(event.getName());
+            editEvent.setTag(event.getHashIdentifier());
         }
 
         // Image information retriever
@@ -151,6 +194,9 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                 // change screen
                 Intent i = new Intent(context, ListOfFilteredEntrantsInEventScreen.class);
                 i.putExtra("entrant_id_list", event.getWaitList());
+                i.putExtra("event_id", event.getHashIdentifier());
+                i.putExtra("event_geolocation_toggle", event.getGeolocation());
+                i.putExtra("entrant_list_type", "waitList");
                 context.startActivity(i);
             });
 
@@ -161,8 +207,9 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                 // change screen
                 Intent i = new Intent(context, ListOfFilteredEntrantsInEventScreen.class);
                 i.putExtra("entrant_id_list", event.getAcceptedList());
-                //ArrayList<String> acceptedList = new ArrayList<>(Arrays.asList("21cd01a5f09d6e83"));
-                //i.putExtra("entrant_id_list",acceptedList);
+                i.putExtra("event_id", event.getHashIdentifier());
+                i.putExtra("event_geolocation_toggle", event.getGeolocation());
+                i.putExtra("entrant_list_type", "acceptedList");
                 context.startActivity(i);
             });
 
@@ -172,9 +219,10 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                 dialog.dismiss();
                 // change screen
                 Intent i = new Intent(context, ListOfFilteredEntrantsInEventScreen.class);
-//                i.putExtra("entrant_id_list", event.getDeclinedList());
-                ArrayList<String> declinedList = new ArrayList<>(Arrays.asList("80f328806d47ddbb"));
-                i.putExtra("entrant_id_list",declinedList);
+                i.putExtra("entrant_id_list", event.getDeclinedList());
+                i.putExtra("event_id", event.getHashIdentifier());
+                i.putExtra("event_geolocation_toggle", event.getGeolocation());
+                i.putExtra("entrant_list_type", "declinedList");
                 context.startActivity(i);
             });
 
@@ -184,9 +232,10 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                 dialog.dismiss();
                 // change screen
                 Intent i = new Intent(context, ListOfFilteredEntrantsInEventScreen.class);
-//                i.putExtra("entrant_id_list", event.getRegisteredList());
-                ArrayList<String> registeredList = new ArrayList<>(Arrays.asList("2b075d2817445df8", "cc10cc7754d9fe8a"));
-                i.putExtra("entrant_id_list",registeredList);
+                i.putExtra("entrant_id_list", event.getRegisteredList());
+                i.putExtra("event_id", event.getHashIdentifier());
+                i.putExtra("event_geolocation_toggle", event.getGeolocation());
+                i.putExtra("entrant_list_type", "registeredList");
                 context.startActivity(i);
             });
 
@@ -282,10 +331,6 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                 roleSpinner.setAdapter(adapter);
 
 
-
-
-
-
                 okButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -293,7 +338,6 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                         String message = messageEditText.getText().toString();
                         // type of entrant to notify in string (Waitlist Entrants, Cancelled Entrants, Invited Entrants, Enrolled Entrants)
                         String selectedRole = roleSpinner.getSelectedItem().toString();
-
 
                         //notification functionality
                         // Firebase reference to the event's document
@@ -338,6 +382,11 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                     }
                 });
             }
+        });
+
+        editEvent.setOnClickListener(v -> {
+            String eventHashIdentifier = (String) v.getTag();
+            listener.onImageSelectionRequested(eventHashIdentifier);
         });
 
         return convertView;

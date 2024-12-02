@@ -4,8 +4,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -68,5 +70,11 @@ public class ViewEntrantLocationScreenTest {
                 assertEquals("the result bitmap should not be null", true, resultBitmap != null);
             });
         }
+    }
+
+    @After
+    public void tearDown() {
+        // Release any resources and clean up after the tests
+        Intents.release();
     }
 }

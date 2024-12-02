@@ -51,7 +51,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.security.MessageDigest;
 
-/*
+/**
  * Class that handles the event screen for creating events, QR Code and sending to firebase
  */
 public class CreateEventActivity extends AppCompatActivity {
@@ -150,7 +150,7 @@ public class CreateEventActivity extends AppCompatActivity {
                 String maxParticipants = eventMaxParticipants.getText().toString();
                 String date = eventDate.getText().toString();
                 String time = eventTime.getText().toString();
-                int number = 500000000; // Max participants for now
+                int number = 50; // Max participants for now
                 // Verify date input
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()); // date formatter
                 sdf.setLenient(false);
@@ -225,6 +225,10 @@ public class CreateEventActivity extends AppCompatActivity {
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("eventCreated", name);
                 setResult(RESULT_OK, resultIntent);
+                // Clear globals
+                imageUri = null;
+                imageBitmap = null;
+                Log.d("EventCreation", "Uploading image for event: " + eventIdentifier);
                 // return
                 finish();
             }

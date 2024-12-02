@@ -49,6 +49,9 @@ android {
 dependencies {
     implementation(libs.androidx.preference)
     implementation(libs.firebase.messaging)
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("androidx.activity:activity:1.9.3")
+    implementation("androidx.constraintlayout:constraintlayout:2.2.0")
     testImplementation(libs.espresso.intents)
     testImplementation(libs.ext.junit)
     testImplementation(libs.test.core)

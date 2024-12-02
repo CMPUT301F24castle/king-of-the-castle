@@ -8,7 +8,7 @@
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="  Profiles"
+        android:text="  Images"
         android:textColor="@color/light_green"
         android:background="@color/dark_grey"
         android:textSize="36sp"
@@ -18,16 +18,16 @@
         android:layout_marginBottom="5sp"/>
 
     <ListView
-        android:id="@+id/list_of_entrants"
+        android:id="@+id/list_of_images"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_below="@id/header"
-        android:layout_above="@id/return_button_LOE_screen"
+        android:layout_above="@id/return_button"
         android:divider="@android:color/transparent"
         android:dividerHeight="10dp" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/return_button_LOE_screen"
+        android:id="@+id/return_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Return"

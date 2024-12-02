@@ -77,6 +77,7 @@ dependencies {
     androidTestImplementation ("androidx.test:core:1.5.0")
     androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.1")
 
+    implementation("androidx.annotation:annotation:1.6.0")
 
     // Regular implementation dependencies
     implementation(libs.appcompat)

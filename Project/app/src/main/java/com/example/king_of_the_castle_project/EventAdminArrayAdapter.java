@@ -24,7 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
-/*
+/**
  * ArrayAdapter to show list of events in the administrator browse
  */
 public class EventAdminArrayAdapter extends ArrayAdapter<Event> {

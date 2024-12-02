@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/*
+/**
  * Activity that shows toolbar and buttons on Event Details Screen.
  * Allows you to join a waiting list for an event
  */

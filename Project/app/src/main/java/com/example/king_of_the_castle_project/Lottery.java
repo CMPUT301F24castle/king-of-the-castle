@@ -50,9 +50,4 @@ public class Lottery { ;
         return selectedAttendees; //returns the selected Attendees
     }
 
-
-
-
-
-
 }

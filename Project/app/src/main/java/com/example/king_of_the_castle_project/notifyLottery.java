@@ -19,7 +19,6 @@ import java.util.List;
  * This will send a notification to all chosen entrants (from lottery class) asking if they would like to accept or decline their invitation
  * 2.5.1: As an organiser I want to send a notification to chosen entrants to sign up for events
  */
-//2.5.1: As an organiser I want to send a notification to chosen entrants to sign up for events
 public class notifyLottery implements View.OnClickListener {
     //private Context context;
     private static final String CHANEL_ID = "sendLotteryNotification";
@@ -30,6 +29,11 @@ public class notifyLottery implements View.OnClickListener {
         //this.context = context;
        // createNotificationChannel();
     }
+
+    /**
+     * When clicking to send the lottery notification
+     * @param view The view that was clicked.
+     */
     @Override
     public void onClick(View view) {
         Context context = view.getContext();
@@ -38,6 +42,11 @@ public class notifyLottery implements View.OnClickListener {
         sendLotteryNotification(context, lottery);
     }
 
+    /**
+     * Creating notification channel
+     * @param context
+     *  Context of the notification channel
+     */
     private void createNotificationChannel(Context context) {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is not in the Support Library.
@@ -52,7 +61,13 @@ public class notifyLottery implements View.OnClickListener {
         }
     }
 
-
+    /**
+     * Sending lottery notification
+     * @param context
+     *  Context of the lottery notification
+     * @param lottery
+     *  Lottery object
+     */
     public void sendLotteryNotification(Context context, Lottery lottery) {
         List<String> selectedAttendees = lottery.getSelectedAttendees();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);

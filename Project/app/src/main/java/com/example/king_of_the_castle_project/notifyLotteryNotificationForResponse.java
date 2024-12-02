@@ -16,7 +16,6 @@ import java.util.List;
  * This will send a notification to selected entrants (by lottery system) if they would like to accept or decline their invitation (we are still waiting on their response)
  * 2.7.2: As an organiser I want to send notifications to all selected entrants
  */
-//2.7.2: As an organiser I want to send a notification to chosen entrants to sign up for events
 public class notifyLotteryNotificationForResponse {
 
     private Context context;

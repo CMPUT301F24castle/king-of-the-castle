@@ -56,8 +56,8 @@
         android:radius = "10dp">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:id="@+id/profile_photo_IV"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="30dp"

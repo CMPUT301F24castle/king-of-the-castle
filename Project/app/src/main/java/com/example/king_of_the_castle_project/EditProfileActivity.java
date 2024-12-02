@@ -138,6 +138,11 @@ public class EditProfileActivity extends AppCompatActivity {
             return;
         }
 
+        if (!phone.matches("\\d+")) {
+            Toast.makeText(this, "Invalid phone number", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         // create a new entrant with these values
         Entrant entrant = new Entrant(name, email, phone.isEmpty() ? null : phone, androidID);
 

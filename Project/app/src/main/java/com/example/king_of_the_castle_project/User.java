@@ -14,6 +14,7 @@ public abstract class User implements Serializable {
     private String email;
     private String phoneNumber;
     private String id;
+    private String pfpData;
 
     /**
      * Empty constructor necessary to pass information to firebase
@@ -110,5 +111,25 @@ public abstract class User implements Serializable {
      */
     public void setId(String id) {
         this.id = id;
+    }
+
+    /**
+     * Gets the profile picture data for the user.
+     * This method returns the data associated with the user's profile picture (PFP).
+     *
+     * @return A string containing the profile picture data, which may be a URL or base64 encoded image data.
+     */
+    public String getPfpData() {
+        return pfpData;
+    }
+
+    /**
+     * Sets the profile picture data for the user.
+     * This method allows you to set the data associated with the user's profile picture (PFP).
+     *
+     * @param pfpData A string representing the profile picture data, which could be a URL or base64 encoded image data.
+     */
+    public void setPfpData(String pfpData) {
+        this.pfpData = pfpData;
     }
 }

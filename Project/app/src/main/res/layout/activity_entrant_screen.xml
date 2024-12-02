@@ -65,7 +65,7 @@
             android:padding="18dp"
             android:paddingStart="28dp"
             android:paddingEnd="28dp"
-            android:text="Hello Username!"
+            android:text="Welcome!"
             android:textColor="@color/black"
             android:textSize="20dp" />
 

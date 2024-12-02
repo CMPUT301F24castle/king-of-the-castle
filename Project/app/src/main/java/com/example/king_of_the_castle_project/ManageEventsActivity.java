@@ -77,23 +77,39 @@ public class ManageEventsActivity extends AppCompatActivity implements EventArra
                         // Check if the query returned any results
                         if (task.getResult() != null && !task.getResult().isEmpty()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                // get waitlist
-                                ArrayList<String> entrantIds = new ArrayList<>();
-                                ArrayList<Map<String, Object>> waitlist = (ArrayList<Map<String, Object>>) document.get("waitList");
-                                if (waitlist != null) {
-                                    for (Map<String, Object> entry : waitlist) {
-                                        // Extract the "entrantID" field
-                                        if (entry.containsKey("entrantID")) {
-                                            entrantIds.add((String) entry.get("entrantID"));
+                                // Parse the document
+                                if (document.getBoolean("geolocation")) {
+                                    // get waitlist
+                                    ArrayList<String> entrantIds = new ArrayList<>();
+                                    ArrayList<Map<String, Object>> waitlist = (ArrayList<Map<String, Object>>) document.get("waitList");
+                                    if (!waitlist.isEmpty()) {
+                                        for (Map<String, Object> entry : waitlist) {
+                                            // Extract the "entrantID" field
+                                            if (entry.containsKey("entrantID")) {
+                                                entrantIds.add((String) entry.get("entrantID"));
+                                            }
                                         }
                                     }
+                                    // add waitlist and other fields to Event object
+                                    Event event = new Event(document.getString("name"), document.getString("date"), document.getString("time"), document.getString("location"),
+                                            document.getString("details"), document.getLong("maxParticipants").intValue(), entrantIds, (ArrayList<String>) document.get("acceptedList"),
+                                            (ArrayList<String>) document.get("declinedList"), (ArrayList<String>) document.get("registeredList"), document.getBoolean("geolocation"),
+                                            document.getString("qrCodeData"), document.getString("organizerID"), document.getString("hashIdentifier"));
+
+                                    // Add the event to the events list
+                                    events.add(event);
                                 }
 
-                                // add waitlist and other fields to Event object
-                                Event event = new Event(document.getString("name"), document.getString("date"), document.getString("time"), document.getString("location"), document.getString("eventDetails"), document.getLong("maxParticipants").intValue(), entrantIds, (ArrayList<String>) document.get("acceptedList"), (ArrayList<String>) document.get("declinedList"), (ArrayList<String>) document.get("registeredList"), document.getBoolean("geolocation"), document.getString("qrCodeData"), document.getString("organizerID"), document.getString("hashIdentifier"));
+                                else {
+                                    Event event = new Event(document.getString("name"), document.getString("date"), document.getString("time"), document.getString("location"),
+                                            document.getString("details"), document.getLong("maxParticipants").intValue(), (ArrayList<String>) document.get("waitList"),
+                                            (ArrayList<String>) document.get("acceptedList"), (ArrayList<String>) document.get("declinedList"), (ArrayList<String>) document.get("registeredList"),
+                                            document.getBoolean("geolocation"), document.getString("qrCodeData"), document.getString("organizerID"),
+                                            document.getString("hashIdentifier"));
 
-                                // Add the event to the events list
-                                events.add(event);
+                                    // Add the event to the events list
+                                    events.add(event);
+                                }
                             }
                             // Notify the adapter to refresh the ListView
                             arrayAdapter.notifyDataSetChanged();

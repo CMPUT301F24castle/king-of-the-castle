@@ -18,7 +18,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.Map;
 
-/*
+/**
  * Administrator event browser handler
  */
 public class BrowseEventsActivity extends AppCompatActivity {

@@ -15,7 +15,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-/*
+/**
  * Class used to handle facility creation and editing
  */
 public class ManageFacilityActivity extends AppCompatActivity {

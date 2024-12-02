@@ -13,7 +13,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-
+/**
+ * Dialog fragment for notification when winning
+*/
 public class WinNotificationFragment extends DialogFragment {
     private WinNotificationFragment.WinNotificationDialogListener listener;
     private Toast toastMessage;

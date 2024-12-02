@@ -318,7 +318,6 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                         // Firebase reference to the event's document
                        // DocumentReference eventRef = db.collection("events").document(event.getHashIdentifier());
 
-
                         //ORIGINAL IMPLEMENTATION
                         //if lottery is null
                         if (lottery == null) {

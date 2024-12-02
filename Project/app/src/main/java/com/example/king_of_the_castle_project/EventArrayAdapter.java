@@ -132,7 +132,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                                 }
                             }
                         } else {
-                            eventPosterImage.setImageResource(R.drawable.baseline_person_24_black);
+                            eventPosterImage.setImageResource(R.drawable.missing_image_icon);
                         }
                     });
         }
@@ -342,7 +342,6 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
                         //notification functionality
                         // Firebase reference to the event's document
                        // DocumentReference eventRef = db.collection("events").document(event.getHashIdentifier());
-
 
                         //ORIGINAL IMPLEMENTATION
                         //if lottery is null

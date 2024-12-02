@@ -19,7 +19,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
  * Activity that allows user to change geolocation and notification settings
  */
 public class SettingsActivity extends AppCompatActivity {
-    private SwitchCompat geolocationSwitch;
     private SwitchCompat notificationSwitch;
     private static final String PREFS_NAME = "user_preferences";
     private static final String KEY_NOTIFICATIONS = "notifications_enabled";
@@ -40,8 +39,7 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        // get views
-        geolocationSwitch = findViewById(R.id.switch_geolocation);
+        // get view
         notificationSwitch = findViewById(R.id.switch_notifications);
         // Load saved notifications preference
         SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);

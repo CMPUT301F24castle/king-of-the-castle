@@ -33,6 +33,7 @@ public class ProfileActivity extends AppCompatActivity {
     private AppCompatButton editProfileButton;
 
     private FirebaseFirestore db;
+    private static String injectedAndroidID; // For testing
     private String androidID;
 
     /**
@@ -61,7 +62,9 @@ public class ProfileActivity extends AppCompatActivity {
 
         // get database reference and the current user's android id
         db = FirebaseFirestore.getInstance();
-        androidID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        // Use injected Android ID for testing, otherwise get the real ID
+        androidID = injectedAndroidID != null ? injectedAndroidID :
+                Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
         // set up bottom navigation between home, profile and settings
         bottomNavView.setOnItemSelectedListener(item -> {
@@ -92,6 +95,14 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    /**
+     * Allows injection of a mock Android ID for testing purposes.
+     * @param mockAndroidID The mocked Android ID to use.
+     */
+    public static void setAndroidIDPA(String mockAndroidID) {
+        injectedAndroidID = mockAndroidID;
     }
 
     /**

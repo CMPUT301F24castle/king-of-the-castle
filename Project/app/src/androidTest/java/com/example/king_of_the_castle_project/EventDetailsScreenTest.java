@@ -11,8 +11,10 @@ import org.junit.runner.RunWith;
 
 import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import android.content.Intent;
+import android.view.View;
 import android.widget.TextView;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -21,16 +23,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
-@RunWith(AndroidJUnit4.class)
-@LargeTest
 public class EventDetailsScreenTest {
+
     private static String mockOrganizerId = "ojnvwrfert";
 
     @Rule
     public ActivityScenarioRule<EventDetailsScreen> activityScenarioRule =
             new ActivityScenarioRule<EventDetailsScreen>(
                     new Intent(ApplicationProvider.getApplicationContext(), EventDetailsScreen.class)
-                            .putExtra("qr result", "Event Details Screen Test Event")
+                            .putExtra("qr result", "vjownriowrf")
             );
 
     @Test
@@ -38,7 +39,7 @@ public class EventDetailsScreenTest {
         // Verify the extras inside the Activity
         activityScenarioRule.getScenario().onActivity(activity -> {
             Intent intent = activity.getIntent();
-            assertEquals("Event Details Screen Test Event", intent.getStringExtra("qr result"));
+            assertEquals("vjownriowrf", intent.getStringExtra("qr result"));
         });
     }
 
@@ -58,10 +59,12 @@ public class EventDetailsScreenTest {
         mockEvent.put("waitlist", new ArrayList<String>());
         mockEvent.put("qrCodeData", "qrCodeData");
         mockEvent.put("organizerID", mockOrganizerId);
+        mockEvent.put("geolocation", false);
+        mockEvent.put("hashIdentifier", "vjownriowrf");
 
         // Write data to Firestore
         db.collection("events")
-                .document("Event Details Screen Test Event")
+                .document("vjownriowrf")
                 .set(mockEvent)
                 .addOnSuccessListener(aVoid -> latch.countDown())
                 .addOnFailureListener(e -> {
@@ -80,6 +83,7 @@ public class EventDetailsScreenTest {
             TextView eventLocationTV = activity.findViewById(R.id.venue_TV);
             TextView eventMaxParticipantsTV = activity.findViewById(R.id.max_participants_TV);
             TextView eventNotesTV = activity.findViewById(R.id.notes_TV);
+            TextView geolocationWarning = activity.findViewById(R.id.join_waitlist_tv_no_warning);
 
             // Get the displayed text
             String eventName = eventNameTV.getText().toString();
@@ -102,11 +106,12 @@ public class EventDetailsScreenTest {
         CountDownLatch latch2 = new CountDownLatch(1);
 
         db.collection("events")
-                .document("Event Details Screen Test Event")
+                .document("vjownriowrf")
                 .delete()
                 .addOnSuccessListener(aVoid -> latch2.countDown())
                 .addOnFailureListener(e -> latch2.countDown());
 
         latch2.await(); // Wait for deletion to complete
     }
+
 }

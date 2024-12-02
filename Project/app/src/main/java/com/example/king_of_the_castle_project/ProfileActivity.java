@@ -99,17 +99,6 @@ public class ProfileActivity extends AppCompatActivity {
         // get user profile from database and sett textviews
         getProfilePhoto();
         showProfile();
-        /*
-        String letter = entrantNameTV.toString().substring(0, 1).toUpperCase();
-        TextDrawable drawable = new TextDrawable.Builder()
-                .setColor(Color.parseColor("#C7C2EE"))
-                .setShape(TextDrawable.SHAPE_ROUND_RECT)
-                .setText(letter)
-                .build();
-
-        entrantPhotoIV.setImageDrawable(drawable);
-
-         */
 
         // button to start edit profile activity
         editProfileButton.setOnClickListener(new View.OnClickListener() {
@@ -121,6 +110,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Gets profile photo and shows it in the image view
+     * If it does not exist, shows deterministically-generated profile photo
+     */
     void getProfilePhoto() {
         DocumentReference docRef = db.collection("entrants").document(androidID);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -161,6 +154,9 @@ public class ProfileActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Shows the deterministically-generated profile image
+     */
     private void showProfileImg() {
         db.collection("entrants")
                 .whereEqualTo("id", androidID)

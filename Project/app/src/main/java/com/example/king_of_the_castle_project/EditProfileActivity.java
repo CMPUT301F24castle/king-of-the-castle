@@ -68,6 +68,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private String androidID;
 
+    // Variables for image selection
     private Uri filePath;
     StorageReference storageReference;
     FirebaseStorage storage;
@@ -106,6 +107,7 @@ public class EditProfileActivity extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
+        // Launcher for selecting image from library
         activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -123,9 +125,11 @@ public class EditProfileActivity extends AppCompatActivity {
 
         // set all edit texts to current profile values
         setCurrentValues();
+        // get current profile photo
         getProfilePhoto();
         //showProfileImg();
 
+        // Updating/uploading new photo
         updatePhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,6 +138,7 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
+        // Deleting existing photo
         deletePhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,6 +154,7 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
+        // Return to previous screen
         returnBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -251,6 +257,9 @@ public class EditProfileActivity extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
     }
 
+    /**
+     * Sets the default deterministically-generated profile photo according to the first character of one's name
+     */
     private void showProfileImg() {
         db.collection("entrants")
                 .whereEqualTo("id", androidID)
@@ -274,6 +283,9 @@ public class EditProfileActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Retrieves the current profile photo, and if it doesn't exist, calls to use a deterministically-generated one
+     */
     void getProfilePhoto() {
         db.collection("entrants")
                 .whereEqualTo("id", androidID)
@@ -298,6 +310,19 @@ public class EditProfileActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Result of the launching of an upload image
+     * Overridden to save uploaded image as a string so it can be properly saved in Firebase
+     * Code used from this tutorial: https://www.geeksforgeeks.org/android-how-to-upload-an-image-on-firebase-storage/
+     * @param requestCode The integer request code originally supplied to
+     *                    startActivityForResult(), allowing you to identify who this
+     *                    result came from.
+     * @param resultCode The integer result code returned by the child activity
+     *                   through its setResult().
+     * @param data An Intent, which can return result data to the caller
+     *               (various data can be attached to Intent "extras").
+     *
+     */
     @Override
     protected void onActivityResult(int requestCode,
                                     int resultCode,
@@ -363,6 +388,11 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Part of the uploading image process
+     * Portion which allows one to select from their device's image library
+     * Code used from this tutorial: https://www.geeksforgeeks.org/android-how-to-upload-an-image-on-firebase-storage/
+     */
     private void selectImage()
     {
 
@@ -377,6 +407,11 @@ public class EditProfileActivity extends AppCompatActivity {
                 PICK_IMAGE_REQUEST);
     }
 
+    /**
+     * Takes the image selected, and stores it
+     * Tries to send to Firebase storage (not used), but the onActivityResult override ensures that it can be stored in the database as a string
+     * Code used from this tutorial: https://www.geeksforgeeks.org/android-how-to-upload-an-image-on-firebase-storage/
+     */
     private void uploadImage() {
         if (filePath != null) {
 
@@ -436,6 +471,9 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Removes profile image from Firebase, and displays default deterministically-generated profile photo
+     */
     private void removeImage() {
         Map<String, Object> data = new HashMap<>();
         data.put("profileImg", null);

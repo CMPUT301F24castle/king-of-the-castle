@@ -16,7 +16,6 @@ import java.util.List;
  * This sends a notification to all cancelled entrants
  * 2.7.3: As an organiser I want to send a notification to all cancelled entrants
  */
-//2.7.3: As an organiser I want to send a notification to all cancelled entrants
 public class notifyCancelledEntrants {
     private Context context;
     private static final String CHANEL_ID = "notifyCancelledEntrants";

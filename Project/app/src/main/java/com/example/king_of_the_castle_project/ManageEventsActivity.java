@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/*
+/**
  * Class used to manage the screen for viewing organizer's activities. Pulls from firebase
  */
 public class ManageEventsActivity extends AppCompatActivity {

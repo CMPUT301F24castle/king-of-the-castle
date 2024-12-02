@@ -216,7 +216,7 @@ public class EntrantScreenActivity extends AppCompatActivity {
     /**
      * Searches the database for the name of the event scanned. If it finds it it opens a new
      * activity that shows the event's details. If it doesn't find it, the scanner closes and users
-     * are brout back to the EntrantScreenActivity
+     * are brought back to the EntrantScreenActivity
      */
     private void searchForQRCode() {
         // fetch firebase reference

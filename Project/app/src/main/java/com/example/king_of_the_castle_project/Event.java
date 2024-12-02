@@ -37,6 +37,23 @@ public class Event {
         // Empty constructor for firebase
     }
 
+    /**
+     * Constructor without a waitList
+     * @param name
+     *  Name of event
+     * @param date
+     *  Date of event
+     * @param time
+     *  Time of event
+     * @param location
+     *  Location of event
+     * @param eventDetails
+     *  Notes added by the organizer
+     * @param maxParticipants
+     *  Maximum number of participants
+     * @param geolocation
+     *  Whether geolocation is enabled or not
+     */
     public Event(String name, String date, String time, String location, String eventDetails, int maxParticipants, Boolean geolocation) {
         // Constructor with no waitlist because it was causing bugs
         this.name = name;
@@ -53,6 +70,25 @@ public class Event {
         this.organizerID = "";
     }
 
+    /**
+     *Constructor without a waitList
+     * @param name
+     *  Name of event
+     * @param date
+     *  Date of event
+     * @param time
+     *  Time of event
+     * @param location
+     *  Location of event
+     * @param eventDetails
+     *  Notes added by the organizer
+     * @param maxParticipants
+     *  Maximum number of participants
+     * @param geolocation
+     *  Whether geolocation is enabled or not
+     * @param organizerID
+     *  Android ID of the organizer
+     */
     public Event(String name, String date, String time, String location, String eventDetails, int maxParticipants, Boolean geolocation, String organizerID) {
         // Constructor with no waitlist because it was causing bugs
         this.name = name;
@@ -437,18 +473,38 @@ public class Event {
         this.hashIdentifier = hashIdentifier;
     }
 
+    /**
+     * Gets facility of event
+     * @return
+     *  Facility of the event
+     */
     public Map<String, String> getFacility() {
         return facility;
     }
 
+    /**
+     * Sets facility of event
+     * @param facility
+     *  Proposed facility of the event
+     */
     public void setFacility(Map<String, String> facility) {
         this.facility = facility;
     }
 
+    /**
+     * Tells whether QR code is valid
+     * @return
+     *  Boolean value of whether QR code is valid
+     */
     public Boolean getQrCodeValid() {
         return qrCodeValid;
     }
 
+    /**
+     * Sets if QR code is valid
+     * @param qrCodeValid
+     *  Boolean of whether event QR code is valid
+     */
     public void setQrCodeValid(Boolean qrCodeValid) {
         this.qrCodeValid = qrCodeValid;
     }

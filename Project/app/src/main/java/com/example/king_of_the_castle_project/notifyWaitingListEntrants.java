@@ -16,7 +16,6 @@ import java.util.List;
  * This will send a notification to all entrants on the waiting list, whether they have been chosen or not
  * 2.7.1: As an organiser I want to send notifications to all entrants on the waiting list
  */
-//2.7.1: As an organiser I want to send notifications to all entrants on the waiting list
 public class notifyWaitingListEntrants {
     private Context context;
     private static final String CHANEL_ID = "notifyWaitingListEntrants";
@@ -26,6 +25,9 @@ public class notifyWaitingListEntrants {
         createNotificationChannel();
     }
 
+    /**
+     * Creates notification channel
+     */
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is not in the Support Library.
@@ -40,6 +42,11 @@ public class notifyWaitingListEntrants {
         }
     }
 
+    /**
+     * Notifies entrants on a waiting list
+     * @param event
+     *  Event whose waiting list's entrants are being notified
+     */
     public void notifyWaitingListEntrants(Event event) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         boolean isNotificationsEnabled = sharedPreferences.getBoolean("notifications_enabled", true);

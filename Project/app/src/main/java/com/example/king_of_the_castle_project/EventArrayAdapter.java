@@ -45,6 +45,13 @@ public class EventArrayAdapter extends ArrayAdapter<Event>  {
     private FirebaseFirestore db;
     private Lottery lottery;
 
+    /**
+     * Constructor for the adapter
+     * @param context
+     *  Context for the adapter
+     * @param events
+     *  List of events
+     */
     public EventArrayAdapter(@NonNull Context context, List<Event> events) {
         super(context, 0, events);
 

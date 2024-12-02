@@ -317,7 +317,15 @@ public class EventDetailsScreen extends AppCompatActivity {
                 });
     }
 
-    // Handle permission result
+    /**
+     * Handle permission result
+     * @param requestCode The request code passed in
+     * @param permissions The requested permissions. Never null.
+     * @param grantResults The grant results for the corresponding permissions
+     *     which is either {@link android.content.pm.PackageManager#PERMISSION_GRANTED}
+     *     or {@link android.content.pm.PackageManager#PERMISSION_DENIED}. Never null.
+     *
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -335,6 +343,9 @@ public class EventDetailsScreen extends AppCompatActivity {
         }
     }
 
+    /**
+     * Gets longitude and latitude of current position
+     */
     private void getLatAndLong() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 

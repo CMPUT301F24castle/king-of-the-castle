@@ -100,6 +100,8 @@ public class EventAdminArrayAdapter extends ArrayAdapter<Event> {
                                         eventPosterImage.setImageBitmap(imageBitmap);
                                     }
                                 }
+                            } else {
+                                eventPosterImage.setImageResource(R.drawable.missing_image_icon);
                             }
                         });
             }

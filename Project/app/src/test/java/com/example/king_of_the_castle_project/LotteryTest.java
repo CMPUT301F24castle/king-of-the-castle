@@ -49,7 +49,7 @@ public class LotteryTest {
         // Call the lottery selection method
         testevent = new Event("Castle Tour", "2024-11-15", "10:00 AM", "Castle Grounds",
                 "A guided tour of the castle", 2, true, "testID");
-        testlottery.selectRandomEntrants(testevent);
+        testlottery.selectRandomEntrants(testevent, 9);
 
         // Verify that the correct number of entrants were selected (2 in this case)
         List<String> selectedAttendees = testlottery.getSelectedAttendees();
